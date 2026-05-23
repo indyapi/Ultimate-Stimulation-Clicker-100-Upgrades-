@@ -1,0 +1,9 @@
+[
+  { "id": 0, "name": "กดสิวฟินๆ", "baseCost": 15, "cpcAdd": 1, "cpsAdd": 0, "isOnetime": false, "desc": "+1 พลังคลิก" },
+  { "id": 1, "name": "คลิปสไลม์หนึบหนับ", "baseCost": 50, "cpcAdd": 0, "cpsAdd": 0.5, "isOnetime": false, "desc": "+0.5 CPS" },
+  { "id": 2, "name": "📜 ใบอนุมัติเทรด Anthropic", "baseCost": 300, "cpcAdd": 0, "cpsAdd": 0, "isOnetime": true, "isUnlock": "anthropic", "desc": "🔓 เปิดเมนูหุ้น Anthropic" },
+  { "id": 3, "name": "📩 กล่องอีเมลสื่อสารข้อมูล", "baseCost": 600, "cpcAdd": 0, "cpsAdd": 0, "isOnetime": true, "specialUnlock": "email", "desc": "🔓 ปลดล็อกระบบพิเศษ" },
+  { "id": 4, "name": "วิดีโอตัดเค้กเนียนๆ", "baseCost": 1200, "cpcAdd": 0, "cpsAdd": 12, "isOnetime": false, "desc": "+12 CPS" },
+  { "id": 5, "name": "🎫 บัตรผ่านเข้าร่วมตลาดโบราณ", "baseCost": 3000, "cpcAdd": 0, "cpsAdd": 0, "isOnetime": true, "specialUnlock": "antique_ticket", "desc": "🔓 ปลดล็อกระบบพิเศษ" },
+  { "id": 6, "name": "📢 บัตรจ้างสื่อสร้างกระแสข่าว", "baseCost": 15000, "cpcAdd": 0, "cpsAdd": 0, "isOnetime": true, "specialUnlock": "media_hype_pass", "desc": "🔓 ปลดล็อกปุ่มปั่นกระแสคลั่งในโรงประมูล" }
+]
