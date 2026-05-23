@@ -3,14 +3,706 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Stimulation Clicker - Modular</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <title>Ultimate Stimulation Clicker - Media Hype Update</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0; padding: 0;
+            background-color: #0a0a0c; color: #fff;
+            display: flex; flex-direction: column;
+            min-height: 100vh; overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* --- Layout รองรับ Mobile & Desktop --- */
+        #game-container { display: flex; flex-direction: column; width: 100%; gap: 15px; padding: 15px; }
+        #main-section { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
+        #invest-container { width: 100%; max-width: 550px; background: #13131a; border: 1px solid #222; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+        #shop-section { width: 100%; max-width: 550px; background-color: #121216; border: 1px solid #222; border-radius: 12px; display: flex; flex-direction: column; margin: 0 auto; }
+
+        @media (min-width: 768px) {
+            body { height: 100vh; overflow: hidden; }
+            #game-container { flex-direction: row; height: 100vh; padding: 0; gap: 0; }
+            #main-section { flex: 1; height: 100%; overflow-y: auto; padding: 20px; justify-content: flex-start; }
+            #invest-container { margin-top: 10px; }
+            #shop-section { width: 420px; max-width: 420px; height: 100%; border-radius: 0; border: none; border-left: 2px solid #222; }
+        }
+
+        /* --- UI Styling --- */
+        #shop-header { padding: 15px; background: #181822; border-bottom: 1px solid #222; text-align: center; }
+        #search-container { padding: 12px 15px 5px 15px; background: #14141c; }
+        #search-input { width: 100%; padding: 12px; background-color: #1c1c24; border: 1px solid #444; border-radius: 8px; color: white; font-size: 0.95rem; outline: none; }
+        #search-input:focus { border-color: #00ffcc; }
+        
+        #shop-tabs { display: flex; background: #14141c; padding: 5px 15px 10px 15px; border-bottom: 1px solid #222; gap: 8px; }
+        .shop-tab { flex: 1; padding: 10px; font-size: 0.85rem; font-weight: bold; color: #888; background: #1c1c24; border: 1px solid #333; border-radius: 8px; cursor: pointer; text-align: center; }
+        .shop-tab.active { color: #00ffcc; border-color: #00ffcc; background: rgba(0,255,204,0.05); }
+        #shop-list { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; max-height: 400px; }
+        @media (min-width: 768px) { #shop-list { max-height: none; } }
+        
+        /* Clicker Panels */
+        #score-display { font-size: 3rem; font-weight: 900; color: #00ffcc; text-shadow: 0 0 15px rgba(0,255,204,0.4); text-align: center; }
+        #cps-display { font-size: 1rem; color: #888; margin-bottom: 12px; text-align: center; }
+        #click-btn {
+            width: 120px; height: 120px; border-radius: 50%; border: none;
+            background: linear-gradient(135deg, #00ffcc, #0077ff); color: white;
+            font-size: 1.1rem; font-weight: bold; cursor: pointer; display: block; margin: 0 auto;
+            box-shadow: 0 0 25px rgba(0,255,204,0.3); transition: transform 0.05s;
+            outline: none; -webkit-tap-highlight-color: transparent;
+        }
+        #click-btn:active { transform: scale(0.93); }
+
+        #market-menu-bar { display: flex; background: #181824; border-bottom: 1px solid #222; overflow-x: auto; }
+        .menu-tab { padding: 14px 16px; font-size: 0.9rem; font-weight: bold; color: #888; background: transparent; border: none; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
+        .menu-tab.active { color: #00ffcc; border-bottom-color: #00ffcc; background: rgba(0,255,204,0.05); }
+
+        #trading-panel { padding: 15px; min-height: 240px; }
+        .market-card { display: flex; flex-direction: column; gap: 10px; }
+        .market-header { display: flex; justify-content: space-between; align-items: center; }
+        .asset-name { font-weight: bold; font-size: 1.1rem; }
+        .asset-price { font-weight: bold; font-size: 1.2rem; color: #ffcc00; }
+        
+        .chart-container { width: 100%; height: 90px; background: #0f0f14; border-radius: 6px; border: 1px solid #1a1a26; }
+        .chart-svg { width: 100%; height: 100%; }
+        .market-stats { display: flex; flex-direction: column; gap: 6px; background: #0d0d14; padding: 12px; border-radius: 8px; font-size: 0.85rem; color: #ccc; }
+        .stat-row { display: flex; justify-content: space-between; }
+        
+        .trade-actions { display: flex; gap: 10px; }
+        .trade-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; font-size: 0.95rem; text-align: center; }
+        .btn-buy { background-color: #00c805; }
+        .btn-sell { background-color: #ff3b30; }
+
+        .antique-story { background: #1a1a26; padding: 12px; border-radius: 8px; font-size: 0.85rem; line-height: 1.4; border-left: 3px solid #ffcc00; margin-bottom: 4px; color: #ddd; font-style: italic; }
+        .input-box { width: 100%; padding: 12px; background: #1c1c24; border: 1px solid #444; border-radius: 8px; color: white; margin-bottom: 8px; font-size: 0.95rem; }
+        
+        /* Shop List Items */
+        .shop-item { background: #1c1c24; border: 1px solid #333; padding: 14px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .shop-item.disabled { opacity: 0.3; cursor: not-allowed; }
+        .item-info { display: flex; flex-direction: column; gap: 2px; }
+        .item-name { font-weight: bold; font-size: 0.95rem; }
+        .item-cost { font-size: 0.85rem; color: #ffcc00; }
+        .item-effect { font-size: 0.75rem; color: #aaa; }
+        .item-count { font-size: 1.3rem; font-weight: bold; color: #444; }
+        .shop-item:not(.disabled) .item-count { color: #00ffcc; }
+
+        .unlock-notice { color: #888; font-style: italic; font-size: 0.9rem; text-align: center; padding: 40px 10px; }
+        #email-box { width: 100%; max-width: 550px; background: #111116; border: 1px solid #222; border-radius: 8px; padding: 12px; display: none; margin: 10px auto 0 auto; }
+        .email-title { font-weight: bold; color: #00ffcc; font-size: 0.9rem; margin-bottom: 4px; }
+        .email-body { font-size: 0.8rem; color: #aaa; }
+    </style>
 </head>
 <body>
 
     <div id="game-container">
+        <div id="main-section">
+            <div id="click-panel">
+                <div id="score-display">0</div>
+                <div id="cps-display">CPS: 0 | พลังคลิก: 1</div>
+                <button id="click-btn">CLICK</button>
+            </div>
+
+            <div id="invest-container">
+                <div id="market-menu-bar">
+                    <button class="menu-tab active" id="m-tab-stock" onclick="switchMainTab('stock')">📈 ตลาดหุ้น/คริปโต</button>
+                    <button class="menu-tab" id="m-tab-antique" onclick="switchMainTab('antique')">🏛️ ตลาดโบราณ</button>
+                    <button class="menu-tab" id="m-tab-auction" onclick="switchMainTab('auction')">🔨 โรงประมูล</button>
+                </div>
+                <div id="trading-panel"></div>
+            </div>
+
+            <div id="email-box">
+                <div class="email-title">📩 กล่องข้อความข่าวสารเก็งกำไร</div>
+                <div class="email-body" id="email-content">ไม่มีข้อความใหม่ในขณะนี้...</div>
+            </div>
         </div>
 
-    <script type="module" src="./js/game.js"></script>
+        <div id="shop-section">
+            <div id="shop-header">
+                <h3>🛒 ตลาดละลายสมอง (100 ชิ้น)</h3>
+            </div>
+            <div id="search-container">
+                <input type="text" id="search-input" placeholder="🔍 พิมพ์ค้นหาไอเทม..." oninput="filterShopItems()">
+            </div>
+            <div id="shop-tabs">
+                <button class="shop-tab active" id="tab-upgrade" onclick="switchShopTab('upgrade')">🔋 อัปเกรดทั่วไป</button>
+                <button class="shop-tab" id="tab-onetime" onclick="switchShopTab('onetime')">📜 ซื้อครั้งเดียวจบ</button>
+            </div>
+            <div id="shop-list"></div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let cpc = 1; 
+        let cps = 0; 
+        
+        let currentMainTab = 'stock'; 
+        let currentSubStockTab = null; 
+        let currentShopTab = 'upgrade';
+
+        let hasEmailBox = false;
+        let hasAntiqueTicket = false;
+        let hasArcheologist = false;
+        let hasAppraiser = false;
+        let hasMediaHypePass = false; // ตัวแปรปลดล็อกบัตรจ้างสื่อ
+
+        let playerInventory = [];
+        let antiqueMarketOpen = false;
+        let antiqueMarketTimer = 0; 
+        let currentMarketItem = null;
+        let activeAuction = null; 
+
+        const marketData = {
+            anthropic: { name: "Anthropic (Stock)", price: 120, owned: 0, invested: 0, history: [], unlocked: false, label: "Anthropic" },
+            alphabet: { name: "Alphabet (Stock)", price: 170, owned: 0, invested: 0, history: [], unlocked: false, label: "Alphabet" },
+            spacex: { name: "SpaceX (Stock)", price: 250, owned: 0, invested: 0, history: [], unlocked: false, label: "SpaceX" },
+            bitcoin: { name: "Bitcoin (Crypto)", price: 65000, owned: 0, invested: 0, history: [], unlocked: false, label: "Bitcoin 🪙" }
+        };
+
+        const antiqueGenData = {
+            types: ["ถ้วยชาเคลือบ", "ดาบโบราณ", "เทวรูป", "ม้วนคัมภีร์", "แหวนหยก", "หน้ากากทองคำ", "สร้อยคออัญมณี", "แจกันดินเผา", "กริชสลักลาย"],
+            materials: ["ราชวงศ์ซ่ง", "คาตานะเปื้อนเลือด", "เทพบาสเทต", "ห้องสมุดอเล็กซานเดรีย", "จักรพรรดิคังซี", "ชนเผ่ามายา", "ฟาโรห์", "กรีกโบราณ"],
+            storiesReal: [
+                "มีรอยคราบเกลือและคราบออกไซด์กัดกร่อนผิวหินอย่างเป็นธรรมชาติ เนื้อผิวหนา มีประวัติชัดเจนในบันทึกลับ",
+                "ขุดพบในรอยแยกใต้ฐานโบราณสถานลึก กลิ่นอายอับชื้นโชยชัดเจน ตัวเนื้อวัสดุมีความเก่าแก่ตามอายุไขอย่างแท้จริง",
+                "เนื้อวัสดุสะท้อนแสงนวลตาตามธรรมชาติแบบของโบราณดั้งเดิมที่ไม่ได้ผ่านสารเคมีสมัยใหม่ ทรงคุณค่าทางประวัติศาสตร์"
+            ],
+            storiesFake: [
+                "ลวดลายดูเนียนและประณีตคมชัดเกินกว่าเทคโนโลยีในยุคอดีตจะทำได้ มีกลิ่นสารเคมีเคลือบเงาจางๆ โชยออกมา",
+                "ตัวอักษรจารึกใช้โทนหมึกที่สกัดจากแร่สมัยใหม่ซึ่งเพิ่งถูกค้นพบในศตวรรษที่ 19 ร่องรอยความเก่าดูเหมือนจงใจทำให้พุกร่อน",
+                "น้ำหนักเบากว่าปกติและไม่มีคราบสนิมดินฝังลึกตามที่ควรจะเป็นในวัตถุโบราณประเภทเดียวกัน คล้ายงานฝีมือโรงงานแถบชานเมือง"
+            ]
+        };
+
+        function generateProceduralAntique() {
+            const type = antiqueGenData.types[Math.floor(Math.random() * antiqueGenData.types.length)];
+            const mat = antiqueGenData.materials[Math.floor(Math.random() * antiqueGenData.materials.length)];
+            const isReal = Math.random() > 0.5;
+            const storyBase = isReal ? antiqueGenData.storiesReal[Math.floor(Math.random() * antiqueGenData.storiesReal.length)] : antiqueGenData.storiesFake[Math.floor(Math.random() * antiqueGenData.storiesFake.length)];
+            
+            const name = `${type}${mat}`;
+            const basePrice = Math.floor(1500 + Math.random() * 25000);
+            const variation = 0.8 + Math.random() * 0.4;
+            const marketPrice = Math.round(basePrice * variation);
+            const realEstimateValue = isReal ? Math.round(basePrice * (2.2 + Math.random())) : Math.round(basePrice * 0.1);
+
+            return {
+                name: name, basePrice: basePrice, marketPrice: marketPrice,
+                realEstimateValue: realEstimateValue, isReal: isReal,
+                story: `วัตถุโบราณชิ้นนี้เล่าขานว่าเป็น ${name} ที่สาบสูญไปนาน ${storyBase}`
+            };
+        }
+
+        const rawItems = [
+            { name: "กดสิวฟินๆ", baseCost: 15, cpcAdd: 1, cpsAdd: 0 },
+            { name: "คลิปสไลม์หนึบหนับ", baseCost: 50, cpcAdd: 0, cpsAdd: 0.5 },
+            { name: "📜 ใบอนุมัติเทรด Anthropic", baseCost: 300, cpcAdd: 0, cpsAdd: 0, isUnlock: "anthropic" },
+            { name: "📩 กล่องอีเมลสื่อสารข้อมูล", baseCost: 600, cpcAdd: 0, cpsAdd: 0, specialUnlock: "email" },
+            { name: "วิดีโอตัดเค้กเนียนๆ", baseCost: 1200, cpcAdd: 0, cpsAdd: 12 },
+            { name: "🎫 บัตรผ่านเข้าร่วมตลาดโบราณ", baseCost: 3000, cpcAdd: 0, cpsAdd: 0, specialUnlock: "antique_ticket" },
+            { name: "💼 พอร์ตหุ้น Alphabet", baseCost: 5000, cpcAdd: 0, cpsAdd: 0, isUnlock: "alphabet" },
+            { name: "📢 บัตรจ้างสื่อสร้างกระแสข่าว", baseCost: 9000, cpcAdd: 0, cpsAdd: 0, specialUnlock: "media_hype" }, // บัตรจ้างสื่อเพิ่มลงในลิสต์แล้ว
+            { name: "🔍 จ้างนักโบราณคดีร่วมทีม", baseCost: 15000, cpcAdd: 0, cpsAdd: 0, specialUnlock: "archeologist" },
+            { name: "🧮 จ้างนักประเมินราคาฝีมือดี", baseCost: 28000, cpcAdd: 0, cpsAdd: 0, specialUnlock: "appraiser" },
+            { name: "🚀 ตั๋วลงทุนระดับ VIP - SpaceX", baseCost: 65000, cpcAdd: 0, cpsAdd: 0, isUnlock: "spacex" },
+            { name: "🪙 กุญแจตู้เซฟคริปโต (Bitcoin)", baseCost: 200000, cpcAdd: 0, cpsAdd: 0, isUnlock: "bitcoin" }
+        ];
+
+        const items = [];
+        const prefixes = ["มหา", "สุดยอด", "ควอนตัม", "เนตรสังสาระ", "จิตวิญญาณ", "ไซเบอร์", "อนันต์", "สมองระเบิด"];
+        const suffixes = ["ขั้นเทพ", "แบบตะโกน", "300%", "ระดับพระกาฬ", "ทะลุมิติ", "ล้างสมอง", "ระดับกาแล็กซี"];
+
+        for (let i = 0; i < 100; i++) {
+            if (i < rawItems.length) {
+                let isOnetime = !!(rawItems[i].isUnlock || rawItems[i].specialUnlock);
+                let descText = rawItems[i].isUnlock ? `🔓 เปิดเมนูหุ้น ${rawItems[i].isUnlock}` : (rawItems[i].specialUnlock ? `🔓 ปลดล็อกระบบพิเศษ` : (rawItems[i].cpsAdd > 0 ? `+${rawItems[i].cpsAdd} CPS` : `+${rawItems[i].cpcAdd} พลังคลิก`));
+                items.push({ ...rawItems[i], count: 0, id: i, desc: descText, isOnetime: isOnetime });
+            } else {
+                let baseItem = rawItems[i % rawItems.length];
+                let scale = Math.pow(1.48, i - rawItems.length + 1);
+                let p = prefixes[Math.floor(i / 10) % prefixes.length];
+                let s = suffixes[i % suffixes.length];
+                let cost = Math.round(rawItems[rawItems.length - 1].baseCost * Math.pow(2.15, i - rawItems.length + 1));
+                let cpcAdd = 0, cpsAdd = 0, descText = "";
+
+                if (baseItem.cpcAdd > 0) {
+                    cpcAdd = Math.round(baseItem.cpcAdd * scale);
+                    descText = `+${formatNumber(cpcAdd)} พลังคลิก`;
+                } else {
+                    cpsAdd = baseItem.cpsAdd > 0 ? Math.round(baseItem.cpsAdd * scale * 8) : Math.round(15 * scale);
+                    descText = `+${formatNumber(cpsAdd)} CPS`;
+                }
+
+                items.push({
+                    id: i, name: `${p}${baseItem.name.replace(/📜 |💼 |🚀 |🪙 |📩 |🎫 |🔍 |🧮 |📢 /g, "")}${s}`,
+                    baseCost: cost, cpcAdd: cpcAdd, cpsAdd: cpsAdd, desc: descText, count: 0, isOnetime: false 
+                });
+            }
+        }
+
+        function getCost(item) { 
+            if(item.isOnetime && item.count > 0) return Infinity;
+            return Math.round(item.baseCost * Math.pow(1.15, item.count)); 
+        }
+
+        function formatNumber(num) {
+            if (num === Infinity) return "SOLD OUT";
+            if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
+            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+            if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+            return num.toFixed(num % 1 === 0 ? 0 : 1);
+        }
+
+        function updateUI() {
+            document.getElementById('score-display').innerText = formatNumber(score);
+            document.getElementById('cps-display').innerText = `CPS: ${formatNumber(cps)} | พลังคลิก: ${formatNumber(cpc)}`;
+            
+            items.forEach(item => {
+                const el = document.getElementById(`item-${item.id}`);
+                const costEl = document.getElementById(`cost-${item.id}`);
+                const countEl = document.getElementById(`count-${item.id}`);
+                
+                if (el) {
+                    const cost = getCost(item);
+                    if (costEl) costEl.innerText = cost === Infinity ? "ปลดล็อกแล้ว" : `ราคา: ${formatNumber(cost)}`;
+                    if (countEl) countEl.innerText = cost === Infinity ? "✓" : item.count;
+                    if (score >= cost && (item.count === 0 || !item.isOnetime)) {
+                        el.classList.remove('disabled');
+                    } else {
+                        el.classList.add('disabled');
+                    }
+                }
+            });
+        }
+
+        function switchShopTab(tabType) {
+            currentShopTab = tabType;
+            document.getElementById('tab-upgrade').classList.toggle('active', tabType === 'upgrade');
+            document.getElementById('tab-onetime').classList.toggle('active', tabType === 'onetime');
+            filterShopItems();
+        }
+
+        function filterShopItems() {
+            const searchText = document.getElementById('search-input').value.toLowerCase();
+            items.forEach(item => {
+                const el = document.getElementById(`item-${item.id}`);
+                if (el) {
+                    const matchTab = (currentShopTab === 'onetime' && item.isOnetime) || (currentShopTab === 'upgrade' && !item.isOnetime);
+                    const matchSearch = item.name.toLowerCase().includes(searchText) || item.desc.toLowerCase().includes(searchText);
+                    el.style.display = (matchTab && matchSearch) ? 'flex' : 'none';
+                }
+            });
+        }
+
+        function switchMainTab(tab) {
+            currentMainTab = tab;
+            document.getElementById('m-tab-stock').classList.toggle('active', tab === 'stock');
+            document.getElementById('m-tab-antique').classList.toggle('active', tab === 'antique');
+            document.getElementById('m-tab-auction').classList.toggle('active', tab === 'auction');
+            renderMainPanel();
+        }
+
+        function renderMainPanel() {
+            const panel = document.getElementById('trading-panel');
+            if(!panel) return; panel.innerHTML = '';
+
+            if (currentMainTab === 'stock') renderStockSubsystem(panel);
+            else if (currentMainTab === 'antique') renderAntiqueSubsystem(panel);
+            else if (currentMainTab === 'auction') renderAuctionSubsystem(panel);
+        }
+
+        function renderStockSubsystem(panel) {
+            let hasAnyUnlock = Object.keys(marketData).some(k => marketData[k].unlocked);
+            if (!hasAnyUnlock) {
+                panel.innerHTML = `<div class="unlock-notice">⚠️ ยังไม่มีพอร์ตลงทุน ซื้อ "ใบอนุมัติเทรด" ด้านขวาเพื่อเปิดตลาดหุ้น</div>`;
+                return;
+            }
+
+            let subBarHtml = `<div style="display:flex; gap:5px; margin-bottom:10px; background:#1b1b24; padding:5px; border-radius:6px; overflow-x:auto;">`;
+            Object.keys(marketData).forEach(key => {
+                if (marketData[key].unlocked) {
+                    if (!currentSubStockTab) currentSubStockTab = key;
+                    subBarHtml += `<button style="background:${currentSubStockTab===key?'#00ffcc':'#111'}; color:${currentSubStockTab===key?'#000':'#fff'}; border:none; padding:6px 12px; border-radius:4px; font-size:0.8rem; font-weight:bold; cursor:pointer; white-space:nowrap;" onclick="currentSubStockTab='${key}'; renderMainPanel();">${marketData[key].label}</button>`;
+                }
+            });
+            subBarHtml += `</div>`;
+
+            const asset = marketData[currentSubStockTab];
+            const unitName = currentSubStockTab === 'bitcoin' ? 'เหรียญ' : 'หุ้น';
+
+            panel.innerHTML = subBarHtml + `
+                <div class="market-card">
+                    <div class="market-header">
+                        <span class="asset-name" style="color:#00ffcc">${asset.name}</span>
+                        <span class="asset-price" id="live-price">$${formatNumber(asset.price)}</span>
+                    </div>
+                    <div class="chart-container"><svg class="chart-svg" id="live-line-chart"></svg></div>
+                    <div class="market-stats">
+                        <div class="stat-row"><span>จำนวนที่ถือครอง:</span> <span><b>${asset.owned}</b> ${unitName}</span></div>
+                        <div class="stat-row"><span>เงินลงทุนรวม:</span> <span>$${formatNumber(asset.invested)}</span></div>
+                        <div class="stat-row"><span>กำไร/ขาดทุนสะสม:</span> <span id="live-pnl">$0 (0%)</span></div>
+                    </div>
+                    <div class="trade-actions">
+                        <button class="trade-btn btn-buy" onclick="buyAsset('${currentSubStockTab}')">ซื้อ 1</button>
+                        <button class="trade-btn btn-sell" onclick="sellAsset('${currentSubStockTab}')">ขาย 1</button>
+                    </div>
+                </div>
+            `;
+            renderLineChart(); updateAssetStats();
+        }
+
+        function renderAntiqueSubsystem(panel) {
+            if (!hasAntiqueTicket) {
+                panel.innerHTML = `<div class="unlock-notice">⚠️ คุณต้องซื้อ "บัตรผ่านเข้าร่วมตลาดโบราณ" จากร้านค้าก่อนจึงจะเข้าหมวดนี้ได้</div>`;
+                return;
+            }
+            if (!antiqueMarketOpen) {
+                panel.innerHTML = `
+                    <div class="unlock-notice" style="color:#ff3344">
+                        🔴 ตลาดวัตถุโบราณปิดอยู่ชั่วคราวขณะนี้...<br>
+                        <span style="font-size:0.8rem; color:#888;">(ตลาดจะสุ่มเปิดและปิดตัวสลับกันไปแบบเรียลไทม์)</span>
+                    </div>
+                `;
+                return;
+            }
+
+            if (!currentMarketItem) currentMarketItem = generateProceduralAntique();
+
+            let expertReport = `<div style="font-size:0.8rem; color:#666;">[!] คุณยังไม่ได้จ้างผู้เชี่ยวชาญโบราณคดีหรือนักประเมินราคา</div>`;
+            if (hasArcheologist || hasAppraiser) {
+                expertReport = `<div style="background:#0d0d14; padding:8px; border-radius:6px; font-size:0.8rem; margin-bottom:8px; border:1px dashed #555;">`;
+                if (hasArcheologist) expertReport += `🕵️ <b>นักโบราณคดีคาดการณ์:</b> ของชิ้นนี้มีโอกาสเป็นของแท้ประมาณ <b style="color:#00ffcc">${currentMarketItem.isReal ? '85%' : '15%'}</b><br>`;
+                if (hasAppraiser) expertReport += `🧮 <b>นักประเมินคาดราคาแท้จริง:</b> $${formatNumber(currentMarketItem.realEstimateValue)} (ถ้าแท้)`;
+                expertReport += `</div>`;
+            }
+
+            panel.innerHTML = `
+                <div class="market-card">
+                    <div class="market-header"><span class="asset-name" style="color:#ffcc00">🏛️ ตลาดโบราณ (เวลาเหลือ: ${antiqueMarketTimer}s)</span></div>
+                    <div style="font-size:1.05rem; font-weight:bold;">สินค้า: ${currentMarketItem.name}</div>
+                    <div style="font-size:0.9rem; color:#ffcc00;">ราคาเสนอขายด่วน: $${formatNumber(currentMarketItem.marketPrice)}</div>
+                    <div class="antique-story">" ${currentMarketItem.story} "</div>
+                    ${expertReport}
+                    <button class="trade-btn" style="background:#ffcc00; color:#000;" onclick="buyAntiqueFromMarket()">💰 จ่ายเงินซื้อของชิ้นนี้เข้าคลัง</button>
+                    <button class="trade-btn" style="background:#333; margin-top:5px;" onclick="currentMarketItem = generateProceduralAntique(); renderMainPanel();">🔄 ข้ามไปดูชิ้นอื่น</button>
+                </div>
+            `;
+        }
+
+        function buyAntiqueFromMarket() {
+            if (score >= currentMarketItem.marketPrice) {
+                score -= currentMarketItem.marketPrice;
+                playerInventory.push({ ...currentMarketItem });
+                alert(`ซื้อ "${currentMarketItem.name}" เข้าคลังแล้ว! นำไปตั้งประมูลขายต่อได้ที่เมนู 'โรงประมูล'`);
+                currentMarketItem = generateProceduralAntique();
+                updateUI(); renderMainPanel();
+            } else { alert("แต้มเงินไม่เพียงพอ!"); }
+        }
+
+        function renderAuctionSubsystem(panel) {
+            if (!hasAntiqueTicket) {
+                panel.innerHTML = `<div class="unlock-notice">⚠️ คุณต้องมี "บัตรผ่านเข้าร่วมตลาดโบราณ" เพื่อเปิดใช้งานระบบโรงประมูล</div>`;
+                return;
+            }
+
+            if (!activeAuction) {
+                let optionsHtml = `<select id="auction-item-select" class="input-box">`;
+                playerInventory.forEach((item, index) => {
+                    optionsHtml += `<option value="${index}">${item.name} (ราคาทุน: $${formatNumber(item.marketPrice)})</option>`;
+                });
+                optionsHtml += `</select>`;
+
+                panel.innerHTML = `
+                    <div class="market-card">
+                        <div style="display:flex; gap:10px;">
+                            <button class="trade-btn btn-buy" style="background:#0077ff" onclick="startNPCAuctionMode()">🎰 [ซื้อ] ส่องงานประมูลของ NPC</button>
+                        </div>
+                        <hr style="border-color:#222; margin:15px 0;">
+                        <div class="market-header"><span class="asset-name" style="color:#00ffcc">🔨 [ขาย] จัดโต๊ะประมูลของตัวเอง</span></div>
+                        ${playerInventory.length === 0 ? '<div style="font-size:0.85rem; color:#666; padding:10px 0;">ไม่มีวัตถุโบราณในคลังที่จะตั้งขาย</div>' : `
+                            <label style="font-size:0.8rem; color:#aaa;">เลือกของจากคลัง:</label>
+                            ${optionsHtml}
+                            <label style="font-size:0.8rem; color:#aaa;">ตั้งราคาเริ่มต้น ($):</label>
+                            <input type="number" id="auction-start-price" class="input-box" placeholder="กรอกราคาเริ่มต้น">
+                            <button class="trade-btn btn-buy" onclick="startPlayerAuctionMode()">🚀 เปิดการประมูลขาย</button>
+                        `}
+                    </div>
+                `;
+            } else {
+                let logsHtml = activeAuction.bidsLog.map(l => `<div style="font-size:0.8rem; margin-bottom:2px;">${l}</div>`).join('');
+                let actionButtonHtml = "";
+                let expertReport = "";
+
+                if (hasArcheologist || hasAppraiser) {
+                    expertReport = `<div style="background:#0d0d14; padding:6px; border-radius:6px; font-size:0.75rem; margin-bottom:5px; border:1px dashed #555; color:#aaa;">🕵️ `;
+                    if (hasArcheologist) expertReport += `คาดว่าแท้: ${activeAuction.item.isReal ? '85%' : '15%'} | `;
+                    if (hasAppraiser) expertReport += `มูลค่าจริงหากแท้: $${formatNumber(activeAuction.item.realEstimateValue)}`;
+                    expertReport += `</div>`;
+                }
+
+                if (activeAuction.mode === 'sell') {
+                    actionButtonHtml = `<button class="trade-btn" style="background:#ff3b30;" onclick="concludeAuction()">🔨 เคาะค้อนปิดดีลทันที</button>`;
+                    
+                    // ระบบปุ่มจ้างสื่อปั่นกระแส
+                    if (hasMediaHypePass && !activeAuction.isHypeMode) {
+                        let hypeCost = Math.round(activeAuction.item.marketPrice * 0.40);
+                        actionButtonHtml += `<button class="trade-btn" style="background:#a100ff; color:#fff; width:100%; margin-top:5px;" onclick="triggerMediaHype(${hypeCost})">📢 จ้างสื่อสร้างกระแสข่าว (จ่าย $${formatNumber(hypeCost)})</button>`;
+                    }
+                } else {
+                    let raiseAmount = Math.round(activeAuction.currentHighestBid * 0.1) || 500;
+                    actionButtonHtml = `
+                        <button class="trade-btn btn-buy" onclick="playerPlaceBid(${raiseAmount})">✋ ยกป้าย (+$${formatNumber(raiseAmount)})</button>
+                        <button class="trade-btn" style="background:#444;" onclick="concludeAuction()">🏳️ ผ่าน</button>
+                    `;
+                }
+
+                let hypeBadge = activeAuction.isHypeMode 
+                    ? `<div style="color:#ff3344; font-weight:bold; font-size:0.9rem; text-align:center; background:rgba(255,51,68,0.1); padding:4px; border-radius:4px; border:1px solid #ff3344; margin-bottom:4px;">🔥 กระแสตลาดกำลังดุเดือด! บอทตัดราคาโคญเงินโหดมาก!</div>` 
+                    : `<div style="color:#888; font-size:0.8rem; text-align:center; margin-bottom:4px;">🤖 บรรยากาศซื้อขาย: ภาวะตลาดปกติ</div>`;
+
+                panel.innerHTML = `
+                    <div class="market-card">
+                        ${hypeBadge}
+                        <div class="market-header">
+                            <span class="asset-name" style="color:#00ffcc">🔨 โรงประมูล [โหมด: ${activeAuction.mode === 'sell' ? 'ตั้งขาย' : 'เข้าซื้อ'}] (${activeAuction.timeLeft}s)</span>
+                        </div>
+                        <div style="font-size:1rem; font-weight:bold; color:#ffcc00;">เป้าหมาย: ${activeAuction.item.name}</div>
+                        <div class="antique-story" style="font-size:0.75rem;">" ${activeAuction.item.story} "</div>
+                        ${expertReport}
+                        <div style="background:#000; padding:10px; text-align:center; border-radius:6px; font-weight:bold; margin:5px 0;">
+                            ราคาเสนอสูงสุด: <span style="color:#00ffcc; font-size:1.3rem;">$${formatNumber(activeAuction.currentHighestBid)}</span><br>
+                            <span style="font-size:0.8rem; color:#aaa;">โดย: ${activeAuction.highestBidder}</span>
+                        </div>
+                        <div style="background:#0f0f14; padding:8px; border-radius:6px; height:100px; overflow-y:auto; border:1px solid #222; color:#bbb; display:flex; flex-direction:column-reverse;">
+                            <div>${logsHtml}</div>
+                        </div>
+                        <div style="margin-top:5px; display:flex; flex-direction:column;">${actionButtonHtml}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function triggerMediaHype(cost) {
+            if (score >= cost) {
+                score -= cost;
+                activeAuction.isHypeMode = true;
+                activeAuction.isPlayerHyped = true; // เปิดเงื่อนไขให้บอทสแปมช้าลง 20% 
+                activeAuction.timeLeft = Math.min(activeAuction.timeLeft + 5, 20);
+                activeAuction.bidsLog.push(`📢 [ข่าวเด่น] สำนักข่าวลงข่าวชิ้นพิเศษทำให้ "${activeAuction.item.name}" ได้รับความสนใจสุดขีด!`);
+                updateUI(); renderMainPanel();
+            } else { alert("เงินไม่พอจ้างสื่อข่าว!"); }
+        }
+
+        function startPlayerAuctionMode() {
+            const selectEl = document.getElementById('auction-item-select');
+            const priceEl = document.getElementById('auction-start-price');
+            if (!selectEl || !priceEl || priceEl.value <= 0) return;
+
+            let idx = parseInt(selectEl.value);
+            let startPrice = parseFloat(priceEl.value);
+            let item = playerInventory.splice(idx, 1)[0];
+            let isHype = Math.random() < 0.20;
+
+            activeAuction = {
+                mode: 'sell', item: item, currentHighestBid: startPrice,
+                highestBidder: "ราคาเปิดของคุณ", timeLeft: 18, bidsLog: ["งานประมูลสินค้าของคุณเริ่มต้นขึ้นแล้ว"],
+                isHypeMode: isHype, hasTriggeredFirstBid: false, isPlayerHyped: false
+            };
+            renderMainPanel();
+        }
+
+        function startNPCAuctionMode() {
+            let randomItem = generateProceduralAntique();
+            let startPrice = Math.round(randomItem.marketPrice * 0.5);
+            let isHype = Math.random() < 0.20;
+
+            activeAuction = {
+                mode: 'buy', item: randomItem, currentHighestBid: startPrice,
+                highestBidder: "เจ้าของงาน (NPC)", timeLeft: 20, bidsLog: ["งานประมูลเริ่มขึ้นแล้ว! บอท NPC คนอื่นกำลังจ้องชิ้นนี้อยู่"],
+                isHypeMode: isHype, hasTriggeredFirstBid: false, isPlayerHyped: false
+            };
+            renderMainPanel();
+        }
+
+        function playerPlaceBid(raise) {
+            let newBid = activeAuction.currentHighestBid + raise;
+            if (score >= newBid) {
+                score -= raise; 
+                activeAuction.currentHighestBid = newBid;
+                activeAuction.highestBidder = "คุณ (ผู้เล่น)";
+                activeAuction.bidsLog.push(`🔴 คุณได้ยกป้ายเสนอราคาขึ้นเป็น $${formatNumber(newBid)}!`);
+                activeAuction.timeLeft = Math.min(activeAuction.timeLeft + 3, 20);
+                activeAuction.hasTriggeredFirstBid = true; 
+                updateUI(); renderMainPanel();
+            } else { alert("เงินไม่พอสู้ราคา!"); }
+        }
+
+        function processAuctionTick() {
+            if (!activeAuction) return;
+            activeAuction.timeLeft--;
+
+            const npcNames = ["คุณหญิงพิมพิลา", "เสี่ยอ้วนเพชรบุรี", "หมอสะสมของเก่า", "นักธุรกิจฮ่องกง", "CEO ท่านหนึ่ง"];
+            let bidder = npcNames[Math.floor(Math.random() * npcNames.length)];
+
+            if (!activeAuction.isHypeMode) {
+                if (!activeAuction.hasTriggeredFirstBid && activeAuction.highestBidder.includes("ราคาเปิด")) {
+                    activeAuction.hasTriggeredFirstBid = true;
+                    if (Math.random() < 0.70) {
+                        activeAuction.highestBidder = bidder;
+                        activeAuction.bidsLog.push(`🤖 ${bidder} เค้าเตอร์ซื้อเท่าราคาเปิดเริ่มต้นที่ $${formatNumber(activeAuction.currentHighestBid)}`);
+                    } else {
+                        let raise = Math.round(activeAuction.currentHighestBid * 0.05) + 100;
+                        activeAuction.currentHighestBid += raise;
+                        activeAuction.highestBidder = bidder;
+                        activeAuction.bidsLog.push(`💬 ${bidder} เปิดประมูลดันราคาขึ้นเป็น $${formatNumber(activeAuction.currentHighestBid)}`);
+                    }
+                } else if (Math.random() < 0.4 && activeAuction.highestBidder !== bidder) {
+                    let ceiling = activeAuction.item.realEstimateValue * (1.1 + Math.random() * 0.3);
+                    if (activeAuction.currentHighestBid < ceiling) {
+                        let raise = Math.round(activeAuction.currentHighestBid * 0.06) + 150;
+                        activeAuction.currentHighestBid += raise;
+                        activeAuction.highestBidder = bidder;
+                        activeAuction.bidsLog.push(`💬 ${bidder} ยกป้ายเพิ่มราคาเป็น $${formatNumber(activeAuction.currentHighestBid)}`);
+                        activeAuction.timeLeft = Math.min(activeAuction.timeLeft + 2, 20);
+                    }
+                }
+            } else {
+                // ลดการสแปมลง 20% (เหลือโอกาสบิด 55% ต่อวินาทีแทน 75% หากผู้เล่นปั่นสื่อ)
+                let spamChance = activeAuction.isPlayerHyped ? 0.55 : 0.75;
+                if (Math.random() < spamChance && activeAuction.highestBidder !== bidder) {
+                    activeAuction.hasTriggeredFirstBid = true;
+                    let multiplier = Math.floor(Math.random() * 9) + 2; 
+                    activeAuction.currentHighestBid *= multiplier;
+                    activeAuction.highestBidder = bidder;
+                    activeAuction.bidsLog.push(`🔥 [X${multiplier} เท่า!] ${bidder} เกทับหักดิบขึ้นเป็น $${formatNumber(activeAuction.currentHighestBid)}!!!`);
+                    activeAuction.timeLeft = Math.min(activeAuction.timeLeft + 3, 20);
+                }
+            }
+
+            if (activeAuction.timeLeft <= 0) concludeAuction();
+            else if (currentMainTab === 'auction') renderMainPanel();
+        }
+
+        function concludeAuction() {
+            if (!activeAuction) return;
+
+            if (activeAuction.mode === 'sell') {
+                if (activeAuction.highestBidder.includes("ราคาเปิด")) {
+                    playerInventory.push(activeAuction.item);
+                    alert("สินค้าถูกดีดกลับคืนคลังเนื่องจากไม่มีคนยกป้ายซื้อ!");
+                } else {
+                    score += activeAuction.currentHighestBid;
+                    alert(`🔨 ขายสำเร็จ! ปิดงานดีลให้แก่ [${activeAuction.highestBidder}] รับแต้มเงินไป $${formatNumber(activeAuction.currentHighestBid)}`);
+                }
+            } else {
+                if (activeAuction.highestBidder === "คุณ (ผู้เล่น)") {
+                    playerInventory.push(activeAuction.item);
+                    let profitReport = activeAuction.item.isReal ? "🎉 ของชิ้นนี้เป็นของแท้ดั้งเดิม!" : "💀 อ้าว! ตรวจสอบแล้วชิ้นนี้เป็นของปลอมเกรดเซินเจิ้นครับ!";
+                    alert(`🔨 ประมูลชนะ! ได้ไอเทมนี้เข้าคลังแล้ว\n\n${profitReport}`);
+                } else {
+                    alert(`❌ สิ้นสุดลง ไอเทมนี้หลุดลอยไปหา [${activeAuction.highestBidder}] ด้วยราคา $${formatNumber(activeAuction.currentHighestBid)}`);
+                }
+            }
+
+            activeAuction = null;
+            updateUI(); renderMainPanel();
+        }
+
+        function renderLineChart() {
+            const svg = document.getElementById('live-line-chart');
+            if (!svg || !currentSubStockTab) return;
+            const history = marketData[currentSubStockTab].history;
+            const min = Math.min(...history), max = Math.max(...history);
+            const range = max - min === 0 ? 1 : max - min, width = svg.clientWidth || 500, height = 90;
+            let points = history.map((price, idx) => `${(idx / (history.length - 1)) * width},${height - (((price - min) / range) * (height - 20) + 10)}`);
+            svg.innerHTML = `<polyline fill="none" stroke="${history[history.length - 1] >= history[history.length - 2] ? '#00c805' : '#ff3b30'}" stroke-width="2.5" points="${points.join(' ')}" />`;
+        }
+
+        function updateMarketPrices() {
+            Object.keys(marketData).forEach(key => {
+                const asset = marketData[key];
+                asset.price = Math.max(1, asset.price * (1 + (Math.random() * 10.4 - 5) / 100));
+                asset.history.push(asset.price);
+                if(asset.history.length > 40) asset.history.shift();
+            });
+            if (currentMainTab === 'stock' && currentSubStockTab) {
+                const priceEl = document.getElementById('live-price');
+                if (priceEl) priceEl.innerText = `$${formatNumber(marketData[currentSubStockTab].price)}`;
+                renderLineChart(); updateAssetStats();
+            }
+        }
+
+        function updateAssetStats() {
+            if (currentMainTab !== 'stock' || !currentSubStockTab) return;
+            const asset = marketData[currentSubStockTab]; const pnlEl = document.getElementById('live-pnl');
+            if (!pnlEl) return; if (asset.owned === 0) { pnlEl.innerText = "$0 (0%)"; pnlEl.className = "pnl-positive"; return; }
+            const pnlValue = (asset.owned * asset.price) - asset.invested;
+            const pnlPct = (pnlValue / (asset.invested || 1)) * 100;
+            pnlEl.innerText = `${pnlValue >= 0 ? '+' : ''}$${formatNumber(pnlValue)} (${pnlPct.toFixed(2)}%)`;
+            pnlEl.className = pnlValue >= 0 ? "pnl-positive" : "pnl-negative";
+        }
+
+        function buyAsset(key) { if (score >= marketData[key].price) { score -= marketData[key].price; marketData[key].owned++; marketData[key].invested += marketData[key].price; updateUI(); renderMainPanel(); } }
+        function sellAsset(key) { if (marketData[key].owned >= 1) { score += marketData[key].price; const avg = marketData[key].invested / marketData[key].owned; marketData[key].owned--; marketData[key].invested -= avg; updateUI(); renderMainPanel(); } }
+
+        function rollRandomEmail() {
+            if (!hasEmailBox) return;
+            const tips = [
+                "⚠️ ข่าววงใน: ช่วงนี้กลุ่มคนรวยกำลังมองหาวัตถุโบราณจำพวก 'ราชวงศ์ซ่ง' มาประดับบารมี!",
+                "🔥 คำเตือนจากตลาดมืด: มีของปลอมเกรดมิลเลอร์ลวดลายละเอียดหลุดเข้ามาในตลาด ระวังโดนหลอก",
+                "📈 ตลาดคริปโต: ตอนนี้บิตคอยน์เริ่มขยับตัวผันผวนสูง โปรดระมัดระวังพอร์ตของท่าน"
+            ];
+            document.getElementById('email-content').innerText = tips[Math.floor(Math.random() * tips.length)];
+        }
+
+        function tickAntiqueMarketTimer() {
+            if (!hasAntiqueTicket) return;
+            if (antiqueMarketTimer > 0) {
+                antiqueMarketTimer--;
+                if (antiqueMarketTimer <= 0) { antiqueMarketOpen = false; currentMarketItem = null; antiqueMarketTimer = Math.floor(Math.random() * 40) + 20; }
+            } else { antiqueMarketOpen = true; antiqueMarketTimer = 600; currentMarketItem = generateProceduralAntique(); }
+            if (currentMainTab === 'antique') renderMainPanel();
+        }
+
+        const shopListEl = document.getElementById('shop-list');
+        function initShop() {
+            shopListEl.innerHTML = '';
+            items.forEach((item) => {
+                const div = document.createElement('div'); div.className = 'shop-item disabled'; div.id = `item-${item.id}`; div.onclick = () => buyItem(item.id);
+                div.innerHTML = `<div class="item-info"><div class="item-name">${item.id + 1}. ${item.name}</div><div class="item-cost" id="cost-${item.id}">ราคา: ${formatNumber(getCost(item))}</div><div class="item-effect">${item.desc}</div></div><div class="item-count" id="count-${item.id}">0</div>`;
+                shopListEl.appendChild(div);
+            });
+            filterShopItems();
+        }
+
+        document.getElementById('click-btn').addEventListener('click', () => { score += cpc; updateUI(); });
+
+        function buyItem(id) {
+            const item = items[id]; const cost = getCost(item);
+            if (score >= cost && (item.count === 0 || !item.isOnetime)) {
+                score -= cost; item.count++;
+                if (item.isUnlock) marketData[item.isUnlock].unlocked = true;
+                else if (item.specialUnlock) {
+                    if (item.specialUnlock === "email") { hasEmailBox = true; document.getElementById('email-box').style.display = 'block'; }
+                    if (item.specialUnlock === "antique_ticket") { hasAntiqueTicket = true; antiqueMarketOpen = true; antiqueMarketTimer = 600; }
+                    if (item.specialUnlock === "archeologist") hasArcheologist = true;
+                    if (item.specialUnlock === "appraiser") hasAppraiser = true;
+                    if (item.specialUnlock === "media_hype") hasMediaHypePass = true; // ปลดล็อกฟังก์ชันปั่นกระแส
+                } else { cpc += item.cpcAdd; }
+                cps = items.reduce((sum, it) => sum + (it.count * it.cpsAdd), 0);
+                updateUI(); renderMainPanel();
+            }
+        }
+
+        setInterval(() => { score += cps / 10; updateUI(); }, 100);
+        setInterval(() => { updateMarketPrices(); processAuctionTick(); }, 1000);
+        setInterval(() => { tickAntiqueMarketTimer(); }, 1000);
+        setInterval(() => { rollRandomEmail(); }, 15000);
+
+        initShop(); updateUI(); renderMainPanel();
+    </script>
 </body>
 </html>
