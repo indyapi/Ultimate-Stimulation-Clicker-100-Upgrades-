@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Stimulation Clicker (100 Upgrades)</title>
+    <title>Ultimate Stimulation Clicker & Trading Pro</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -11,161 +11,237 @@
             margin: 0; padding: 0;
             background-color: #0a0a0c; color: #fff;
             display: flex; height: 100vh; overflow: hidden;
-            transition: background 0.1s;
         }
         /* Layout */
-        #click-section {
+        #main-section {
             flex: 1; display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
             background: radial-gradient(circle, #1a1a24 0%, #0a0a0c 100%);
-            position: relative;
+            position: relative; overflow-y: auto; padding: 20px;
+            align-items: center; justify-content: flex-start; gap: 15px;
         }
         #shop-section {
-            width: 450px; border-left: 2px solid #222;
+            width: 420px; border-left: 2px solid #222;
             background-color: #121216; display: flex;
             flex-direction: column; z-index: 10;
         }
         #shop-header {
-            padding: 20px; background: #181822;
+            padding: 15px; background: #181822;
             border-bottom: 1px solid #222; text-align: center;
         }
-        #shop-list {
-            flex: 1; overflow-y: scroll; padding: 15px;
-            display: flex; flex-direction: column; gap: 10px;
-        }
-        /* UI Elements */
-        #score-display { font-size: 3rem; font-weight: 900; color: #00ffcc; text-shadow: 0 0 10px rgba(0,255,204,0.3); }
-        #cps-display { font-size: 1.2rem; color: #888; margin-bottom: 20px; }
-        #click-btn {
-            width: 200px; height: 200px; border-radius: 50%;
-            border: none; background: linear-gradient(135deg, #00ffcc, #0077ff);
-            color: white; font-size: 1.5rem; font-weight: bold;
-            cursor: pointer; box-shadow: 0 0 30px rgba(0,255,204,0.4);
-            transition: transform 0.05s, box-shadow 0.1s;
-            z-index: 5;
-        }
-        #click-btn:active { transform: scale(0.92); box-shadow: 0 0 10px rgba(0,255,204,0.2); }
         
+        /* Search & Item Category Tabs */
+        #search-container {
+            padding: 12px 15px 5px 15px; background: #14141c;
+        }
+        #search-input {
+            width: 100%; padding: 10px 12px;
+            background-color: #1c1c24; border: 1px solid #444;
+            border-radius: 6px; color: white; font-size: 0.95rem;
+            outline: none; transition: border-color 0.2s;
+        }
+        #search-input:focus { border-color: #00ffcc; }
+        
+        #shop-tabs {
+            display: flex; background: #14141c; padding: 5px 15px 10px 15px;
+            border-bottom: 1px solid #222; gap: 8px;
+        }
+        .shop-tab {
+            flex: 1; padding: 8px; font-size: 0.85rem; font-weight: bold;
+            color: #888; background: #1c1c24; border: 1px solid #333;
+            border-radius: 6px; cursor: pointer; transition: 0.2s;
+        }
+        .shop-tab:hover { color: #fff; border-color: #555; }
+        .shop-tab.active { color: #00ffcc; border-color: #00ffcc; background: rgba(0,255,204,0.05); }
+
+        #shop-list {
+            flex: 1; overflow-y: scroll; padding: 10px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        
+        /* Clicker UI */
+        #click-panel { text-align: center; margin-top: 5px; }
+        #score-display { font-size: 3.5rem; font-weight: 900; color: #00ffcc; text-shadow: 0 0 15px rgba(0,255,204,0.4); }
+        #cps-display { font-size: 1.1rem; color: #888; margin-bottom: 12px; }
+        #click-btn {
+            width: 130px; height: 130px; border-radius: 50%;
+            border: none; background: linear-gradient(135deg, #00ffcc, #0077ff);
+            color: white; font-size: 1.2rem; font-weight: bold;
+            cursor: pointer; box-shadow: 0 0 25px rgba(0,255,204,0.3);
+            transition: transform 0.05s;
+        }
+        #click-btn:active { transform: scale(0.95); }
+
+        /* --- Trading Area with Menu Bar --- */
+        #invest-container {
+            width: 100%; max-width: 500px; background: #13131a;
+            border: 1px solid #222; border-radius: 12px; overflow: hidden;
+            display: flex; flex-direction: column; margin-top: 10px;
+        }
+        #market-menu-bar {
+            display: flex; background: #181824; border-bottom: 1px solid #222;
+            overflow-x: auto; scrollbar-width: none;
+        }
+        .menu-tab {
+            padding: 12px 16px; font-size: 0.9rem; font-weight: bold;
+            color: #888; background: transparent; border: none;
+            cursor: pointer; transition: 0.2s; border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+        .menu-tab:hover { color: #fff; }
+        .menu-tab.active { color: #00ffcc; border-bottom-color: #00ffcc; background: rgba(0,255,204,0.05); }
+
+        /* Market Content Card */
+        #trading-panel { padding: 15px; min-height: 220px; }
+        .market-card { display: flex; flex-direction: column; gap: 12px; }
+        .market-header { display: flex; justify-content: space-between; align-items: center; }
+        .asset-name { font-weight: bold; font-size: 1.2rem; color: #fff; }
+        .asset-price { font-weight: bold; font-size: 1.3rem; color: #ffcc00; }
+        
+        /* SVG Line Chart Container */
+        .chart-container {
+            width: 100%; height: 80px; background: #0f0f14;
+            border-radius: 6px; overflow: hidden; position: relative;
+            border: 1px solid #1a1a26;
+        }
+        .chart-svg { width: 100%; height: 100%; }
+
+        .market-stats { 
+            display: flex; flex-direction: column; gap: 6px; 
+            background: #0d0d14; padding: 10px; border-radius: 8px; font-size: 0.85rem; color: #ccc;
+        }
+        .stat-row { display: flex; justify-content: space-between; }
+        .pnl-positive { color: #00ff66; font-weight: bold; }
+        .pnl-negative { color: #ff3344; font-weight: bold; }
+        
+        .trade-actions { display: flex; gap: 10px; margin-top: 5px; }
+        .trade-btn {
+            flex: 1; padding: 10px; border: none; border-radius: 6px;
+            font-weight: bold; font-size: 0.95rem; cursor: pointer; color: white;
+        }
+        .btn-buy { background-color: #00c805; }
+        .btn-buy:hover { background-color: #00a604; }
+        .btn-sell { background-color: #ff3b30; }
+        .btn-sell:hover { background-color: #d32f2f; }
+
         /* Shop Items */
         .shop-item {
             background: #1c1c24; border: 1px solid #333;
             padding: 12px; border-radius: 8px; display: flex;
-            justify-content: space-between; align-items: center;
-            transition: 0.2s; cursor: pointer;
+            justify-content: space-between; align-items: center; cursor: pointer;
         }
         .shop-item:hover:not(.disabled) { background: #252532; border-color: #00ffcc; }
-        .shop-item.disabled { opacity: 0.4; cursor: not-allowed; }
-        .item-info { display: flex; flex-direction: column; gap: 4px; }
-        .item-name { font-weight: bold; font-size: 1rem; color: #fff; }
+        .shop-item.disabled { opacity: 0.3; cursor: not-allowed; }
+        .item-info { display: flex; flex-direction: column; gap: 2px; }
+        .item-name { font-weight: bold; font-size: 0.95rem; color: #fff; }
         .item-cost { font-size: 0.85rem; color: #ffcc00; }
         .item-effect { font-size: 0.75rem; color: #aaa; }
-        .item-count { font-size: 1.5rem; font-weight: bold; color: #555; }
+        .item-count { font-size: 1.3rem; font-weight: bold; color: #444; }
         .shop-item:not(.disabled) .item-count { color: #00ffcc; }
 
-        /* Brainrot Visuals */
-        .floating-text {
-            position: fixed; pointer-events: none; font-weight: bold;
-            font-size: 20px; z-index: 2; animation: floatUp 1.5s linear forwards;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
-        }
-        .bouncing-bg {
-            position: fixed; font-weight: 900; opacity: 0.15;
-            pointer-events: none; white-space: nowrap; z-index: 1;
-        }
-        .video-popup {
-            position: fixed; z-index: 3; border: 3px solid #ff0055;
-            background: #000; pointer-events: auto; box-shadow: 0 0 20px rgba(255,0,85,0.5);
-        }
+        .unlock-notice { color: #888; font-style: italic; font-size: 0.9rem; text-align: center; padding: 50px 10px; }
     </style>
 </head>
 <body>
 
-    <div id="click-section">
-        <div id="score-display">0</div>
-        <div id="cps-display">ความฟินต่อวินาที (CPS): 0 | พลังคลิก: 1</div>
-        <button id="click-btn">CLICK ME</button>
+    <div id="main-section">
+        <div id="click-panel">
+            <div id="score-display">0</div>
+            <div id="cps-display">CPS: 0 | พลังคลิก: 1</div>
+            <button id="click-btn">CLICK ME</button>
+        </div>
+
+        <div id="invest-container">
+            <div id="market-menu-bar"></div>
+            <div id="trading-panel">
+                <div id="no-market-notice" class="unlock-notice">
+                    ⚠️ ยังไม่มีพอร์ตลงทุน ซื้อ "ใบอนุมัติเทรด" ด้านขวาเพื่อเปิดเมนูหุ้น
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="shop-section">
         <div id="shop-header">
-            <h2>🛒 ตลาดละลายสมอง</h2>
-            <p style="color: #666; font-size: 0.85rem; margin: 0;">ซื้อสิ่งเร้าเพื่อเพิ่มพลังของคุณ</p>
+            <h3>🛒 ตลาดละลายสมอง (100 ชิ้น)</h3>
+        </div>
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="🔍 พิมพ์ค้นหาไอเทมที่นี่..." oninput="filterShopItems()">
+        </div>
+        <div id="shop-tabs">
+            <button class="shop-tab active" id="tab-upgrade" onclick="switchShopTab('upgrade')">🔋 อัปเกรดทั่วไป</button>
+            <button class="shop-tab" id="tab-onetime" onclick="switchShopTab('onetime')">📜 ซื้อครั้งเดียวจบ</button>
         </div>
         <div id="shop-list"></div>
     </div>
 
     <script>
         let score = 0;
-        let cpc = 1; // Click per click
-        let cps = 0; // Click per second
-        let totalChaosLevel = 0;
+        let cpc = 1; 
+        let cps = 0; 
+        let currentActiveTab = null; 
+        let currentShopTab = 'upgrade'; // เก็บหมวดหมู่ร้านค้าที่เลือกอยู่ ('upgrade' หรือ 'onetime')
 
-        // วัตถุดิบชื่อไอเทม 100 ชิ้น ไล่ระดับความกาวและความแพง
+        const marketData = {
+            anthropic: { name: "Anthropic (Stock)", price: 120, owned: 0, invested: 0, history: [], unlocked: false, label: "Anthropic" },
+            alphabet: { name: "Alphabet (Stock)", price: 170, owned: 0, invested: 0, history: [], unlocked: false, label: "Alphabet" },
+            spacex: { name: "SpaceX (Stock)", price: 250, owned: 0, invested: 0, history: [], unlocked: false, label: "SpaceX" },
+            bitcoin: { name: "Bitcoin (Crypto)", price: 65000, owned: 0, invested: 0, history: [], unlocked: false, label: "Bitcoin 🪙" }
+        };
+
         const rawItems = [
-            { name: "กดสิวฟินๆ", baseCost: 15, cpcAdd: 1, cpsAdd: 0, desc: "+1 พลังคลิก" },
-            { name: "คลิปสไลม์หนึบหนับ", baseCost: 50, cpcAdd: 0, cpsAdd: 0.5, desc: "+0.5 CPS" },
-            { name: "ทรายไฮดรอลิกโดนบด", baseCost: 120, cpcAdd: 0, cpsAdd: 2, desc: "+2 CPS" },
-            { name: "เพลง Lofi แซมเปิ้ลฝนตก", baseCost: 300, cpcAdd: 2, cpsAdd: 0, desc: "+2 พลังคลิก" },
-            { name: "วิดีโอตัดเค้กเนียนๆ", baseCost: 600, cpcAdd: 0, cpsAdd: 8, desc: "+8 CPS" },
-            { name: "ASMR เสียงกระซิบเคี้ยวแตงกวา", baseCost: 1200, cpcAdd: 0, cpsAdd: 15, desc: "+15 CPS" },
-            { name: "Subway Surfers เกมเพลย์ครึ่งจอ", baseCost: 2500, cpcAdd: 5, cpsAdd: 25, desc: "เริ่มความป่วน +25 CPS" },
-            { name: "Minecraft Parkour กระโดดข้ามลาวา", baseCost: 6000, cpcAdd: 0, cpsAdd: 60, desc: "+60 CPS" },
-            { name: "คลิปรีดกีบเท้าม้า", baseCost: 14000, cpcAdd: 15, cpsAdd: 120, desc: "+120 CPS" },
-            { name: "พอดแคสต์คดีฆาตกรรมหลอนๆ", baseCost: 32000, cpcAdd: 0, cpsAdd: 300, desc: "+300 CPS" },
-            { name: "มุกสกีบีดี้โตเล็ตไอเดียกาว", baseCost: 75000, cpcAdd: 50, cpsAdd: 700, desc: "ระดับสมองไหล" },
-            { name: "คลิปขูดหินปูนสุนัข", baseCost: 150000, cpcAdd: 0, cpsAdd: 1500, desc: "+1500 CPS" },
-            { name: "คนอินเดียขุดสระว่ายน้ำด้วยมือเปล่า", baseCost: 350000, cpcAdd: 0, cpsAdd: 4000, desc: "+4000 CPS" },
-            { name: "ไลฟ์สดนอนหลับให้คนปาของขวัญ", baseCost: 800000, cpcAdd: 200, cpsAdd: 9000, desc: "นอนก็รวยได้" },
-            { name: "คลิปทำลายไอโฟนด้วยเครื่องกดไฮดรอลิก", baseCost: 2000000, cpcAdd: 0, cpsAdd: 22000, desc: "+22k CPS" },
-            { name: "สอนรวยด่วนใน 30 วินาทีโดยโค้ชโนเนม", baseCost: 5000000, cpcAdd: 500, cpsAdd: 50000, desc: "สลัดความคิดจน" },
-            { name: "สปีดรันบอส Elden Ring มือเดียว", baseCost: 12000000, cpcAdd: 0, cpsAdd: 120000, desc: "+120k CPS" },
-            { name: "เพลงรีมิกซ์แดนซ์สามช่าติดหู", baseCost: 30000000, cpcAdd: 0, cpsAdd: 280000, desc: "โจ๊ะๆ เข้าไป" },
-            { name: "แกะกล่องสุ่มโมเดลราคาแสนศุกร์", baseCost: 75000000, cpcAdd: 2500, cpsAdd: 650000, desc: "เกลือล้วนๆ" },
-            { name: "AI ร้องเพลงลูกทุ่งไทย", baseCost: 180000000, cpcAdd: 0, cpsAdd: 1500000, desc: "อัจฉริยะทางดนตรี" }
+            { name: "กดสิวฟินๆ", baseCost: 15, cpcAdd: 1, cpsAdd: 0 },
+            { name: "คลิปสไลม์หนึบหนับ", baseCost: 50, cpcAdd: 0, cpsAdd: 0.5 },
+            { name: "ทรายไฮดรอลิกโดนบด", baseCost: 120, cpcAdd: 0, cpsAdd: 2 },
+            { name: "📜 ใบอนุมัติเทรด Anthropic", baseCost: 300, cpcAdd: 0, cpsAdd: 0, isUnlock: "anthropic" },
+            { name: "วิดีโอตัดเค้กเนียนๆ", baseCost: 600, cpcAdd: 0, cpsAdd: 8 },
+            { name: "ASMR เสียงเคี้ยวแตงกวา", baseCost: 1200, cpcAdd: 0, cpsAdd: 15 },
+            { name: "💼 พอร์ตหุ้น Alphabet", baseCost: 2500, cpcAdd: 0, cpsAdd: 0, isUnlock: "alphabet" },
+            { name: "Minecraft Parkour กระโดดลาวา", baseCost: 6000, cpcAdd: 0, cpsAdd: 60 },
+            { name: "🚀 ตั๋วลงทุนระดับ VIP - SpaceX", baseCost: 14000, cpcAdd: 0, cpsAdd: 0, isUnlock: "spacex" },
+            { name: "พอดแคสต์คดีฆาตกรรม", baseCost: 32000, cpcAdd: 0, cpsAdd: 300 },
+            { name: "มุกสกีบีดี้โตเล็ตไอเดียกาว", baseCost: 75000, cpcAdd: 50, cpsAdd: 700 },
+            { name: "🪙 กุญแจตู้เซฟคริปโต (Bitcoin)", baseCost: 150000, cpcAdd: 0, cpsAdd: 0, isUnlock: "bitcoin" }
         ];
 
-        // เติมไอเทมให้ครบ 100 ชิ้นด้วยคณิตศาสตร์ (สเกลชื่อและเอฟเฟกต์ตามความแพง)
         const items = [];
-        const suffixes = ["ขั้นเทพ", "แบบตะโกน", "300%", "ระดับพระกาฬ", "ทะลุมิติ", "ล้างสมอง", "ระดับกาแล็กซี", "ควันออกหู", "สิงร่าง", "อมตะ"];
         const prefixes = ["มหา", "สุดยอด", "โภคทรัพย์", "ควอนตัม", "เนตรสังสาระ", "จิตวิญญาณ", "จักรกล", "ไซเบอร์", "อนันต์", "สมองระเบิด"];
+        const suffixes = ["ขั้นเทพ", "แบบตะโกน", "300%", "ระดับพระกาฬ", "ทะลุมิติ", "ล้างสมอง", "ระดับกาแล็กซี", "ควันออกหู", "สิงร่าง", "อมตะ"];
 
         for (let i = 0; i < 100; i++) {
             if (i < rawItems.length) {
-                items.push({ ...rawItems[i], count: 0, id: i });
+                let isOnetime = !!rawItems[i].isUnlock;
+                let descText = isOnetime ? `🔓 เปิดเมนูเทรด ${rawItems[i].isUnlock}` : (rawItems[i].cpsAdd > 0 ? `+${rawItems[i].cpsAdd} CPS` : `+${rawItems[i].cpcAdd} พลังคลิก`);
+                items.push({ ...rawItems[i], count: 0, id: i, desc: descText, isOnetime: isOnetime });
             } else {
-                // สร้างไอเทมสุ่มแบบอิงตามดัชนี (i) เพื่อความสมดุลของเกม
                 let baseItem = rawItems[i % rawItems.length];
                 let scale = Math.pow(1.55, i - rawItems.length + 1);
                 let p = prefixes[Math.floor(i / 10) % prefixes.length];
                 let s = suffixes[i % suffixes.length];
-                
                 let cost = Math.round(rawItems[rawItems.length - 1].baseCost * Math.pow(2.1, i - rawItems.length + 1));
                 let cpsAdd = baseItem.cpsAdd > 0 ? Math.round(baseItem.cpsAdd * scale * 10) : 0;
                 let cpcAdd = baseItem.cpcAdd > 0 ? Math.round(baseItem.cpcAdd * scale * 5) : 0;
 
+                // ไอเทมที่สเกลขึ้นมาหลังจาก 12 ชิ้นแรก จะถูกนับเป็นหมวดหมู่ซื้อซ้ำได้ (Upgrade) ทั้งหมดเพื่อความสนุกในการปั๊มแต้ม
                 items.push({
                     id: i,
-                    name: `${p}${baseItem.name}${s}`,
+                    name: `${p}${baseItem.name.replace(/📜 |💼 |🚀 |🪙 /g, "")}${s}`,
                     baseCost: cost,
                     cpcAdd: cpcAdd,
                     cpsAdd: cpsAdd,
-                    desc: cpsAdd > 0 ? `+${formatNumber(cpsAdd)} CPS` : `+${formatNumber(cpcAdd)} พลังคลิก`,
-                    count: 0
+                    desc: `+${formatNumber(cpsAdd)} CPS`,
+                    count: 0,
+                    isOnetime: false 
                 });
             }
         }
 
-        // สูตรคำนวณราคาปัจจุบันตามจำนวนที่ซื้อไปแล้ว
-        function getCost(item) {
-            return Math.round(item.baseCost * Math.pow(1.15, item.count));
+        function getCost(item) { 
+            if(item.isOnetime && item.count > 0) return Infinity;
+            return Math.round(item.baseCost * Math.pow(1.15, item.count)); 
         }
 
-        // จัดฟอร์แมตตัวเลขให้ดูง่าย (เช่น 1K, 1M, 1B, 1T)
         function formatNumber(num) {
-            if (num >= 1e15) return (num / 1e15).toFixed(2) + ' Quadrillion';
+            if (num === Infinity) return "SOLD OUT";
             if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
             if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
             if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
@@ -173,7 +249,207 @@
             return num.toFixed(num % 1 === 0 ? 0 : 1);
         }
 
-        // สร้างปุ่มร้านค้าใน HTML
+        // --- ฟังก์ชันสลับแท็บหมวดหมู่ร้านค้า ---
+        function switchShopTab(tabType) {
+            currentShopTab = tabType;
+            document.getElementById('tab-upgrade').classList.toggle('active', tabType === 'upgrade');
+            document.getElementById('tab-onetime').classList.toggle('active', tabType === 'onetime');
+            filterShopItems(); // รีเฟรชการแสดงผลไอเทมให้ตรงตามหมวดหมู่และคำค้นหา
+        }
+
+        // --- ฟังก์ชันกรองไอเทม (รวมทั้งระบบค้นหาและแบ่งหมวดหมู่) ---
+        function filterShopItems() {
+            const searchText = document.getElementById('search-input').value.toLowerCase();
+            items.forEach(item => {
+                const el = document.getElementById(`item-${item.id}`);
+                if (el) {
+                    // Check 1: ตรงตามหมวดหมู่ที่เลือกหรือไม่
+                    const matchTab = (currentShopTab === 'onetime' && item.isOnetime) || (currentShopTab === 'upgrade' && !item.isOnetime);
+                    // Check 2: ตรงตามข้อความที่พิมพ์ค้นหาหรือไม่
+                    const matchSearch = item.name.toLowerCase().includes(searchText) || item.desc.toLowerCase().includes(searchText);
+
+                    if (matchTab && matchSearch) {
+                        el.style.display = 'flex';
+                    } else {
+                        el.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        function rebuildMenuBar() {
+            const menuBar = document.getElementById('market-menu-bar');
+            menuBar.innerHTML = '';
+            
+            let hasAnyUnlock = false;
+            Object.keys(marketData).forEach(key => {
+                if (marketData[key].unlocked) {
+                    hasAnyUnlock = true;
+                    const btn = document.createElement('button');
+                    btn.className = `menu-tab ${currentActiveTab === key ? 'active' : ''}`;
+                    btn.innerText = marketData[key].label;
+                    btn.onclick = () => switchTab(key);
+                    menuBar.appendChild(btn);
+                }
+            });
+
+            if (hasAnyUnlock && !currentActiveTab) {
+                const firstKey = Object.keys(marketData).find(key => marketData[key].unlocked);
+                switchTab(firstKey);
+            }
+        }
+
+        function switchTab(key) {
+            currentActiveTab = key;
+            rebuildMenuBar();
+            renderActiveMarketCard();
+        }
+
+        function unlockMarketCard(key) {
+            marketData[key].unlocked = true;
+            const asset = marketData[key];
+            for(let i=0; i<40; i++) asset.history.push(asset.price);
+            
+            document.getElementById('no-market-notice').style.display = 'none';
+            switchTab(key);
+        }
+
+        function renderActiveMarketCard() {
+            const panel = document.getElementById('trading-panel');
+            if (!currentActiveTab) return;
+            
+            const asset = marketData[currentActiveTab];
+            const unitName = currentActiveTab === 'bitcoin' ? 'เหรียญ' : 'หุ้น';
+
+            panel.innerHTML = `
+                <div class="market-card">
+                    <div class="market-header">
+                        <span class="asset-name">${asset.name}</span>
+                        <span class="asset-price" id="live-price">$${formatNumber(asset.price)}</span>
+                    </div>
+                    <div class="chart-container">
+                        <svg class="chart-svg" id="live-line-chart"></svg>
+                    </div>
+                    <div class="market-stats">
+                        <div class="stat-row"><span>จำนวนที่ถือครอง:</span> <span><b id="live-owned">${asset.owned}</b> ${unitName}</span></div>
+                        <div class="stat-row"><span>เงินลงทุนรวม:</span> <span>$<span id="live-invested">${formatNumber(asset.invested)}</span></span></div>
+                        <div class="stat-row"><span>กำไร/ขาดทุนสะสม:</span> <span id="live-pnl">$0 (0%)</span></div>
+                    </div>
+                    <div class="trade-actions">
+                        <button class="trade-btn btn-buy" onclick="buyAsset('${currentActiveTab}')">ซื้อ 1 ${unitName === 'เหรียญ' ? 'เหรียญ' : 'หุ้น'}</button>
+                        <button class="trade-btn btn-sell" onclick="sellAsset('${currentActiveTab}')">ขาย 1 ${unitName === 'เหรียญ' ? 'เหรียญ' : 'หุ้น'}</button>
+                    </div>
+                </div>
+            `;
+            renderLineChart();
+            updateAssetStats();
+        }
+
+        function renderLineChart() {
+            const svg = document.getElementById('live-line-chart');
+            if (!svg || !currentActiveTab) return;
+            
+            const history = marketData[currentActiveTab].history;
+            const min = Math.min(...history);
+            const max = Math.max(...history);
+            const range = max - min === 0 ? 1 : max - min;
+
+            const width = svg.clientWidth || 470;
+            const height = 80;
+
+            let points = [];
+            history.forEach((price, index) => {
+                const x = (index / (history.length - 1)) * width;
+                const y = height - (((price - min) / range) * (height - 20) + 10);
+                points.push(`${x},${y}`);
+            });
+
+            const isUp = history[history.length - 1] >= history[history.length - 2];
+            const strokeColor = isUp ? '#00c805' : '#ff3b30';
+
+            svg.innerHTML = `
+                <polyline fill="none" stroke="${strokeColor}" stroke-width="2.5" points="${points.join(' ')}" />
+            `;
+        }
+
+        function updateMarketPrices() {
+            Object.keys(marketData).forEach(key => {
+                const asset = marketData[key];
+                const pctChange = (Math.random() * 10.4 - 5) / 100;
+                asset.price = Math.max(1, asset.price * (1 + pctChange));
+                asset.history.push(asset.price);
+                if(asset.history.length > 40) asset.history.shift();
+            });
+
+            if (currentActiveTab) {
+                const asset = marketData[currentActiveTab];
+                const priceEl = document.getElementById('live-price');
+                if (priceEl) priceEl.innerText = `$${formatNumber(asset.price)}`;
+                renderLineChart();
+                updateAssetStats();
+            }
+        }
+
+        function updateAssetStats() {
+            if (!currentActiveTab) return;
+            const asset = marketData[currentActiveTab];
+            
+            const ownedEl = document.getElementById('live-owned');
+            const investedEl = document.getElementById('live-invested');
+            const pnlEl = document.getElementById('live-pnl');
+            
+            if(!ownedEl || !investedEl || !pnlEl) return;
+
+            ownedEl.innerText = asset.owned;
+            investedEl.innerText = formatNumber(asset.invested);
+
+            if (asset.owned === 0) {
+                pnlEl.innerText = "$0 (0%)";
+                pnlEl.className = "pnl-positive";
+                return;
+            }
+
+            const currentTotalValue = asset.owned * asset.price;
+            const pnlValue = currentTotalValue - asset.invested;
+            const pnlPct = (pnlValue / (asset.invested || 1)) * 100;
+
+            if (pnlValue >= 0) {
+                pnlEl.innerText = `+$${formatNumber(pnlValue)} (+${pnlPct.toFixed(2)}%)`;
+                pnlEl.className = "pnl-positive";
+            } else {
+                pnlEl.innerText = `-$${formatNumber(Math.abs(pnlValue))} (${pnlPct.toFixed(2)}%)`;
+                pnlEl.className = "pnl-negative";
+            }
+        }
+
+        function buyAsset(key) {
+            const asset = marketData[key];
+            const cost = asset.price;
+            if (score >= cost) {
+                score -= cost;
+                asset.owned += 1;
+                asset.invested += cost;
+                updateUI();
+                updateAssetStats();
+            }
+        }
+
+        function sellAsset(key) {
+            const asset = marketData[key];
+            if (asset.owned >= 1) {
+                const revenue = asset.price;
+                score += revenue;
+                
+                const costPerUnit = asset.invested / asset.owned;
+                asset.owned -= 1;
+                asset.invested -= costPerUnit;
+                if(asset.owned <= 0) { asset.owned = 0; asset.invested = 0; }
+
+                updateUI();
+                updateAssetStats();
+            }
+        }
+
         const shopListEl = document.getElementById('shop-list');
         function initShop() {
             shopListEl.innerHTML = '';
@@ -192,33 +468,29 @@
                 `;
                 shopListEl.appendChild(div);
             });
+            filterShopItems(); // คัดแยกแท็บเริ่มต้นหลังจากสร้างเสร็จ
         }
 
-        // ระบบคลิกด้วยมือ
-        document.getElementById('click-btn').addEventListener('click', (e) => {
+        document.getElementById('click-btn').addEventListener('click', () => {
             score += cpc;
             updateUI();
-            createFloatingText(e.clientX, e.clientY, `+${formatNumber(cpc)}`);
-            triggerChaosEffect(0.05);
         });
 
-        // ระบบซื้อของ
         function buyItem(id) {
             const item = items[id];
             const cost = getCost(item);
-            if (score >= cost) {
+            if (score >= cost && (item.count === 0 || !item.isOnetime)) {
                 score -= cost;
                 item.count++;
-                cpc += item.cpcAdd;
+                
+                if (item.isUnlock) {
+                    unlockMarketCard(item.isUnlock);
+                } else {
+                    cpc += item.cpcAdd;
+                }
+                
                 calculateCPS();
                 updateUI();
-                totalChaosLevel++;
-                triggerChaosEffect(0.5);
-                
-                // เอฟเฟกต์พิเศษเมื่อซื้อไอเทมระดับสูงขึ้นเรื่อยๆ
-                if (item.count === 1 && id >= 6 && id % 4 === 2) {
-                    spawnVideoOverlay();
-                }
             }
         }
 
@@ -228,7 +500,7 @@
 
         function updateUI() {
             document.getElementById('score-display').innerText = formatNumber(score);
-            document.getElementById('cps-display').innerText = `ความฟินต่อวินาที (CPS): ${formatNumber(cps)} | พลังคลิก: ${formatNumber(cpc)}`;
+            document.getElementById('cps-display').innerText = `CPS: ${formatNumber(cps)} | พลังคลิก: ${formatNumber(cpc)}`;
 
             items.forEach((item) => {
                 const cost = getCost(item);
@@ -236,89 +508,30 @@
                 const costEl = document.getElementById(`cost-${item.id}`);
                 const countEl = document.getElementById(`count-${item.id}`);
 
+                if(cost === Infinity) {
+                    costEl.innerText = "ปลดล็อกแล้ว";
+                    el.classList.add('disabled');
+                    countEl.innerText = "✓";
+                    return;
+                }
+
                 costEl.innerText = `ราคา: ${formatNumber(cost)}`;
                 countEl.innerText = item.count;
 
-                if (score >= cost) {
-                    el.classList.remove('disabled');
-                } else {
-                    el.classList.add('disabled');
-                }
+                if (score >= cost) el.classList.remove('disabled');
+                else el.classList.add('disabled');
             });
         }
 
-        // เอฟเฟกต์ตัวเลขลอยตอนคลิก
-        function createFloatingText(x, y, text) {
-            const txt = document.createElement('div');
-            txt.className = 'floating-text';
-            txt.innerText = text;
-            txt.style.left = `${x}px`;
-            txt.style.top = `${y}px`;
-            txt.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-            document.body.appendChild(txt);
-            setTimeout(() => txt.remove(), 1500);
-        }
-
-        // ป่วนหน้าจอ (Brainrot Stimulation)
-        function triggerChaosEffect(chance) {
-            if (Math.random() > chance) return;
-            
-            // สุ่มเปลี่ยนสีพื้นหลังแวบๆ
-            if (totalChaosLevel > 5) {
-                document.getElementById('click-section').style.background = `radial-gradient(circle, hwb(${Math.random()*360} 10% 80%) 0%, #0a0a0c 100%)`;
-                setTimeout(() => {
-                    document.getElementById('click-section').style.background = 'radial-gradient(circle, #1a1a24 0%, #0a0a0c 100%)';
-                }, 50);
-            }
-
-            // สุ่มสร้างข้อความเด้งไปมาในพื้นหลังเหมือน DVD Logo
-            if (totalChaosLevel > 10 && document.querySelectorAll('.bouncing-bg').length < 10) {
-                const words = ["SKIBIDI", "GYATT", "RIZZ", "SUBWAY SURFERS", "ASMR", "OHIO", "CHIGMA", "สมองไหล"];
-                const b = document.createElement('div');
-                b.className = 'bouncing-bg';
-                b.innerText = words[Math.floor(Math.random() * words.length)];
-                b.style.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                b.style.fontSize = `${Math.random() * 3 + 2}rem`;
-                document.body.appendChild(b);
-
-                let x = Math.random() * (window.innerWidth - 300);
-                let y = Math.random() * (window.innerHeight - 100);
-                let dx = (Math.random() - 0.5) * 6;
-                let dy = (Math.random() - 0.5) * 6;
-
-                setInterval(() => {
-                    x += dx; y += dy;
-                    if (x < 0 || x > window.innerWidth - 200) dx = -dx;
-                    if (y < 0 || y > window.innerHeight - 50) dy = -dy;
-                    b.style.left = x + 'px';
-                    b.style.top = y + 'px';
-                }, 30);
-            }
-        }
-
-        // ฝังวิดีโอป่วนประสาท (จำลอง Subway Surfers และคลิปสั้น YouTube)
-        const ytVideos = ["u779_59X_Rw", "jfKfPfyJRdk", "z376nHeS2K0", "n_Dv4JMiwK8"];
-        function spawnVideoOverlay() {
-            const vid = document.createElement('div');
-            vid.className = 'video-popup';
-            
-            // สุ่มตำแหน่งหน้าจอ
-            vid.style.left = `${Math.random() * (window.innerWidth - 300)}px`;
-            vid.style.top = `${Math.random() * (window.innerHeight - 200)}px`;
-            
-            const id = ytVideos[Math.floor(Math.random() * ytVideos.length)];
-            vid.innerHTML = `<iframe width="240" height="140" src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}" frameborder="0" allow="autoplay" allowfullscreen></iframe>`;
-            
-            document.body.appendChild(vid);
-        }
-
-        // ลูปหลักปั๊มแต้มอัตโนมัติ (รันทุกๆ 100ms เพื่อความเนียน ไม่กระตุก)
         setInterval(() => {
             score += cps / 10;
             updateUI();
         }, 100);
 
-        // เริ่มต้นเกม
+        setInterval(() => {
+            updateMarketPrices();
+        }, 1000);
+
         initShop();
         updateUI();
     </script>
