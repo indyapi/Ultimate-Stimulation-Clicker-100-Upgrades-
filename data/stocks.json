@@ -1,0 +1,6 @@
+{
+    "anthropic": { "name": "Anthropic", "price": 120, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "หุ้น Anthropic" },
+    "alphabet": { "name": "Alphabet", "price": 2500, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "หุ้น Alphabet" },
+    "spacex": { "name": "SpaceX", "price": 15000, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "หุ้น SpaceX" },
+    "bitcoin": { "name": "Bitcoin", "price": 65000, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "BTC Crypto 🪙" }
+}

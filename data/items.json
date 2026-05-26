@@ -1,9 +1,987 @@
 [
-  { "id": 0, "name": "กดสิวฟินๆ", "baseCost": 15, "cpcAdd": 1, "cpsAdd": 0, "isOnetime": false, "desc": "+1 พลังคลิก" },
-  { "id": 1, "name": "คลิปสไลม์หนึบหนับ", "baseCost": 50, "cpcAdd": 0, "cpsAdd": 0.5, "isOnetime": false, "desc": "+0.5 CPS" },
-  { "id": 2, "name": "📜 ใบอนุมัติเทรด Anthropic", "baseCost": 300, "cpcAdd": 0, "cpsAdd": 0, "isOnetime": true, "isUnlock": "anthropic", "desc": "🔓 เปิดเมนูหุ้น Anthropic" },
-  { "id": 3, "name": "📩 กล่องอีเมลสื่อสารข้อมูล", "baseCost": 600, "cpcAdd": 0, "cpsAdd": 0, "isOnetime": true, "specialUnlock": "email", "desc": "🔓 ปลดล็อกระบบพิเศษ" },
-  { "id": 4, "name": "วิดีโอตัดเค้กเนียนๆ", "baseCost": 1200, "cpcAdd": 0, "cpsAdd": 12, "isOnetime": false, "desc": "+12 CPS" },
-  { "id": 5, "name": "🎫 บัตรผ่านเข้าร่วมตลาดโบราณ", "baseCost": 3000, "cpcAdd": 0, "cpsAdd": 0, "isOnetime": true, "specialUnlock": "antique_ticket", "desc": "🔓 ปลดล็อกระบบพิเศษ" },
-  { "id": 6, "name": "📢 บัตรจ้างสื่อสร้างกระแสข่าว", "baseCost": 15000, "cpcAdd": 0, "cpsAdd": 0, "isOnetime": true, "specialUnlock": "media_hype_pass", "desc": "🔓 ปลดล็อกปุ่มปั่นกระแสคลั่งในโรงประมูล" }
+  {
+    "id": 0,
+    "name": "กดสิวฟินๆ",
+    "baseCost": 30,
+    "cpcAdd": 2,
+    "cpsAdd": 0,
+    "desc": "+2 พลังคลิก",
+    "isOnetime": false
+  },
+  {
+    "id": 1,
+    "name": "คลิปสไลม์หนึบหนับ",
+    "baseCost": 57,
+    "cpcAdd": 0,
+    "cpsAdd": 0.6,
+    "desc": "+0.6 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 2,
+    "name": "📜 ใบอนุมัติเทรด Anthropic",
+    "baseCost": 107,
+    "cpcAdd": 0,
+    "cpsAdd": 0,
+    "desc": "🔓 เปิดเมนูหุ้น anthropic",
+    "isUnlock": "anthropic",
+    "isOnetime": true
+  },
+  {
+    "id": 3,
+    "name": "📩 กล่องอีเมลสื่อสารข้อมูล",
+    "baseCost": 201,
+    "cpcAdd": 0,
+    "cpsAdd": 0,
+    "desc": "🔓 ปลดล็อกระบบพิเศษ",
+    "specialUnlock": "email",
+    "isOnetime": true
+  },
+  {
+    "id": 4,
+    "name": "วิดีโอตัดเค้กเนียนๆ",
+    "baseCost": 378,
+    "cpcAdd": 0,
+    "cpsAdd": 3.8,
+    "desc": "+3.8 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 5,
+    "name": "🎫 บัตรผ่านเข้าร่วมตลาดโบราณ",
+    "baseCost": 713,
+    "cpcAdd": 0,
+    "cpsAdd": 0,
+    "desc": "🔓 ปลดล็อกระบบพิเศษ",
+    "specialUnlock": "antique_ticket",
+    "isOnetime": true
+  },
+  {
+    "id": 6,
+    "name": "💼 พอร์ตหุ้น Alphabet",
+    "baseCost": 1344,
+    "cpcAdd": 0,
+    "cpsAdd": 0,
+    "desc": "🔓 เปิดเมนูหุ้น alphabet",
+    "isUnlock": "alphabet",
+    "isOnetime": true
+  },
+  {
+    "id": 7,
+    "name": "📢 บัตรจ้างสื่อสร้างกระแสข่าว",
+    "baseCost": 2534,
+    "cpcAdd": 0,
+    "cpsAdd": 0,
+    "desc": "🔓 ปลดล็อกระบบพิเศษ",
+    "specialUnlock": "media_hype",
+    "isOnetime": true
+  },
+  {
+    "id": 8,
+    "name": "🔍 จ้างนักโบราณคดีร่วมทีม",
+    "baseCost": 4775,
+    "cpcAdd": 0,
+    "cpsAdd": 0,
+    "desc": "🔓 ปลดล็อกระบบพิเศษ (อัปเกรดได้ 3 ระดับ)",
+    "specialUnlock": "archeologist",
+    "isOnetime": false,
+    "maxLevel": 3,
+    "minLevel": 20
+  },
+  {
+    "id": 9,
+    "name": "🧮 จ้างนักประเมินราคาฝีมือดี",
+    "baseCost": 8999,
+    "cpcAdd": 0,
+    "cpsAdd": 0,
+    "desc": "🔓 ปลดล็อกระบบพิเศษ (อัปเกรดได้ 3 ระดับ)",
+    "specialUnlock": "appraiser",
+    "isOnetime": false,
+    "maxLevel": 3,
+    "minLevel": 30
+  },
+  {
+    "id": 10,
+    "name": "🚀 ตั๋วลงทุนระดับ VIP - SpaceX",
+    "baseCost": 16959,
+    "cpcAdd": 0,
+    "cpsAdd": 0,
+    "desc": "🔓 เปิดเมนูหุ้น spacex",
+    "isUnlock": "spacex",
+    "isOnetime": true
+  },
+  {
+    "id": 11,
+    "name": "🪙 กุญแจตู้เซฟคริปโต (Bitcoin)",
+    "baseCost": 31962,
+    "cpcAdd": 0,
+    "cpsAdd": 0,
+    "desc": "🔓 เปิดเมนูหุ้น bitcoin",
+    "isUnlock": "bitcoin",
+    "isOnetime": true,
+    "minLevel": 50
+  },
+  {
+    "id": 12,
+    "name": "🌍 สมาชิกข่าวสารทั่วโลก",
+    "baseCost": 60237,
+    "cpcAdd": 0,
+    "cpsAdd": 0,
+    "desc": "🔓 ปลดล็อกระบบข่าวสารเศรษฐกิจ",
+    "specialUnlock": "news_subscription",
+    "isOnetime": true
+  },
+  {
+    "id": 13,
+    "name": "วิดีโอเททราย ASMR",
+    "baseCost": 113526,
+    "cpcAdd": 252,
+    "cpsAdd": 0,
+    "desc": "+252 พลังคลิก",
+    "isOnetime": false
+  },
+  {
+    "id": 14,
+    "name": "คีย์บอร์ด Custom เสียงเพราะ",
+    "baseCost": 213956,
+    "cpcAdd": 0,
+    "cpsAdd": 201,
+    "desc": "+201 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 15,
+    "name": "นวดแป้งขนมปังเนียนๆ",
+    "baseCost": 403230,
+    "cpcAdd": 0,
+    "cpsAdd": 402,
+    "desc": "+402 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 16,
+    "name": "แกะกล่องฟิกเกอร์หายาก",
+    "baseCost": 759944,
+    "cpcAdd": 1285,
+    "cpsAdd": 0,
+    "desc": "+1,285 พลังคลิก",
+    "isOnetime": false
+  },
+  {
+    "id": 17,
+    "name": "เก็บกวาดชายหาดด้วยโดรน",
+    "baseCost": 1432223,
+    "cpcAdd": 0,
+    "cpsAdd": 1282,
+    "desc": "+1,282 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 18,
+    "name": "ผสมสีน้ำมันสดใส",
+    "baseCost": 2699227,
+    "cpcAdd": 0,
+    "cpsAdd": 2559,
+    "desc": "+2,559 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 19,
+    "name": "เครื่องขัดหินเงาวับ",
+    "baseCost": 5087076,
+    "cpcAdd": 6541,
+    "cpsAdd": 0,
+    "desc": "+6,541 พลังคลิก",
+    "isOnetime": false
+  },
+  {
+    "id": 20,
+    "name": "ทดลองมีด 1000 องศา",
+    "baseCost": 9587315,
+    "cpcAdd": 0,
+    "cpsAdd": 8160,
+    "desc": "+8,160 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 21,
+    "name": "วิดีโอแกะพัสดุจากญี่ปุ่น",
+    "baseCost": 18068654,
+    "cpcAdd": 0,
+    "cpsAdd": 16290,
+    "desc": "+16,290 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 22,
+    "name": "ทำความสะอาดพรมด้วยเครื่องแรงสูง",
+    "baseCost": 34052937,
+    "cpcAdd": 33320,
+    "cpsAdd": 0,
+    "desc": "+33,320 พลังคลิก",
+    "isOnetime": false
+  },
+  {
+    "id": 23,
+    "name": "เทคโนโลยีเลเซอร์ลบสนิม",
+    "baseCost": 64177584,
+    "cpcAdd": 0,
+    "cpsAdd": 51964,
+    "desc": "+51,964 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 24,
+    "name": "ไวรัลคลิปตู้กดอัตโนมัติ",
+    "baseCost": 120951749,
+    "cpcAdd": 0,
+    "cpsAdd": 103754,
+    "desc": "+103,754 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 25,
+    "name": "สถาปัตยกรรมโดมิโน่หมื่นชิ้น",
+    "baseCost": 227950706,
+    "cpcAdd": 169673,
+    "cpsAdd": 0,
+    "desc": "+169,673 พลังคลิก",
+    "isOnetime": false
+  },
+  {
+    "id": 26,
+    "name": "ระบบ AI วิเคราะห์ความฟิน",
+    "baseCost": 429605397,
+    "cpcAdd": 0,
+    "cpsAdd": 330832,
+    "desc": "+330,832 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 27,
+    "name": "กราฟิกฟลูอิดสมจริง 8K",
+    "baseCost": 809652229,
+    "cpcAdd": 0,
+    "cpsAdd": 660487,
+    "desc": "+660,487 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 28,
+    "name": "เครื่องปั้นดินเผาดิจิทัล",
+    "baseCost": 1525904323,
+    "cpcAdd": 864026,
+    "cpsAdd": 0,
+    "desc": "+864,026 พลังคลิก",
+    "isOnetime": false
+  },
+  {
+    "id": 29,
+    "name": "หูฟัง Spatial Audio 3D",
+    "baseCost": 2875782859,
+    "cpcAdd": 0,
+    "cpsAdd": 2105932,
+    "desc": "+2,105,932 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 30,
+    "name": "แว่น VR ความละเอียดสูง",
+    "baseCost": 5419820188,
+    "cpcAdd": 0,
+    "cpsAdd": 4204373,
+    "desc": "+4,204,373 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 31,
+    "name": "ชุดสูท Haptic Feedback",
+    "baseCost": 10214418928,
+    "cpcAdd": 4400538,
+    "cpsAdd": 0,
+    "desc": "+4,400,538 พลังคลิก",
+    "isOnetime": false
+  },
+  {
+    "id": 32,
+    "name": "ห้องสมาธิแบบไร้เสียง",
+    "baseCost": 19250519465,
+    "cpcAdd": 0,
+    "cpsAdd": 13406173,
+    "desc": "+13,406,173 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 33,
+    "name": "ปลูกป่าไซเบอร์ใน Metaverse",
+    "baseCost": 36280331001,
+    "cpcAdd": 0,
+    "cpsAdd": 26765388,
+    "desc": "+26,765,388 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 34,
+    "name": "คลาวด์ฟาร์มขุดเหรียญความสุข",
+    "baseCost": 68375423320,
+    "cpcAdd": 22413084,
+    "cpsAdd": 0,
+    "desc": "+22,413,084 พลังคลิก",
+    "isOnetime": false
+  },
+  {
+    "id": 35,
+    "name": "AI เจนภาพงานศิลปะสุดล้ำ",
+    "baseCost": 128863171453,
+    "cpcAdd": 0,
+    "cpsAdd": 85348565,
+    "desc": "+85,348,565 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 36,
+    "name": "เครื่องพิมพ์ 3D ระดับโมเลกุล",
+    "baseCost": 242860901631,
+    "cpcAdd": 0,
+    "cpsAdd": 170393495,
+    "desc": "+170,393,495 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 37,
+    "name": "โรงงานไมโครชิปชีวภาพ",
+    "baseCost": 457705773312,
+    "cpcAdd": 114143708,
+    "cpsAdd": 0,
+    "desc": "+114,143,708 พลังคลิก",
+    "isOnetime": false
+  },
+  {
+    "id": 38,
+    "name": "หุ่นยนต์นวดกดจุดอัจฉริยะ",
+    "baseCost": 862611369371,
+    "cpcAdd": 0,
+    "cpsAdd": 543336402,
+    "desc": "+543,336,402 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 39,
+    "name": "โครงข่ายประสาทเทียมส่วนบุคคล",
+    "baseCost": 1625713324926,
+    "cpcAdd": 0,
+    "cpsAdd": 1084752057,
+    "desc": "+1,084,752,057 CPS",
+    "isOnetime": false
+  },
+  {
+    "id": 40,
+    "name": "เลนส์สายตาเสริม AR",
+    "baseCost": 3063887062800,
+    "cpcAdd": 581302674,
+    "cpsAdd": 0,
+    "desc": "+581,302,674 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 41,
+    "name": "ระบบแปลภาษาทางจิต",
+    "baseCost": 5774329206549,
+    "cpcAdd": 0,
+    "cpsAdd": 3458868526,
+    "desc": "+3,458,868,526 CPS",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 42,
+    "name": "ยานยนต์ลอยตัวพลังแม่เหล็ก",
+    "baseCost": 10882541393394,
+    "cpcAdd": 0,
+    "cpsAdd": 6905481721,
+    "desc": "+6,905,481,721 CPS",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 43,
+    "name": "แบตเตอรี่พลังงานแสงดาว",
+    "baseCost": 20509690899613,
+    "cpcAdd": 2960574452,
+    "cpsAdd": 0,
+    "desc": "+2,960,574,452 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 44,
+    "name": "ลิฟต์อวกาศสายแรกของโลก",
+    "baseCost": 38653417946382,
+    "cpcAdd": 0,
+    "cpsAdd": 22019251743,
+    "desc": "+22,019,251,743 CPS",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 45,
+    "name": "การท่องเที่ยวสถานีอวกาศ",
+    "baseCost": 72847841844651,
+    "cpcAdd": 0,
+    "cpsAdd": 43960168950,
+    "desc": "+43,960,168,950 CPS",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 46,
+    "name": "เหมืองแร่บนดาวอังคาร",
+    "baseCost": 137292077735134,
+    "cpcAdd": 15077072117,
+    "cpsAdd": 0,
+    "desc": "+15,077,072,117 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 47,
+    "name": "โดมระบบนิเวศจำลองบนดวงจันทร์",
+    "baseCost": 258746369577098,
+    "cpcAdd": 0,
+    "cpsAdd": 140171499670,
+    "desc": "+140,171,499,670 CPS",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 48,
+    "name": "พลังงานนิวเคลียร์ฟิวชันแบบพกพา",
+    "baseCost": 487644188024370,
+    "cpcAdd": 0,
+    "cpsAdd": 279845982861,
+    "desc": "+279,845,982,861 CPS",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 49,
+    "name": "เครื่องวาร์ประยะสั้น",
+    "baseCost": 919034553035890,
+    "cpcAdd": 76782085519,
+    "cpsAdd": 0,
+    "desc": "+76,782,085,519 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 50,
+    "name": "แคปซูลจำศีลระหว่างดวงดาว",
+    "baseCost": 1732050807568876,
+    "cpcAdd": 0,
+    "cpsAdd": 892326260796,
+    "desc": "+892,326,260,796 CPS",
+    "isOnetime": false,
+    "minLevel": 100
+  },
+  {
+    "id": 51,
+    "name": "อาหารสังเคราะห์รสเลิศ",
+    "baseCost": 3264295112833301,
+    "cpcAdd": 0,
+    "cpsAdd": 1781467924949,
+    "desc": "+1.78e+12 CPS",
+    "isOnetime": false,
+    "minLevel": 200
+  },
+  {
+    "id": 52,
+    "name": "ชุดเกราะนาโนเทคโนโลยี",
+    "baseCost": 6152026567063420,
+    "cpcAdd": 391035536349,
+    "cpsAdd": 0,
+    "desc": "+391,035,536,349 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 200
+  },
+  {
+    "id": 53,
+    "name": "ดาบเลเซอร์ตัดมิติ",
+    "baseCost": 11594365574687210,
+    "cpcAdd": 0,
+    "cpsAdd": 5680469140564,
+    "desc": "+5.68e+12 CPS",
+    "isOnetime": false,
+    "minLevel": 200
+  },
+  {
+    "id": 54,
+    "name": "สัตว์เลี้ยงหุ่นยนต์ AI อารมณ์ดี",
+    "baseCost": 21851224407774260,
+    "cpcAdd": 0,
+    "cpsAdd": 11340729660957,
+    "desc": "+1.13e+13 CPS",
+    "isOnetime": false,
+    "minLevel": 200
+  },
+  {
+    "id": 55,
+    "name": "สวนสนุกแรงโน้มถ่วงต่ำ",
+    "baseCost": 41181727886977620,
+    "cpcAdd": 1991502729855,
+    "cpsAdd": 0,
+    "desc": "+1.99e+12 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 200
+  },
+  {
+    "id": 56,
+    "name": "คอนเสิร์ตโฮโลแกรมทั่วโลก",
+    "baseCost": 77612800093421200,
+    "cpcAdd": 0,
+    "cpsAdd": 36161239764505,
+    "desc": "+3.62e+13 CPS",
+    "isOnetime": false,
+    "minLevel": 200
+  },
+  {
+    "id": 57,
+    "name": "ระบบเลือกตั้งแบบบล็อกเชน",
+    "baseCost": 146272316568974700,
+    "cpcAdd": 0,
+    "cpsAdd": 72194001286603,
+    "desc": "+7.22e+13 CPS",
+    "isOnetime": false,
+    "minLevel": 200
+  },
+  {
+    "id": 58,
+    "name": "การรักษาโรคด้วยหุ่นยนต์นาโน",
+    "baseCost": 275670901819040640,
+    "cpcAdd": 10142089514713,
+    "cpsAdd": 0,
+    "desc": "+1.01e+13 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 200
+  },
+  {
+    "id": 59,
+    "name": "เซรั่มชะลอความชรา",
+    "baseCost": 519540866599237760,
+    "cpcAdd": 0,
+    "cpsAdd": 230199521762423,
+    "desc": "+2.30e+14 CPS",
+    "isOnetime": false,
+    "minLevel": 200
+  },
+  {
+    "id": 60,
+    "name": "อัปโหลดความทรงจำสู่คลาวด์",
+    "baseCost": 979148362360975600,
+    "cpcAdd": 0,
+    "cpsAdd": 459580094617610,
+    "desc": "+4.60e+14 CPS",
+    "isOnetime": false,
+    "minLevel": 200
+  },
+  {
+    "id": 61,
+    "name": "โทรจิตผ่านคลื่นสมอง",
+    "baseCost": 1845343797090989000,
+    "cpcAdd": 51651978419197,
+    "cpsAdd": 0,
+    "desc": "+5.17e+13 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 300
+  },
+  {
+    "id": 62,
+    "name": "ร่างอวตารเสมือนจริง 100%",
+    "baseCost": 3477811800911520000,
+    "cpcAdd": 0,
+    "cpsAdd": 1465430166328840,
+    "desc": "+1.47e+15 CPS",
+    "isOnetime": false,
+    "minLevel": 300
+  },
+  {
+    "id": 63,
+    "name": "เครื่องตรวจจับอารมณ์มนุษย์",
+    "baseCost": 6554429012971096000,
+    "cpcAdd": 0,
+    "cpsAdd": 2925646975767268,
+    "desc": "+2.93e+15 CPS",
+    "isOnetime": false,
+    "minLevel": 300
+  },
+  {
+    "id": 64,
+    "name": "ฟาร์มแนวตั้งอัตโนมัติ",
+    "baseCost": 12352749989179253000,
+    "cpcAdd": 263044956810433,
+    "cpsAdd": 0,
+    "desc": "+2.63e+14 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 300
+  },
+  {
+    "id": 65,
+    "name": "เมืองลอยน้ำพลังสะอาด",
+    "baseCost": 23280507271219868000,
+    "cpcAdd": 0,
+    "cpsAdd": 9328803261844916,
+    "desc": "+9.33e+15 CPS",
+    "isOnetime": false,
+    "minLevel": 300
+  },
+  {
+    "id": 66,
+    "name": "โครงการฟื้นฟูมหาสมุทร",
+    "baseCost": 43875413918365210000,
+    "cpcAdd": 0,
+    "cpsAdd": 18624418733863620,
+    "desc": "+1.86e+16 CPS",
+    "isOnetime": false,
+    "minLevel": 300
+  },
+  {
+    "id": 67,
+    "name": "ดาวเทียมควบคุมสภาพอากาศ",
+    "baseCost": 82689433012814480000,
+    "cpcAdd": 1339640154773765,
+    "cpsAdd": 0,
+    "desc": "+1.34e+15 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 300
+  },
+  {
+    "id": 68,
+    "name": "เกราะป้องกันพลาสม่ารอบโลก",
+    "baseCost": 155839950472095730000,
+    "cpcAdd": 0,
+    "cpsAdd": 59386275568264696,
+    "desc": "+5.94e+16 CPS",
+    "isOnetime": false,
+    "minLevel": 300
+  },
+  {
+    "id": 69,
+    "name": "กล้องโทรทรรศน์ส่องขอบจักรวาล",
+    "baseCost": 293702463280666080000,
+    "cpcAdd": 0,
+    "cpsAdd": 118561296227335870,
+    "desc": "+1.19e+17 CPS",
+    "isOnetime": false,
+    "minLevel": 300
+  },
+  {
+    "id": 70,
+    "name": "การสำรวจดาวเคราะห์นอกระบบ",
+    "baseCost": 553523898562690500000,
+    "cpcAdd": 6822347175558066,
+    "cpsAdd": 0,
+    "desc": "+6.82e+15 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 300
+  },
+  {
+    "id": 71,
+    "name": "เรือข้ามมิติควอนตัม",
+    "baseCost": 1.0431942002040698e+21,
+    "cpcAdd": 0,
+    "cpsAdd": 378047741060727400,
+    "desc": "+3.78e+17 CPS",
+    "isOnetime": false,
+    "minLevel": 450
+  },
+  {
+    "id": 72,
+    "name": "พลังงานจากหลุมดำจำลอง",
+    "baseCost": 1.966047251374742e+21,
+    "cpcAdd": 0,
+    "cpsAdd": 754750554035101600,
+    "desc": "+7.55e+17 CPS",
+    "isOnetime": false,
+    "minLevel": 450
+  },
+  {
+    "id": 73,
+    "name": "เครื่องยนต์สสารมืด",
+    "baseCost": 3.705294559615111e+21,
+    "cpcAdd": 34744748837483770,
+    "cpsAdd": 0,
+    "desc": "+3.47e+16 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 450
+  },
+  {
+    "id": 74,
+    "name": "ระบบสื่อสารความเร็วแสงเกินพิกัด",
+    "baseCost": 6.983152497435303e+21,
+    "cpcAdd": 0,
+    "cpsAdd": 2406617026504258000,
+    "desc": "+2.41e+18 CPS",
+    "isOnetime": false,
+    "minLevel": 450
+  },
+  {
+    "id": 75,
+    "name": "คลังความรู้จักรวาล",
+    "baseCost": 1.3160740129524905e+22,
+    "cpcAdd": 0,
+    "cpsAdd": 4804673131648352000,
+    "desc": "+4.80e+18 CPS",
+    "isOnetime": false,
+    "minLevel": 450
+  },
+  {
+    "id": 76,
+    "name": "สภาสันติภาพกาแล็กซี",
+    "baseCost": 2.480327915228833e+22,
+    "cpcAdd": 176945503143409900,
+    "cpsAdd": 0,
+    "desc": "+1.77e+17 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 450
+  },
+  {
+    "id": 77,
+    "name": "สถานีวิจัยกลางทางช้างเผือก",
+    "baseCost": 4.674529324731445e+22,
+    "cpcAdd": 0,
+    "cpsAdd": 15320304674798778000,
+    "desc": "+1.53e+19 CPS",
+    "isOnetime": false,
+    "minLevel": 450
+  },
+  {
+    "id": 78,
+    "name": "โรงงานผลิตดาวเคราะห์",
+    "baseCost": 8.809812716137674e+22,
+    "cpcAdd": 0,
+    "cpsAdd": 30586107466462030000,
+    "desc": "+3.06e+19 CPS",
+    "isOnetime": false,
+    "minLevel": 450
+  },
+  {
+    "id": 79,
+    "name": "การเหนี่ยวนำแรงโน้มถ่วงเทียม",
+    "baseCost": 1.6603340080207964e+23,
+    "cpcAdd": 901135052912795900,
+    "cpsAdd": 0,
+    "desc": "+9.01e+17 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 450
+  },
+  {
+    "id": 80,
+    "name": "ประตูมิติเชื่อมต่อกาแล็กซี",
+    "baseCost": 3.129134644531893e+23,
+    "cpcAdd": 0,
+    "cpsAdd": 97527657978578750000,
+    "desc": "+9.75e+19 CPS",
+    "isOnetime": false,
+    "minLevel": 450
+  },
+  {
+    "id": 81,
+    "name": "การท่องเที่ยวข้ามเวลา (เสมือน)",
+    "baseCost": 5.8972975174324664e+23,
+    "cpcAdd": 0,
+    "cpsAdd": 194708368057664570000,
+    "desc": "+1.95e+20 CPS",
+    "isOnetime": false,
+    "minLevel": 600
+  },
+  {
+    "id": 82,
+    "name": "เซ็นเซอร์ตรวจจับพหุภพ",
+    "baseCost": 1.1114292595203362e+24,
+    "cpcAdd": 4589227591624447000,
+    "cpsAdd": 0,
+    "desc": "+4.59e+18 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 600
+  },
+  {
+    "id": 83,
+    "name": "พลังงานจากมิติที่ 5",
+    "baseCost": 2.094645886978635e+24,
+    "cpcAdd": 0,
+    "cpsAdd": 620852140111616800000,
+    "desc": "+6.21e+20 CPS",
+    "isOnetime": false,
+    "minLevel": 600
+  },
+  {
+    "id": 84,
+    "name": "สถาปัตยกรรมคริสตัลอวกาศ",
+    "baseCost": 3.947656905964542e+24,
+    "cpcAdd": 0,
+    "cpsAdd": 1.239495560654183e+21,
+    "desc": "+1.24e+21 CPS",
+    "isOnetime": false,
+    "minLevel": 600
+  },
+  {
+    "id": 85,
+    "name": "คอมพิวเตอร์ควอนตัมระดับอะตอม",
+    "baseCost": 7.439918672691856e+24,
+    "cpcAdd": 23371736155955995000,
+    "cpsAdd": 0,
+    "desc": "+2.34e+19 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 600
+  },
+  {
+    "id": 86,
+    "name": "การสื่อสารผ่านรูหนอน",
+    "baseCost": 1.4021580693255442e+25,
+    "cpcAdd": 0,
+    "cpsAdd": 3.9522876832860104e+21,
+    "desc": "+3.95e+21 CPS",
+    "isOnetime": false,
+    "minLevel": 600
+  },
+  {
+    "id": 87,
+    "name": "เครื่องย้ายมวลสาร",
+    "baseCost": 2.6425655143128028e+25,
+    "cpcAdd": 0,
+    "cpsAdd": 7.890514931096169e+21,
+    "desc": "+7.89e+21 CPS",
+    "isOnetime": false,
+    "minLevel": 600
+  },
+  {
+    "id": 88,
+    "name": "เกราะป้องกันรังสีคอสมิก",
+    "baseCost": 4.980289063125581e+25,
+    "cpcAdd": 119025635242490450000,
+    "cpsAdd": 0,
+    "desc": "+1.19e+20 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 600
+  },
+  {
+    "id": 89,
+    "name": "ฐานทัพบนวงแหวนดาวเสาร์",
+    "baseCost": 9.386060257710717e+25,
+    "cpcAdd": 0,
+    "cpsAdd": 2.5159900320927752e+22,
+    "desc": "+2.52e+22 CPS",
+    "isOnetime": false,
+    "minLevel": 600
+  },
+  {
+    "id": 90,
+    "name": "การทำฟาร์มบนดาวหาง",
+    "baseCost": 1.7689360204744228e+26,
+    "cpcAdd": 0,
+    "cpsAdd": 5.023029361379258e+22,
+    "desc": "+5.02e+22 CPS",
+    "isOnetime": false,
+    "minLevel": 600
+  },
+  {
+    "id": 91,
+    "name": "ระบบป้องกันอุกกาบาต",
+    "baseCost": 3.333810521790844e+26,
+    "cpcAdd": 606166380819110300000,
+    "cpsAdd": 0,
+    "desc": "+6.06e+20 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 750
+  },
+  {
+    "id": 92,
+    "name": "โดรนสำรวจใต้พื้นผิวยูโรปา",
+    "baseCost": 6.28303820294333e+26,
+    "cpcAdd": 0,
+    "cpsAdd": 1.6016561589487807e+23,
+    "desc": "+1.60e+23 CPS",
+    "isOnetime": false,
+    "minLevel": 750
+  },
+  {
+    "id": 93,
+    "name": "สถาบันวิจัยสิ่งมีชีวิตต่างดาว",
+    "baseCost": 1.1841275561887501e+27,
+    "cpcAdd": 0,
+    "cpsAdd": 3.197614316199053e+23,
+    "desc": "+3.20e+23 CPS",
+    "isOnetime": false,
+    "minLevel": 750
+  },
+  {
+    "id": 94,
+    "name": "ทูตสันถวไมตรีระหว่างดวงดาว",
+    "baseCost": 2.231656125644265e+27,
+    "cpcAdd": 3.0870395911197646e+21,
+    "cpsAdd": 0,
+    "desc": "+3.09e+21 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 750
+  },
+  {
+    "id": 95,
+    "name": "ธนาคารพันธุกรรมจักรวาล",
+    "baseCost": 4.205872109889243e+27,
+    "cpcAdd": 0,
+    "cpsAdd": 1.0195995918772864e+24,
+    "desc": "+1.02e+24 CPS",
+    "isOnetime": false,
+    "minLevel": 750
+  },
+  {
+    "id": 96,
+    "name": "ระบบควบคุมวงโคจรดาวเคราะห์",
+    "baseCost": 7.926561803798237e+27,
+    "cpcAdd": 0,
+    "cpsAdd": 2.0355719051985534e+24,
+    "desc": "+2.04e+24 CPS",
+    "isOnetime": false,
+    "minLevel": 750
+  },
+  {
+    "id": 97,
+    "name": "โครงข่ายพลังงานไดสัน",
+    "baseCost": 1.493872861271755e+28,
+    "cpcAdd": 1.572143312791071e+22,
+    "cpsAdd": 0,
+    "desc": "+1.57e+22 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 750
+  },
+  {
+    "id": 98,
+    "name": "เครื่องสร้างเอกภพจำลอง",
+    "baseCost": 2.8154150322462624e+28,
+    "cpcAdd": 0,
+    "cpsAdd": 6.490677356757147e+24,
+    "desc": "+6.49e+24 CPS",
+    "isOnetime": false,
+    "minLevel": 750
+  },
+  {
+    "id": 99,
+    "name": "พอร์ทัลข้ามพหุภพ",
+    "baseCost": 5.306048465898382e+28,
+    "cpcAdd": 0,
+    "cpsAdd": 1.2958263750158034e+25,
+    "desc": "+1.30e+25 CPS",
+    "isOnetime": false,
+    "minLevel": 750
+  },
+  {
+    "id": 100,
+    "name": "จิตสำนึกแห่งจักรวาล",
+    "baseCost": 1e+29,
+    "cpcAdd": 8.006499008484061e+22,
+    "cpsAdd": 0,
+    "desc": "+8.01e+22 พลังคลิก",
+    "isOnetime": false,
+    "minLevel": 750
+  }
 ]
