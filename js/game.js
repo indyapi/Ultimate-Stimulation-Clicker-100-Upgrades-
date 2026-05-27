@@ -33,6 +33,7 @@ async function loadNews() {
 function getCost(item) {
     if (item.isOnetime && item.count > 0) return Infinity;
     if (item.maxLevel && item.count >= item.maxLevel) return Infinity;
+    if (item.currency === 'adee') return item.baseCost; // Adee items don't scale
     const scaling = item.specialUnlock === "archeologist" || item.specialUnlock === "appraiser" ? 5.0 : (item.maxLevel ? 3.0 : 1.15);
     return Math.round(item.baseCost * Math.pow(scaling, item.count)); 
 }
@@ -104,21 +105,82 @@ function initSheetResizer() {
 }
 
 // --- 4. SHEET RENDERING ---
+function setStockCategory(cat) {
+    currentStockCategory = cat;
+    const unlocked = Object.keys(marketData).filter(k => marketData[k].unlocked);
+    const filtered = unlocked.filter(k => marketData[k].type === cat);
+    if (filtered.length > 0) currentStockTab = filtered[0];
+    renderStockSheet();
+}
+
 function renderStockSheet() {
     const container = document.getElementById('stock-content');
     if (!container) return;
-    let unlocked = Object.keys(marketData).filter(k => marketData[k].unlocked);
-    if (unlocked.length === 0) { container.innerHTML = `<div style="text-align:center; padding:40px; color:#888;">⚠️ ซื้อใบอนุมัติเทรดหุ้นในร้านค้าก่อน</div>`; return; }
-    if (!currentStockTab || !marketData[currentStockTab].unlocked) currentStockTab = unlocked[0];
     
-    let tabsHtml = `<div class="asset-tabs">` + unlocked.map(k => `<div class="asset-tab ${currentStockTab===k?'active':''}" onclick="currentStockTab='${k}'; renderStockSheet();">${marketData[k].label}</div>`).join('') + `</div>`;
+    let unlocked = Object.keys(marketData).filter(k => marketData[k].unlocked);
+    if (unlocked.length === 0) { 
+        container.innerHTML = `<div style="text-align:center; padding:40px; color:#888;">⚠️ ซื้อใบอนุมัติเทรดหุ้นในร้านค้าก่อน</div>`; 
+        return; 
+    }
+
+    const categories = [
+        { id: 'stock', label: '📊 หุ้นไทย/ต่างประเทศ' },
+        { id: 'crypto', label: '🪙 คริปโตเคอร์เรนซี' },
+        { id: 'fund', label: '📈 กองทุนดัชนี' }
+    ];
+
+    // Build Category Tabs (Top)
+    let html = `<div class="category-tabs" style="display:flex; gap:5px; margin-bottom:15px; overflow-x:auto; padding-bottom:5px;">`;
+    categories.forEach(cat => {
+        const count = unlocked.filter(k => marketData[k].type === cat.id).length;
+        if (count > 0 || cat.id === 'fund') { // Show fund anyway since they start unlocked
+            const active = currentStockCategory === cat.id;
+            html += `<div class="shop-tab ${active?'active':''}" style="min-width:110px; font-size:0.7rem;" onclick="setStockCategory('${cat.id}')">${cat.label}</div>`;
+        }
+    });
+    html += `</div>`;
+
+    // Filter assets by current category
+    const filteredAssets = unlocked.filter(k => marketData[k].type === currentStockCategory);
+    
+    if (filteredAssets.length === 0) {
+        html += `<div style="text-align:center; padding:30px; color:#666; font-size:0.8rem;">ยังไม่ได้ปลดล็อกสินทรัพย์ในหมวดนี้</div>`;
+        container.innerHTML = html;
+        return;
+    }
+
+    if (!currentStockTab || !marketData[currentStockTab] || marketData[currentStockTab].type !== currentStockCategory) {
+        currentStockTab = filteredAssets[0];
+    }
+
+    // Build Asset Tabs (Secondary)
+    html += `<div class="asset-tabs" style="display:flex; gap:8px; overflow-x:auto; margin-bottom:12px; padding-bottom:5px;">`;
+    filteredAssets.forEach(k => {
+        const active = currentStockTab === k;
+        html += `<div class="asset-tab ${active?'active':''}" style="font-size:0.7rem; padding:6px 12px;" onclick="currentStockTab='${k}'; renderStockSheet();">${marketData[k].label}</div>`;
+    });
+    html += `</div>`;
+
     let s = marketData[currentStockTab];
     let pnl = (s.owned * s.price) - s.invested;
     
-    container.innerHTML = tabsHtml + `<div class="card"><div style="display:flex; justify-content:space-between;"><b>${s.name}</b> <b style="color:#ffcc00">$${formatNumber(s.price)}</b></div>
-    <div class="chart-container"><svg class="chart-svg" id="live-chart-${currentStockTab}"></svg></div>
-    <div style="font-size:0.8rem; margin:10px 0; color:#888; display:flex; justify-content:space-between;"><span>ถือ: ${s.owned}</span> <span>กำไร: <b class="${pnl>=0?'pnl-positive':'pnl-negative'}">$${formatNumber(pnl)}</b></span></div>
-    <div style="display:flex; gap:8px;"><button class="btn-action btn-success" onclick="buyStock('${currentStockTab}')">ซื้อ</button><button class="btn-action btn-danger" onclick="sellStock('${currentStockTab}')">ขาย</button></div></div>`;
+    html += `<div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <b style="font-size:1.1rem;">${s.name}</b> 
+            <b style="color:#ffcc00; font-size:1.1rem;">$${formatNumber(s.price)}</b>
+        </div>
+        <div class="chart-container"><svg class="chart-svg" id="live-chart-${currentStockTab}"></svg></div>
+        <div style="font-size:0.8rem; margin:10px 0; color:#888; display:flex; justify-content:space-between;">
+            <span>ถือครอง: ${s.owned} หน่วย</span> 
+            <span>กำไร/ขาดทุน: <b class="${pnl>=0?'pnl-positive':'pnl-negative'}">$${formatNumber(pnl)}</b></span>
+        </div>
+        <div style="display:flex; gap:8px;">
+            <button class="btn-action btn-success" onclick="buyStock('${currentStockTab}')">ซื้อสะสม</button>
+            <button class="btn-action btn-danger" onclick="sellStock('${currentStockTab}')">ขายทำกำไร</button>
+        </div>
+    </div>`;
+
+    container.innerHTML = html;
     renderChart(currentStockTab);
 }
 
@@ -158,7 +220,58 @@ function addXp(amount) {
         needed = getXpNeeded(playerLevel);
         console.log(`Level Up! Now Level ${playerLevel}`);
         updateTitle();
-        // Level up reward: +1% CPS Global is handled in getTotalCPSMultiplier
+        // Level up reward: Adee Coin
+        adeeCoin += Math.floor(playerLevel / 10) + 1;
+    }
+    updateUI();
+}
+
+function watchAd(onFinish) {
+    const now = Date.now();
+    if (!onFinish && now < nextAdAvailableTime) {
+        const remaining = Math.ceil((nextAdAvailableTime - now) / 1000);
+        alert(`รออีก ${remaining} วินาทีเพื่อดูโฆษณาครั้งต่อไป`);
+        return;
+    }
+
+    const overlay = document.getElementById('ad-overlay');
+    const timer = document.getElementById('ad-timer');
+    const closeBtn = document.getElementById('close-ad-btn');
+    if (!overlay || !timer || !closeBtn) return;
+
+    overlay.style.display = 'flex';
+    let timeLeft = 15;
+    timer.innerText = timeLeft;
+    closeBtn.disabled = true;
+    closeBtn.style.background = '#444';
+    closeBtn.style.color = '#888';
+    closeBtn.style.cursor = 'not-allowed';
+
+    const interval = setInterval(() => {
+        timeLeft--;
+        timer.innerText = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            closeBtn.disabled = false;
+            closeBtn.style.background = '#00ffcc';
+            closeBtn.style.color = '#000';
+            closeBtn.style.cursor = 'pointer';
+        }
+    }, 1000);
+
+    window.currentAdCallback = onFinish;
+}
+
+function finishAd() {
+    const overlay = document.getElementById('ad-overlay');
+    if (overlay) overlay.style.display = 'none';
+    
+    if (window.currentAdCallback) {
+        window.currentAdCallback();
+        window.currentAdCallback = null;
+    } else {
+        adeeCoin += 1;
+        nextAdAvailableTime = Date.now() + 60000;
     }
     updateUI();
 }
@@ -193,21 +306,50 @@ function buyItem(id) {
     const item = items.find(it => it.id === id);
     if (!item) return;
     const cost = getCost(item);
-    if (score >= cost && cost !== Infinity) {
-        score -= cost; item.count++;
-        addXp(Math.max(1, Math.floor(cost / 100)));
-        if (item.isUnlock) marketData[item.isUnlock].unlocked = true;
-        if (item.specialUnlock === "antique_ticket") hasAntiqueTicket = true;
-        if (item.specialUnlock === "archeologist") archeologistLevel = item.count;
-        if (item.specialUnlock === "appraiser") appraiserLevel = item.count;
-        if (item.specialUnlock === "news_subscription") {
-            hasNewsSubscription = true;
-            const ticker = document.getElementById('news-ticker');
-            if (ticker) ticker.style.display = 'block';
+    
+    if (item.currency === 'adee') {
+        if (adeeCoin >= cost && cost !== Infinity) {
+            adeeCoin -= cost;
+            item.count++;
+            applyItemEffect(item);
+            updateUI();
+            renderShop();
+        } else if (cost !== Infinity) {
+            alert("Adee Coin ไม่พอ!");
         }
-        cpc += item.cpcAdd || 0; cps = items.reduce((sum, it) => sum + (it.count * (it.cpsAdd||0)), 0);
-        updateUI(); renderShop();
+    } else {
+        if (score >= cost && cost !== Infinity) {
+            score -= cost;
+            item.count++;
+            addXp(Math.max(1, Math.floor(cost / 100)));
+            applyItemEffect(item);
+            cpc += item.cpcAdd || 0; 
+            cps = items.reduce((sum, it) => sum + (it.count * (it.cpsAdd||0)), 0);
+            updateUI(); 
+            renderShop();
+        }
     }
+}
+
+function applyItemEffect(item) {
+    if (item.isUnlock) marketData[item.isUnlock].unlocked = true;
+    if (item.specialUnlock === "antique_ticket") hasAntiqueTicket = true;
+    if (item.specialUnlock === "archeologist") archeologistLevel = item.count;
+    if (item.specialUnlock === "appraiser") appraiserLevel = item.count;
+    if (item.specialUnlock === "news_subscription") {
+        hasNewsSubscription = true;
+        const ticker = document.getElementById('news-ticker');
+        if (ticker) ticker.style.display = 'block';
+    }
+    if (item.specialUnlock === "ad_ticket") {
+        adTicketExpiry = Date.now() + (24 * 60 * 60 * 1000);
+        setTimeout(() => watchAd(() => { console.log("Ad Ticket Purchase Ad Finished"); }), 100);
+    }
+    // Unique Items
+    if (item.specialUnlock === "quantum_lens") window.hasQuantumLens = true;
+    if (item.specialUnlock === "carter_journal") window.hasCarterJournal = true;
+    if (item.specialUnlock === "echoes_past") window.hasEchoesPast = true;
+    if (item.specialUnlock === "collector_aura") window.hasCollectorAura = true;
 }
 
 function newsCycle() {
@@ -256,11 +398,16 @@ function renderShop() {
         const matchLevel = !item.minLevel || playerLevel >= item.minLevel;
         
         if (matchTab && matchLevel && item.name.toLowerCase().includes(search)) {
+            const isAdee = item.currency === 'adee';
+            const canAfford = isAdee ? adeeCoin >= cost : score >= cost;
             const div = document.createElement('div');
-            div.className = `shop-item ${score < cost || cost === Infinity ? 'disabled' : ''}`;
+            div.className = `shop-item ${!canAfford || cost === Infinity ? 'disabled' : ''}`;
+            if (isAdee) div.classList.add('adee-item');
             div.id = `shop-item-${item.id}`;
             div.onclick = () => buyItem(item.id);
-            div.innerHTML = `<div class="item-info"><div class="item-name">${item.name}</div><div class="item-cost">${cost === Infinity ? 'MAX' : '$'+formatNumber(cost)}</div><div class="item-desc">${item.desc}</div></div><div class="item-count">${item.maxLevel ? 'Lv.'+item.count : item.count}</div>`;
+            
+            const costText = cost === Infinity ? 'MAX' : (isAdee ? `🪙 ${cost}` : `$${formatNumber(cost)}`);
+            div.innerHTML = `<div class="item-info"><div class="item-name">${item.name}</div><div class="item-cost" style="color:${isAdee?'#ffcc00':''}">${costText}</div><div class="item-desc">${item.desc}</div></div><div class="item-count">${item.maxLevel ? 'Lv.'+item.count : item.count}</div>`;
             list.appendChild(div);
         }
     });
@@ -276,20 +423,66 @@ function updateUI() {
     const levelEl = document.getElementById('player-level');
     const titleEl = document.getElementById('player-title');
     const xpBarFill = document.getElementById('xp-bar-fill');
+    const adeeEl = document.getElementById('adee-display');
+    
     if (levelEl) levelEl.innerText = `Lv. ${playerLevel}`;
     if (titleEl) titleEl.innerText = playerTitle;
+    if (adeeEl) adeeEl.innerText = `🪙 ${adeeCoin}`;
     if (xpBarFill) {
         const needed = getXpNeeded(playerLevel);
         const percent = (playerXP / needed) * 100;
         xpBarFill.style.width = `${percent}%`;
     }
 
+    // Ad Button Cooldown
+    const adBtn = document.getElementById('watch-ad-btn');
+    if (adBtn) {
+        const now = Date.now();
+        if (now < nextAdAvailableTime) {
+            const rem = Math.ceil((nextAdAvailableTime - now) / 1000);
+            adBtn.innerText = `📺 รอ (${rem}s)`;
+            adBtn.classList.add('disabled');
+            adBtn.disabled = true;
+        } else {
+            adBtn.innerText = `📺 ดูโฆษณา (+1 Adee)`;
+            adBtn.classList.remove('disabled');
+            adBtn.disabled = false;
+        }
+    }
+
     if (items) {
         items.forEach(item => {
             const el = document.getElementById(`shop-item-${item.id}`);
-            if (el) { const cost = getCost(item); if (score < cost || cost === Infinity) el.classList.add('disabled'); else el.classList.remove('disabled'); }
+            if (el) { 
+                const cost = getCost(item); 
+                const canAfford = item.currency === 'adee' ? adeeCoin >= cost : score >= cost;
+                if (!canAfford || cost === Infinity) el.classList.add('disabled'); 
+                else el.classList.remove('disabled'); 
+            }
         });
     }
+}
+
+function applyDevMode() {
+    const s = document.getElementById('dev-score').value;
+    const l = document.getElementById('dev-level').value;
+    const a = document.getElementById('dev-adee').value;
+    const cpsVal = document.getElementById('dev-cps').value;
+    const cpcVal = document.getElementById('dev-cpc').value;
+
+    if (s !== "") score = parseFloat(s);
+    if (l !== "") {
+        playerLevel = parseInt(l);
+        playerXP = 0;
+        updateTitle();
+    }
+    if (a !== "") adeeCoin = parseInt(a);
+    if (cpsVal !== "") cps = parseFloat(cpsVal);
+    if (cpcVal !== "") cpc = parseFloat(cpcVal);
+
+    updateUI();
+    closeSecret();
+    console.log("DevMode: Changes applied.");
 }
 
 async function init() {
@@ -323,7 +516,8 @@ async function init() {
         if (typeof marketData !== 'undefined') {
             Object.keys(marketData).forEach(k => { 
                 let multiplier = getActiveMarketMultiplier(k);
-                marketData[k].price *= (1 + (Math.random() * 0.06 - 0.03)) * multiplier; 
+                let vol = marketData[k].volatility || 1.0;
+                marketData[k].price *= (1 + (Math.random() * 0.06 - 0.03) * vol) * multiplier; 
                 if (!marketData[k].history) marketData[k].history = [];
                 marketData[k].history.push(marketData[k].price); 
                 if(marketData[k].history.length > 20) marketData[k].history.shift(); 
@@ -331,7 +525,7 @@ async function init() {
         }
         if (currentSheet === 'stock') renderStockSheet();
     }, 2000);
-    setInterval(() => { newsCycle(); }, Math.random() * 30000 + 30000); 
+    setInterval(() => { newsCycle(); }, 120000); 
     
     renderShop();
     updateUI();
@@ -361,10 +555,6 @@ function getActiveMarketMultiplier(key) {
     return mult;
 }
 
-function setSecretScore() {
-    const val = parseFloat(document.getElementById('secret-input').value);
-    if (!isNaN(val)) { score = val; updateUI(); closeSecret(); }
-}
 function closeSecret() { document.getElementById('secret-modal').style.display = 'none'; }
 
 window.onload = init;
@@ -390,9 +580,100 @@ function buyAntique() {
         renderAntiqueSheet(); 
     } 
 }
-function startPlayerAuction() { const idx = document.getElementById('auc-select').value; const pr = parseFloat(document.getElementById('auc-price').value); if (pr > 0) setupAuction('sell', playerInventory.splice(idx,1)[0], pr); }
+
+function setAuctionPriceUnit(unit) {
+    if (auctionPriceUnit === unit) auctionPriceUnit = 1; 
+    else auctionPriceUnit = unit;
+    renderAuctionSheet();
+}
+
+function startPlayerAuction() { 
+    const idx = window.selectedInventoryIndex;
+    let pr = parseFloat(document.getElementById('auc-price').value); 
+    if (idx !== null && idx !== undefined && pr > 0) {
+        pr *= auctionPriceUnit;
+        const item = playerInventory.splice(idx, 1)[0];
+        setupAuction('sell', item, pr); 
+        window.selectedInventoryIndex = null;
+        auctionPriceUnit = 1;
+        const selectBtn = document.getElementById('select-item-btn');
+        if (selectBtn) selectBtn.innerText = "📦 คลิกเลือกไอเท็ม";
+    } else {
+        alert("กรุณาเลือกไอเท็มและระบุราคาเริ่มต้น");
+    }
+}
+
+function openInventoryModal() {
+    const modal = document.getElementById('inventory-modal');
+    const grid = document.getElementById('inventory-grid');
+    const detail = document.getElementById('selected-item-detail');
+    if (!modal || !grid || !detail) return;
+
+    detail.style.display = 'none';
+    grid.innerHTML = "";
+    
+    if (playerInventory.length === 0) {
+        grid.innerHTML = `<div style="grid-column: span 2; color:#666; padding:20px; text-align:center;">คลังว่างเปล่า...</div>`;
+    } else {
+        playerInventory.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.cursor = 'pointer';
+            card.style.margin = '0';
+            card.style.border = '1px solid #333';
+            card.style.padding = '10px';
+            card.onclick = () => selectInventoryItem(index);
+            card.innerHTML = `
+                <div style="font-size:0.8rem; font-weight:bold; color:#eee;">${item.name}</div>
+                <div style="font-size:0.7rem; color:#ffcc00; margin-top:5px;">$${formatNumber(item.marketPrice)}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    modal.style.display = 'flex';
+}
+
+function closeInventoryModal() {
+    document.getElementById('inventory-modal').style.display = 'none';
+}
+
+function selectInventoryItem(index) {
+    const item = playerInventory[index];
+    const detail = document.getElementById('selected-item-detail');
+    const nameEl = document.getElementById('detail-name');
+    const priceEl = document.getElementById('detail-price');
+    const descEl = document.getElementById('detail-desc');
+    const confirmBtn = document.getElementById('confirm-select-btn');
+
+    nameEl.innerText = item.name;
+    priceEl.innerText = `ราคาตลาด: $${formatNumber(item.marketPrice)}`;
+    descEl.innerText = item.description;
+    
+    window.selectedInventoryIndex = index;
+    
+    confirmBtn.onclick = () => {
+        const selectBtn = document.getElementById('select-item-btn');
+        if (selectBtn) selectBtn.innerText = `✅ ${item.name}`;
+        closeInventoryModal();
+    };
+
+    detail.style.display = 'block';
+}
+
 function getExpertReportHTML(item) {
     if (!archeologistLevel && !appraiserLevel) return "";
+    
+    // Quantum Appraisal Lens effect: Reveal full details immediately
+    if (window.hasQuantumLens) {
+        return `<div class="expert-box">
+            ✨ <b>Quantum Report:</b><br>
+            ความหายาก: ${item.rarity.toUpperCase()}<br>
+            เกรด: ${item.grade.replace('_', ' ').toUpperCase()}<br>
+            ราคาตลาดโดยประมาณ: $${formatNumber(item.marketPrice)}
+        </div>`;
+    }
+
     let h = `<div class="expert-box">`;
     if (archeologistLevel) {
         h += `🕵️ <b>โบราณคดี (Lv.${archeologistLevel}):</b> `;
@@ -421,9 +702,21 @@ function renderAuctionSheet() {
     if (!hasAntiqueTicket) { container.innerHTML = `<div style="text-align:center; padding:40px; color:#888;">⚠️ ต้องมีบัตรเข้าตลาดโบราณ</div>`; return; }
     if (typeof activeAuction === 'undefined') return;
     if (!activeAuction) {
-        let opts = playerInventory.map((it, i) => `<option value="${i}">${it.name}</option>`).join('');
+        const u = auctionPriceUnit;
         container.innerHTML = `<div class="card"><button class="btn-action btn-primary" onclick="setupAuction('buy', generateProceduralAntique(), 1000)">🎰 ส่องงานประมูล NPC</button></div>
-        <div class="card"><b>🔨 จัดโต๊ะประมูล</b><br>${playerInventory.length?'<select id="auc-select" class="input-box">'+opts+'</select><input type="number" id="auc-price" class="input-box" value="1000"><button class="btn-action btn-success" onclick="startPlayerAuction()">เปิดประมูล</button>':'คลังว่าง'}</div>`;
+        <div class="card">
+            <b>🔨 จัดโต๊ะประมูล</b><br>
+            <button class="btn-action" id="select-item-btn" onclick="openInventoryModal()" style="background:#1c1c24; border:1px solid #333; margin:10px 0;">📦 คลิกเลือกไอเท็ม</button>
+            <div style="display:flex; gap:5px; margin-bottom:10px;">
+                <input type="number" id="auc-price" class="input-box" placeholder="ราคาเริ่มต้น" value="1000" style="margin-bottom:0; flex:1;">
+                <div style="display:flex; gap:3px;">
+                    <div class="asset-tab ${u===1e6?'active':''}" style="padding:10px; min-width:40px; text-align:center;" onclick="setAuctionPriceUnit(1e6)">M</div>
+                    <div class="asset-tab ${u===1e9?'active':''}" style="padding:10px; min-width:40px; text-align:center;" onclick="setAuctionPriceUnit(1e9)">B</div>
+                    <div class="asset-tab ${u===1e12?'active':''}" style="padding:10px; min-width:40px; text-align:center;" onclick="setAuctionPriceUnit(1e12)">T</div>
+                </div>
+            </div>
+            <button class="btn-action btn-success" onclick="startPlayerAuction()">เปิดประมูล</button>
+        </div>`;
     } else {
         let raise = Math.round(activeAuction.currentHighestBid * 0.1) || 500;
         container.innerHTML = `<div class="card"><b>${activeAuction.item.name}</b> [${activeAuction.timeLeft}s]<div class="expert-box" style="margin-bottom:10px; font-style:italic; font-size:0.85rem;">"${activeAuction.item.description}"</div><div style="background:#000; text-align:center; padding:15px; margin:10px 0; border-radius:10px; border:1px solid #333;"><div style="color:#00ffcc; font-size:1.8rem; font-weight:900;">$${formatNumber(activeAuction.currentHighestBid)}</div><div style="font-size:0.7rem; color:#666;">โดย: ${activeAuction.highestBidder}</div></div>

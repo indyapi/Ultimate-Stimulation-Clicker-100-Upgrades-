@@ -1,11 +1,12 @@
 // --- GLOBAL DATA & STATE ---
 var score = 0, cpc = 1, cps = 0;
-var currentSheet = null, currentStockTab = null, shopTab = 'upgrade';
+var currentSheet = null, currentStockTab = null, currentStockCategory = 'stock', shopTab = 'upgrade';
 var isDraggingSheet = false, sheetStartY, sheetStartHeight;
 var isDraggingDivider = false;
 
 var hasAntiqueTicket = false, hasMediaHypePass = false, hasNewsSubscription = false, archeologistLevel = 0, appraiserLevel = 0;
 var playerLevel = 0, playerXP = 0, playerTitle = "มือใหม่";
+var adeeCoin = 0, adTicketExpiry = 0, nextAdAvailableTime = 0, auctionPriceUnit = 1;
 var playerInventory = [], currentMarketItem = null;
 var newsData = [], activeNews = [];
 var items = [];
@@ -74,10 +75,21 @@ function generateProceduralAntique() {
         activeNews.forEach(n => {
             if (n.impact.type === 'artifact') {
                 if (n.impact.target === 'All' || artifact.name.toLowerCase().includes(n.impact.target.toLowerCase())) {
-                    newsPopularityMultiplier *= n.impact.multiplier;
+                    let impact = n.impact.multiplier;
+                    // Carter's Lost Journal: +30% news effect
+                    if (window.hasCarterJournal) {
+                        if (impact > 1) impact = 1 + (impact - 1) * 1.3;
+                        else impact = 1 - (1 - impact) * 1.3;
+                    }
+                    newsPopularityMultiplier *= impact;
                 }
             }
         });
+    }
+
+    // Echoes of the Past: 15% chance to force Grade to ancient_true
+    if (window.hasEchoesPast && artifact.grade !== 'ancient_true' && Math.random() < 0.15) {
+        artifact.grade = 'ancient_true';
     }
 
     const rarityMult = rarityMultipliers[artifact.rarity] || 1;

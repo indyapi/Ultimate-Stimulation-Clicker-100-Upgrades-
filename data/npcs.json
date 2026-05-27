@@ -1,7 +1,902 @@
 [
-    { "name": "คุณหญิงพิมพิลา", "wealthMult": 1.6, "greed": 1.2, "trustAppraiser": 0.8, "baseDelay": 1, "minLevel": 10 },
-    { "name": "เสี่ยอ้วนเพชรบุรี", "wealthMult": 2.5, "greed": 1.0, "trustAppraiser": 0.3, "baseDelay": 2, "minLevel": 25 },
-    { "name": "หมอสะสมของเก่า", "wealthMult": 0.9, "greed": 1.3, "trustAppraiser": 1.0, "baseDelay": 1, "minLevel": 0 },
-    { "name": "นักธุรกิจฮ่องกง", "wealthMult": 1.4, "greed": 1.1, "trustAppraiser": 0.9, "baseDelay": 1.5, "minLevel": 40 },
-    { "name": "เศรษฐีใหม่ใจถึง", "wealthMult": 1.8, "greed": 1.5, "trustAppraiser": 0.4, "baseDelay": 0.5, "minLevel": 100 }
+  {
+    "name": "Pravit",
+    "tier": "poor",
+    "wealthMult": 0.23,
+    "greed": 0.5,
+    "appraiserSkill": 0.14,
+    "riskTolerance": 0.62,
+    "minLevel": 0
+  },
+  {
+    "name": "Sarayut",
+    "tier": "poor",
+    "wealthMult": 0.79,
+    "greed": 1.77,
+    "appraiserSkill": 0.57,
+    "riskTolerance": 0.25,
+    "minLevel": 0
+  },
+  {
+    "name": "Kriangsak",
+    "tier": "poor",
+    "wealthMult": 0.71,
+    "greed": 1.85,
+    "appraiserSkill": 0.81,
+    "riskTolerance": 0.56,
+    "minLevel": 0
+  },
+  {
+    "name": "Vacharee",
+    "tier": "poor",
+    "wealthMult": 0.41,
+    "greed": 1.74,
+    "appraiserSkill": 0.38,
+    "riskTolerance": 0.4,
+    "minLevel": 0
+  },
+  {
+    "name": "Sinit",
+    "tier": "poor",
+    "wealthMult": 0.75,
+    "greed": 1.08,
+    "appraiserSkill": 0.39,
+    "riskTolerance": 0.95,
+    "minLevel": 0
+  },
+  {
+    "name": "Janya",
+    "tier": "poor",
+    "wealthMult": 0.75,
+    "greed": 1.57,
+    "appraiserSkill": 0.58,
+    "riskTolerance": 0.51,
+    "minLevel": 0
+  },
+  {
+    "name": "Sarach",
+    "tier": "poor",
+    "wealthMult": 0.52,
+    "greed": 1.92,
+    "appraiserSkill": 0.68,
+    "riskTolerance": 0.75,
+    "minLevel": 0
+  },
+  {
+    "name": "Abhisit",
+    "tier": "poor",
+    "wealthMult": 0.47,
+    "greed": 1.92,
+    "appraiserSkill": 0.48,
+    "riskTolerance": 0.28,
+    "minLevel": 0
+  },
+  {
+    "name": "Chatchai",
+    "tier": "poor",
+    "wealthMult": 0.14,
+    "greed": 1.45,
+    "appraiserSkill": 0.74,
+    "riskTolerance": 0.64,
+    "minLevel": 0
+  },
+  {
+    "name": "Phuwadol",
+    "tier": "poor",
+    "wealthMult": 0.57,
+    "greed": 1.47,
+    "appraiserSkill": 0.63,
+    "riskTolerance": 0.84,
+    "minLevel": 0
+  },
+  {
+    "name": "Kanya",
+    "tier": "poor",
+    "wealthMult": 0.27,
+    "greed": 1.31,
+    "appraiserSkill": 0.43,
+    "riskTolerance": 0.86,
+    "minLevel": 0
+  },
+  {
+    "name": "Prasit",
+    "tier": "poor",
+    "wealthMult": 0.41,
+    "greed": 0.71,
+    "appraiserSkill": 0.51,
+    "riskTolerance": 0.78,
+    "minLevel": 0
+  },
+  {
+    "name": "Narit",
+    "tier": "poor",
+    "wealthMult": 0.17,
+    "greed": 0.88,
+    "appraiserSkill": 0.63,
+    "riskTolerance": 0.21,
+    "minLevel": 0
+  },
+  {
+    "name": "Sakda",
+    "tier": "poor",
+    "wealthMult": 0.59,
+    "greed": 1.39,
+    "appraiserSkill": 0.83,
+    "riskTolerance": 0.86,
+    "minLevel": 0
+  },
+  {
+    "name": "Chuan",
+    "tier": "poor",
+    "wealthMult": 0.36,
+    "greed": 1.7,
+    "appraiserSkill": 0.67,
+    "riskTolerance": 0.92,
+    "minLevel": 0
+  },
+  {
+    "name": "Pensri",
+    "tier": "poor",
+    "wealthMult": 0.2,
+    "greed": 0.51,
+    "appraiserSkill": 0.83,
+    "riskTolerance": 0.34,
+    "minLevel": 0
+  },
+  {
+    "name": "Vichai",
+    "tier": "poor",
+    "wealthMult": 0.58,
+    "greed": 0.59,
+    "appraiserSkill": 0.84,
+    "riskTolerance": 0.91,
+    "minLevel": 0
+  },
+  {
+    "name": "Suphan",
+    "tier": "poor",
+    "wealthMult": 0.47,
+    "greed": 0.67,
+    "appraiserSkill": 0.13,
+    "riskTolerance": 0.89,
+    "minLevel": 0
+  },
+  {
+    "name": "Saksayam",
+    "tier": "poor",
+    "wealthMult": 0.55,
+    "greed": 1.43,
+    "appraiserSkill": 0.75,
+    "riskTolerance": 0.9,
+    "minLevel": 0
+  },
+  {
+    "name": "Ratana",
+    "tier": "poor",
+    "wealthMult": 0.21,
+    "greed": 1.24,
+    "appraiserSkill": 0.23,
+    "riskTolerance": 0.12,
+    "minLevel": 0
+  },
+  {
+    "name": "Siwarak",
+    "tier": "poor",
+    "wealthMult": 0.43,
+    "greed": 1.04,
+    "appraiserSkill": 0.21,
+    "riskTolerance": 0.47,
+    "minLevel": 0
+  },
+  {
+    "name": "Kitti",
+    "tier": "poor",
+    "wealthMult": 0.51,
+    "greed": 1.6,
+    "appraiserSkill": 0.39,
+    "riskTolerance": 0.21,
+    "minLevel": 0
+  },
+  {
+    "name": "Thitima",
+    "tier": "poor",
+    "wealthMult": 0.12,
+    "greed": 1.65,
+    "appraiserSkill": 0.82,
+    "riskTolerance": 0.44,
+    "minLevel": 0
+  },
+  {
+    "name": "Peerapat",
+    "tier": "poor",
+    "wealthMult": 0.13,
+    "greed": 1.37,
+    "appraiserSkill": 0.76,
+    "riskTolerance": 0.59,
+    "minLevel": 0
+  },
+  {
+    "name": "Viroj",
+    "tier": "poor",
+    "wealthMult": 0.2,
+    "greed": 0.92,
+    "appraiserSkill": 0.13,
+    "riskTolerance": 0.76,
+    "minLevel": 0
+  },
+  {
+    "name": "Boonlerd",
+    "tier": "poor",
+    "wealthMult": 0.43,
+    "greed": 0.89,
+    "appraiserSkill": 0.71,
+    "riskTolerance": 0.72,
+    "minLevel": 0
+  },
+  {
+    "name": "Malee",
+    "tier": "poor",
+    "wealthMult": 0.44,
+    "greed": 0.88,
+    "appraiserSkill": 0.76,
+    "riskTolerance": 0.74,
+    "minLevel": 0
+  },
+  {
+    "name": "Piyapong",
+    "tier": "poor",
+    "wealthMult": 0.6,
+    "greed": 1.09,
+    "appraiserSkill": 0.44,
+    "riskTolerance": 0.86,
+    "minLevel": 0
+  },
+  {
+    "name": "Thammanat",
+    "tier": "poor",
+    "wealthMult": 0.79,
+    "greed": 1.57,
+    "appraiserSkill": 0.56,
+    "riskTolerance": 0.69,
+    "minLevel": 0
+  },
+  {
+    "name": "Wanida",
+    "tier": "poor",
+    "wealthMult": 0.8,
+    "greed": 0.94,
+    "appraiserSkill": 0.34,
+    "riskTolerance": 0.91,
+    "minLevel": 0
+  },
+  {
+    "name": "Yuwadee",
+    "tier": "poor",
+    "wealthMult": 0.67,
+    "greed": 1.68,
+    "appraiserSkill": 0.68,
+    "riskTolerance": 0.2,
+    "minLevel": 0
+  },
+  {
+    "name": "Suda",
+    "tier": "poor",
+    "wealthMult": 0.58,
+    "greed": 0.94,
+    "appraiserSkill": 0.89,
+    "riskTolerance": 0.64,
+    "minLevel": 0
+  },
+  {
+    "name": "Worawut",
+    "tier": "poor",
+    "wealthMult": 0.75,
+    "greed": 0.82,
+    "appraiserSkill": 0.56,
+    "riskTolerance": 0.87,
+    "minLevel": 0
+  },
+  {
+    "name": "Suchinda",
+    "tier": "poor",
+    "wealthMult": 0.58,
+    "greed": 1.09,
+    "appraiserSkill": 0.48,
+    "riskTolerance": 0.97,
+    "minLevel": 0
+  },
+  {
+    "name": "Ladda",
+    "tier": "poor",
+    "wealthMult": 0.53,
+    "greed": 1.03,
+    "appraiserSkill": 0.88,
+    "riskTolerance": 0.7,
+    "minLevel": 0
+  },
+  {
+    "name": "Apinya",
+    "tier": "poor",
+    "wealthMult": 0.17,
+    "greed": 1.55,
+    "appraiserSkill": 0.65,
+    "riskTolerance": 0.49,
+    "minLevel": 0
+  },
+  {
+    "name": "Arkhom",
+    "tier": "poor",
+    "wealthMult": 0.63,
+    "greed": 1.71,
+    "appraiserSkill": 0.61,
+    "riskTolerance": 0.12,
+    "minLevel": 0
+  },
+  {
+    "name": "Itthiphol",
+    "tier": "poor",
+    "wealthMult": 0.66,
+    "greed": 1.31,
+    "appraiserSkill": 0.53,
+    "riskTolerance": 0.26,
+    "minLevel": 0
+  },
+  {
+    "name": "Thaksin",
+    "tier": "poor",
+    "wealthMult": 0.66,
+    "greed": 1.71,
+    "appraiserSkill": 0.66,
+    "riskTolerance": 0.59,
+    "minLevel": 0
+  },
+  {
+    "name": "Zom",
+    "tier": "poor",
+    "wealthMult": 0.78,
+    "greed": 0.53,
+    "appraiserSkill": 0.83,
+    "riskTolerance": 0.99,
+    "minLevel": 0
+  },
+  {
+    "name": "Prayut",
+    "tier": "lower_rich",
+    "wealthMult": 8.99,
+    "greed": 1.57,
+    "appraiserSkill": 0.88,
+    "riskTolerance": 0.87,
+    "minLevel": 10
+  },
+  {
+    "name": "Supachai",
+    "tier": "lower_rich",
+    "wealthMult": 4.98,
+    "greed": 1.36,
+    "appraiserSkill": 0.54,
+    "riskTolerance": 0.66,
+    "minLevel": 10
+  },
+  {
+    "name": "Nopporn",
+    "tier": "lower_rich",
+    "wealthMult": 5.51,
+    "greed": 1.79,
+    "appraiserSkill": 0.28,
+    "riskTolerance": 0.74,
+    "minLevel": 10
+  },
+  {
+    "name": "Wipada",
+    "tier": "lower_rich",
+    "wealthMult": 5.83,
+    "greed": 0.57,
+    "appraiserSkill": 0.89,
+    "riskTolerance": 0.81,
+    "minLevel": 10
+  },
+  {
+    "name": "Prasert",
+    "tier": "lower_rich",
+    "wealthMult": 2.71,
+    "greed": 0.55,
+    "appraiserSkill": 0.66,
+    "riskTolerance": 0.29,
+    "minLevel": 10
+  },
+  {
+    "name": "Prem",
+    "tier": "lower_rich",
+    "wealthMult": 1.4,
+    "greed": 0.63,
+    "appraiserSkill": 0.35,
+    "riskTolerance": 0.45,
+    "minLevel": 10
+  },
+  {
+    "name": "Adisak",
+    "tier": "lower_rich",
+    "wealthMult": 5.18,
+    "greed": 1.88,
+    "appraiserSkill": 0.75,
+    "riskTolerance": 0.31,
+    "minLevel": 10
+  },
+  {
+    "name": "Sumeth",
+    "tier": "lower_rich",
+    "wealthMult": 8.02,
+    "greed": 1.63,
+    "appraiserSkill": 0.85,
+    "riskTolerance": 0.19,
+    "minLevel": 10
+  },
+  {
+    "name": "Orawan",
+    "tier": "lower_rich",
+    "wealthMult": 3.28,
+    "greed": 1.92,
+    "appraiserSkill": 0.74,
+    "riskTolerance": 0.84,
+    "minLevel": 10
+  },
+  {
+    "name": "Wichan",
+    "tier": "lower_rich",
+    "wealthMult": 8.63,
+    "greed": 0.92,
+    "appraiserSkill": 0.52,
+    "riskTolerance": 0.77,
+    "minLevel": 10
+  },
+  {
+    "name": "Korrakot",
+    "tier": "lower_rich",
+    "wealthMult": 5.92,
+    "greed": 0.57,
+    "appraiserSkill": 0.81,
+    "riskTolerance": 0.73,
+    "minLevel": 10
+  },
+  {
+    "name": "Varawut",
+    "tier": "lower_rich",
+    "wealthMult": 9.67,
+    "greed": 1.59,
+    "appraiserSkill": 0.47,
+    "riskTolerance": 0.64,
+    "minLevel": 10
+  },
+  {
+    "name": "Thanom",
+    "tier": "lower_rich",
+    "wealthMult": 2.65,
+    "greed": 1.14,
+    "appraiserSkill": 0.2,
+    "riskTolerance": 0.51,
+    "minLevel": 10
+  },
+  {
+    "name": "Umaporn",
+    "tier": "lower_rich",
+    "wealthMult": 1.13,
+    "greed": 1.02,
+    "appraiserSkill": 1.0,
+    "riskTolerance": 0.3,
+    "minLevel": 10
+  },
+  {
+    "name": "Theerathon",
+    "tier": "lower_rich",
+    "wealthMult": 2.0,
+    "greed": 0.57,
+    "appraiserSkill": 0.83,
+    "riskTolerance": 0.84,
+    "minLevel": 10
+  },
+  {
+    "name": "Chuti",
+    "tier": "lower_rich",
+    "wealthMult": 4.64,
+    "greed": 1.93,
+    "appraiserSkill": 0.74,
+    "riskTolerance": 0.39,
+    "minLevel": 10
+  },
+  {
+    "name": "Suchat",
+    "tier": "lower_rich",
+    "wealthMult": 5.3,
+    "greed": 1.1,
+    "appraiserSkill": 0.44,
+    "riskTolerance": 0.87,
+    "minLevel": 10
+  },
+  {
+    "name": "Sompong",
+    "tier": "lower_rich",
+    "wealthMult": 9.54,
+    "greed": 1.24,
+    "appraiserSkill": 0.22,
+    "riskTolerance": 0.16,
+    "minLevel": 10
+  },
+  {
+    "name": "Anutin",
+    "tier": "lower_rich",
+    "wealthMult": 7.24,
+    "greed": 1.18,
+    "appraiserSkill": 0.28,
+    "riskTolerance": 0.23,
+    "minLevel": 10
+  },
+  {
+    "name": "Kawin",
+    "tier": "lower_rich",
+    "wealthMult": 8.37,
+    "greed": 1.09,
+    "appraiserSkill": 0.54,
+    "riskTolerance": 0.67,
+    "minLevel": 10
+  },
+  {
+    "name": "Thongchai",
+    "tier": "lower_rich",
+    "wealthMult": 8.1,
+    "greed": 0.58,
+    "appraiserSkill": 0.34,
+    "riskTolerance": 0.23,
+    "minLevel": 10
+  },
+  {
+    "name": "Santi",
+    "tier": "lower_rich",
+    "wealthMult": 4.46,
+    "greed": 0.67,
+    "appraiserSkill": 0.65,
+    "riskTolerance": 0.23,
+    "minLevel": 10
+  },
+  {
+    "name": "Somsak",
+    "tier": "lower_rich",
+    "wealthMult": 3.58,
+    "greed": 1.58,
+    "appraiserSkill": 0.48,
+    "riskTolerance": 0.93,
+    "minLevel": 10
+  },
+  {
+    "name": "Siriporn",
+    "tier": "lower_rich",
+    "wealthMult": 8.2,
+    "greed": 1.73,
+    "appraiserSkill": 0.2,
+    "riskTolerance": 0.52,
+    "minLevel": 10
+  },
+  {
+    "name": "Somchai",
+    "tier": "lower_rich",
+    "wealthMult": 8.25,
+    "greed": 1.83,
+    "appraiserSkill": 0.18,
+    "riskTolerance": 0.61,
+    "minLevel": 10
+  },
+  {
+    "name": "Monthira",
+    "tier": "middle",
+    "wealthMult": 71.09,
+    "greed": 0.89,
+    "appraiserSkill": 0.96,
+    "riskTolerance": 0.41,
+    "minLevel": 50
+  },
+  {
+    "name": "Teerasil",
+    "tier": "middle",
+    "wealthMult": 92.82,
+    "greed": 1.4,
+    "appraiserSkill": 0.31,
+    "riskTolerance": 0.7,
+    "minLevel": 50
+  },
+  {
+    "name": "Sudarat",
+    "tier": "middle",
+    "wealthMult": 89.2,
+    "greed": 1.53,
+    "appraiserSkill": 0.11,
+    "riskTolerance": 0.52,
+    "minLevel": 50
+  },
+  {
+    "name": "Pansa",
+    "tier": "middle",
+    "wealthMult": 92.61,
+    "greed": 1.57,
+    "appraiserSkill": 0.16,
+    "riskTolerance": 0.99,
+    "minLevel": 50
+  },
+  {
+    "name": "Kiattisak",
+    "tier": "middle",
+    "wealthMult": 26.89,
+    "greed": 1.11,
+    "appraiserSkill": 0.24,
+    "riskTolerance": 0.79,
+    "minLevel": 50
+  },
+  {
+    "name": "Surachai",
+    "tier": "middle",
+    "wealthMult": 93.95,
+    "greed": 1.17,
+    "appraiserSkill": 0.18,
+    "riskTolerance": 0.37,
+    "minLevel": 50
+  },
+  {
+    "name": "Tristan",
+    "tier": "middle",
+    "wealthMult": 58.12,
+    "greed": 1.53,
+    "appraiserSkill": 0.98,
+    "riskTolerance": 0.94,
+    "minLevel": 50
+  },
+  {
+    "name": "Sunisa",
+    "tier": "middle",
+    "wealthMult": 71.63,
+    "greed": 1.13,
+    "appraiserSkill": 0.17,
+    "riskTolerance": 0.23,
+    "minLevel": 50
+  },
+  {
+    "name": "Chanathip",
+    "tier": "middle",
+    "wealthMult": 78.22,
+    "greed": 1.3,
+    "appraiserSkill": 0.74,
+    "riskTolerance": 0.27,
+    "minLevel": 50
+  },
+  {
+    "name": "Prawit",
+    "tier": "middle",
+    "wealthMult": 22.8,
+    "greed": 1.39,
+    "appraiserSkill": 0.68,
+    "riskTolerance": 0.48,
+    "minLevel": 50
+  },
+  {
+    "name": "Banharn",
+    "tier": "middle",
+    "wealthMult": 97.4,
+    "greed": 1.88,
+    "appraiserSkill": 0.76,
+    "riskTolerance": 0.8,
+    "minLevel": 50
+  },
+  {
+    "name": "Manuel",
+    "tier": "middle",
+    "wealthMult": 16.71,
+    "greed": 1.16,
+    "appraiserSkill": 0.53,
+    "riskTolerance": 0.3,
+    "minLevel": 50
+  },
+  {
+    "name": "Mika",
+    "tier": "middle",
+    "wealthMult": 46.78,
+    "greed": 1.88,
+    "appraiserSkill": 0.6,
+    "riskTolerance": 0.26,
+    "minLevel": 50
+  },
+  {
+    "name": "Patcharee",
+    "tier": "middle",
+    "wealthMult": 52.98,
+    "greed": 0.76,
+    "appraiserSkill": 0.2,
+    "riskTolerance": 0.79,
+    "minLevel": 50
+  },
+  {
+    "name": "Tawatchai",
+    "tier": "middle",
+    "wealthMult": 87.58,
+    "greed": 1.45,
+    "appraiserSkill": 0.53,
+    "riskTolerance": 0.5,
+    "minLevel": 50
+  },
+  {
+    "name": "Udom",
+    "tier": "upper",
+    "wealthMult": 226.63,
+    "greed": 1.11,
+    "appraiserSkill": 0.93,
+    "riskTolerance": 0.37,
+    "minLevel": 150
+  },
+  {
+    "name": "Thana",
+    "tier": "upper",
+    "wealthMult": 139.67,
+    "greed": 1.71,
+    "appraiserSkill": 0.93,
+    "riskTolerance": 0.76,
+    "minLevel": 150
+  },
+  {
+    "name": "Pornthip",
+    "tier": "upper",
+    "wealthMult": 523.42,
+    "greed": 1.48,
+    "appraiserSkill": 0.67,
+    "riskTolerance": 0.12,
+    "minLevel": 150
+  },
+  {
+    "name": "Chaiwut",
+    "tier": "upper",
+    "wealthMult": 886.06,
+    "greed": 1.54,
+    "appraiserSkill": 0.88,
+    "riskTolerance": 0.48,
+    "minLevel": 150
+  },
+  {
+    "name": "Pipat",
+    "tier": "upper",
+    "wealthMult": 785.07,
+    "greed": 1.05,
+    "appraiserSkill": 0.15,
+    "riskTolerance": 0.62,
+    "minLevel": 150
+  },
+  {
+    "name": "Pokklaw",
+    "tier": "upper",
+    "wealthMult": 152.93,
+    "greed": 1.05,
+    "appraiserSkill": 0.19,
+    "riskTolerance": 0.84,
+    "minLevel": 150
+  },
+  {
+    "name": "Chai",
+    "tier": "upper",
+    "wealthMult": 686.47,
+    "greed": 0.67,
+    "appraiserSkill": 0.54,
+    "riskTolerance": 0.55,
+    "minLevel": 150
+  },
+  {
+    "name": "Yingluck",
+    "tier": "upper",
+    "wealthMult": 293.38,
+    "greed": 1.5,
+    "appraiserSkill": 0.12,
+    "riskTolerance": 0.53,
+    "minLevel": 150
+  },
+  {
+    "name": "Panya",
+    "tier": "upper",
+    "wealthMult": 294.84,
+    "greed": 1.17,
+    "appraiserSkill": 0.79,
+    "riskTolerance": 0.78,
+    "minLevel": 150
+  },
+  {
+    "name": "Boonma",
+    "tier": "upper",
+    "wealthMult": 927.52,
+    "greed": 0.66,
+    "appraiserSkill": 0.86,
+    "riskTolerance": 0.54,
+    "minLevel": 150
+  },
+  {
+    "name": "Rungrat",
+    "tier": "upper",
+    "wealthMult": 905.54,
+    "greed": 1.76,
+    "appraiserSkill": 0.84,
+    "riskTolerance": 0.25,
+    "minLevel": 150
+  },
+  {
+    "name": "Anan",
+    "tier": "upper",
+    "wealthMult": 348.8,
+    "greed": 1.75,
+    "appraiserSkill": 0.75,
+    "riskTolerance": 0.72,
+    "minLevel": 150
+  },
+  {
+    "name": "Charyl",
+    "tier": "tycoon",
+    "wealthMult": 5945.79,
+    "greed": 1.37,
+    "appraiserSkill": 0.73,
+    "riskTolerance": 0.97,
+    "minLevel": 300
+  },
+  {
+    "name": "Chalermpong",
+    "tier": "tycoon",
+    "wealthMult": 35442.51,
+    "greed": 1.92,
+    "appraiserSkill": 0.25,
+    "riskTolerance": 0.3,
+    "minLevel": 300
+  },
+  {
+    "name": "Naree",
+    "tier": "tycoon",
+    "wealthMult": 6392.52,
+    "greed": 0.71,
+    "appraiserSkill": 0.81,
+    "riskTolerance": 0.27,
+    "minLevel": 300
+  },
+  {
+    "name": "Arthit",
+    "tier": "tycoon",
+    "wealthMult": 19942.18,
+    "greed": 1.08,
+    "appraiserSkill": 0.97,
+    "riskTolerance": 0.88,
+    "minLevel": 300
+  },
+  {
+    "name": "Tanaboon",
+    "tier": "tycoon",
+    "wealthMult": 41682.74,
+    "greed": 1.59,
+    "appraiserSkill": 0.56,
+    "riskTolerance": 0.4,
+    "minLevel": 300
+  },
+  {
+    "name": "Narong",
+    "tier": "tycoon",
+    "wealthMult": 10838.46,
+    "greed": 1.25,
+    "appraiserSkill": 0.32,
+    "riskTolerance": 0.15,
+    "minLevel": 300
+  },
+  {
+    "name": "Chatichai",
+    "tier": "tycoon",
+    "wealthMult": 22258.71,
+    "greed": 1.9,
+    "appraiserSkill": 0.47,
+    "riskTolerance": 0.68,
+    "minLevel": 300
+  },
+  {
+    "name": "Jurit",
+    "tier": "tycoon",
+    "wealthMult": 27182.12,
+    "greed": 1.23,
+    "appraiserSkill": 0.24,
+    "riskTolerance": 0.23,
+    "minLevel": 300
+  }
 ]

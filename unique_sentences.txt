@@ -1,0 +1,456 @@
+Historical records suggest it was believed to have belonged to a high priest.
+Historical records suggest it was discovered in the ruins of a coastal city.
+Historical records suggest it was excavated from a site associated with ancient rituals.
+Historical records suggest it was found in a sealed chamber of a forgotten tomb.
+Historical records suggest it was passed down through a minor noble family.
+Historical records suggest it was recovered from a deep-sea shipwreck.
+Historical records suggest it was rumored to be a gift from a foreign king.
+Historical records suggest it was stolen from a museum during a time of war.
+It absorbs light completely.
+It catches the light in a way that feels intentional.
+It reflects light with a dull glow.
+It scatters light in uneven patterns.
+It seems to glow from within under direct light.
+It shimmers with an iridescent sheen.
+The patina suggests extreme age, though the lack of certain expected wear patterns raises subtle questions for the discerning eye.
+The surface of this aztec ceramic urn is slightly pitted.
+The surface of this aztec ceramic urn is unnaturally cold.
+The surface of this aztec clay tablet is coarse and weathered.
+The surface of this aztec clay tablet is cool and heavy.
+The surface of this aztec golden mask is coarse and weathered.
+The surface of this aztec golden mask is remarkably smooth.
+The surface of this aztec golden mask is surprisingly heavy.
+The surface of this aztec ritual bowl is coarse and weathered.
+The surface of this aztec ritual bowl is surprisingly heavy.
+The surface of this aztec ritual bowl is unnaturally cold.
+The surface of this aztec silver chalice is cool and heavy.
+The surface of this aztec silver chalice is surprisingly heavy.
+The surface of this aztec stone stela is cool and heavy.
+The surface of this aztec terracotta figure is cool and heavy.
+The surface of this aztec terracotta figure is slightly pitted.
+The surface of this byzantine amulet is delicate and brittle.
+The surface of this byzantine amulet is unnaturally cold.
+The surface of this byzantine bronze dagger is delicate and brittle.
+The surface of this byzantine bronze dagger is waxy to the touch.
+The surface of this byzantine engraved coin is remarkably smooth.
+The surface of this byzantine engraved coin is slightly pitted.
+The surface of this byzantine glass vessel is cool and heavy.
+The surface of this byzantine glass vessel is remarkably smooth.
+The surface of this byzantine golden mask is remarkably smooth.
+The surface of this byzantine iron shield is unnaturally cold.
+The surface of this byzantine iron shield is waxy to the touch.
+The surface of this byzantine sarcophagus fragment is coarse and weathered.
+The surface of this byzantine sarcophagus fragment is waxy to the touch.
+The surface of this byzantine silk scroll is surprisingly heavy.
+The surface of this byzantine silk scroll is unnaturally cold.
+The surface of this celtic bronze dagger is cool and heavy.
+The surface of this celtic iron shield is coarse and weathered.
+The surface of this celtic iron shield is slightly pitted.
+The surface of this celtic iron shield is surprisingly heavy.
+The surface of this celtic iron shield is unnaturally cold.
+The surface of this celtic ivory carving is coarse and weathered.
+The surface of this celtic ivory carving is remarkably smooth.
+The surface of this celtic ivory carving is slightly pitted.
+The surface of this celtic ivory carving is surprisingly heavy.
+The surface of this celtic marble bust is slightly pitted.
+The surface of this celtic marble bust is surprisingly heavy.
+The surface of this celtic sarcophagus fragment is unnaturally cold.
+The surface of this celtic sarcophagus fragment is waxy to the touch.
+The surface of this celtic silk scroll is slightly pitted.
+The surface of this celtic silk scroll is waxy to the touch.
+The surface of this celtic stone stela is delicate and brittle.
+The surface of this celtic stone stela is slightly pitted.
+The surface of this chinese amulet is remarkably smooth.
+The surface of this chinese amulet is waxy to the touch.
+The surface of this chinese bronze dagger is slightly pitted.
+The surface of this chinese bronze dagger is unnaturally cold.
+The surface of this chinese clay tablet is cool and heavy.
+The surface of this chinese clay tablet is remarkably smooth.
+The surface of this chinese clay tablet is surprisingly heavy.
+The surface of this chinese clay tablet is waxy to the touch.
+The surface of this chinese engraved coin is cool and heavy.
+The surface of this chinese engraved coin is waxy to the touch.
+The surface of this chinese glass vessel is cool and heavy.
+The surface of this chinese glass vessel is waxy to the touch.
+The surface of this chinese golden mask is cool and heavy.
+The surface of this chinese golden mask is delicate and brittle.
+The surface of this chinese golden mask is remarkably smooth.
+The surface of this chinese golden mask is slightly pitted.
+The surface of this chinese golden mask is surprisingly heavy.
+The surface of this chinese golden mask is unnaturally cold.
+The surface of this chinese iron shield is coarse and weathered.
+The surface of this chinese iron shield is cool and heavy.
+The surface of this chinese iron shield is remarkably smooth.
+The surface of this chinese iron shield is slightly pitted.
+The surface of this chinese obsidian knife is coarse and weathered.
+The surface of this chinese obsidian knife is delicate and brittle.
+The surface of this chinese obsidian knife is slightly pitted.
+The surface of this chinese obsidian knife is surprisingly heavy.
+The surface of this chinese obsidian knife is unnaturally cold.
+The surface of this chinese obsidian knife is waxy to the touch.
+The surface of this chinese silk scroll is coarse and weathered.
+The surface of this chinese silk scroll is unnaturally cold.
+The surface of this chinese silver chalice is remarkably smooth.
+The surface of this chinese silver chalice is surprisingly heavy.
+The surface of this chinese stone stela is slightly pitted.
+The surface of this chinese stone stela is unnaturally cold.
+The surface of this chinese stone stela is waxy to the touch.
+The surface of this egyptian amulet is coarse and weathered.
+The surface of this egyptian amulet is cool and heavy.
+The surface of this egyptian amulet is remarkably smooth.
+The surface of this egyptian amulet is slightly pitted.
+The surface of this egyptian amulet is surprisingly heavy.
+The surface of this egyptian amulet is unnaturally cold.
+The surface of this egyptian ceramic urn is coarse and weathered.
+The surface of this egyptian ceramic urn is delicate and brittle.
+The surface of this egyptian engraved coin is slightly pitted.
+The surface of this egyptian glass vessel is cool and heavy.
+The surface of this egyptian glass vessel is remarkably smooth.
+The surface of this egyptian jeweled crown is slightly pitted.
+The surface of this egyptian jeweled crown is surprisingly heavy.
+The surface of this egyptian jeweled crown is waxy to the touch.
+The surface of this egyptian obsidian knife is cool and heavy.
+The surface of this egyptian obsidian knife is remarkably smooth.
+The surface of this egyptian obsidian knife is waxy to the touch.
+The surface of this egyptian papyrus fragment is delicate and brittle.
+The surface of this egyptian papyrus fragment is remarkably smooth.
+The surface of this egyptian papyrus fragment is surprisingly heavy.
+The surface of this egyptian papyrus fragment is unnaturally cold.
+The surface of this egyptian ritual bowl is remarkably smooth.
+The surface of this egyptian ritual bowl is waxy to the touch.
+The surface of this egyptian sarcophagus fragment is remarkably smooth.
+The surface of this egyptian sarcophagus fragment is waxy to the touch.
+The surface of this egyptian silver chalice is cool and heavy.
+The surface of this egyptian silver chalice is delicate and brittle.
+The surface of this egyptian terracotta figure is coarse and weathered.
+The surface of this egyptian terracotta figure is cool and heavy.
+The surface of this egyptian terracotta figure is delicate and brittle.
+The surface of this egyptian terracotta figure is remarkably smooth.
+The surface of this etruscan amulet is delicate and brittle.
+The surface of this etruscan amulet is slightly pitted.
+The surface of this etruscan ceramic urn is delicate and brittle.
+The surface of this etruscan ceramic urn is remarkably smooth.
+The surface of this etruscan glass vessel is slightly pitted.
+The surface of this etruscan glass vessel is waxy to the touch.
+The surface of this etruscan iron shield is delicate and brittle.
+The surface of this etruscan iron shield is remarkably smooth.
+The surface of this etruscan iron shield is unnaturally cold.
+The surface of this etruscan iron shield is waxy to the touch.
+The surface of this etruscan jade statue is slightly pitted.
+The surface of this etruscan jade statue is waxy to the touch.
+The surface of this etruscan jeweled crown is coarse and weathered.
+The surface of this etruscan jeweled crown is delicate and brittle.
+The surface of this etruscan jeweled crown is slightly pitted.
+The surface of this etruscan jeweled crown is surprisingly heavy.
+The surface of this etruscan jeweled crown is waxy to the touch.
+The surface of this etruscan obsidian knife is cool and heavy.
+The surface of this etruscan obsidian knife is remarkably smooth.
+The surface of this etruscan ritual bowl is coarse and weathered.
+The surface of this etruscan ritual bowl is cool and heavy.
+The surface of this etruscan sarcophagus fragment is remarkably smooth.
+The surface of this etruscan sarcophagus fragment is unnaturally cold.
+The surface of this etruscan silk scroll is unnaturally cold.
+The surface of this etruscan silk scroll is waxy to the touch.
+The surface of this etruscan silver chalice is remarkably smooth.
+The surface of this etruscan silver chalice is slightly pitted.
+The surface of this etruscan stone stela is delicate and brittle.
+The surface of this etruscan stone stela is unnaturally cold.
+The surface of this etruscan stone stela is waxy to the touch.
+The surface of this greek amulet is delicate and brittle.
+The surface of this greek amulet is unnaturally cold.
+The surface of this greek bronze dagger is unnaturally cold.
+The surface of this greek bronze dagger is waxy to the touch.
+The surface of this greek ceramic urn is coarse and weathered.
+The surface of this greek ceramic urn is delicate and brittle.
+The surface of this greek ceramic urn is remarkably smooth.
+The surface of this greek ceramic urn is slightly pitted.
+The surface of this greek clay tablet is surprisingly heavy.
+The surface of this greek clay tablet is unnaturally cold.
+The surface of this greek glass vessel is surprisingly heavy.
+The surface of this greek glass vessel is waxy to the touch.
+The surface of this greek ivory carving is slightly pitted.
+The surface of this greek ivory carving is surprisingly heavy.
+The surface of this greek jeweled crown is delicate and brittle.
+The surface of this greek jeweled crown is remarkably smooth.
+The surface of this greek jeweled crown is slightly pitted.
+The surface of this greek jeweled crown is waxy to the touch.
+The surface of this greek marble bust is cool and heavy.
+The surface of this greek marble bust is waxy to the touch.
+The surface of this greek obsidian knife is remarkably smooth.
+The surface of this greek obsidian knife is slightly pitted.
+The surface of this greek sarcophagus fragment is slightly pitted.
+The surface of this greek sarcophagus fragment is waxy to the touch.
+The surface of this greek silk scroll is delicate and brittle.
+The surface of this greek silk scroll is surprisingly heavy.
+The surface of this greek silver chalice is delicate and brittle.
+The surface of this greek silver chalice is surprisingly heavy.
+The surface of this greek silver chalice is unnaturally cold.
+The surface of this greek silver chalice is waxy to the touch.
+The surface of this greek stone stela is remarkably smooth.
+The surface of this greek stone stela is waxy to the touch.
+The surface of this incan ceramic urn is coarse and weathered.
+The surface of this incan ceramic urn is remarkably smooth.
+The surface of this incan clay tablet is delicate and brittle.
+The surface of this incan clay tablet is unnaturally cold.
+The surface of this incan glass vessel is cool and heavy.
+The surface of this incan glass vessel is waxy to the touch.
+The surface of this incan golden mask is coarse and weathered.
+The surface of this incan golden mask is remarkably smooth.
+The surface of this incan golden mask is slightly pitted.
+The surface of this incan golden mask is waxy to the touch.
+The surface of this incan iron shield is remarkably smooth.
+The surface of this incan iron shield is slightly pitted.
+The surface of this incan iron shield is surprisingly heavy.
+The surface of this incan iron shield is waxy to the touch.
+The surface of this incan marble bust is surprisingly heavy.
+The surface of this incan marble bust is waxy to the touch.
+The surface of this incan sarcophagus fragment is cool and heavy.
+The surface of this incan sarcophagus fragment is delicate and brittle.
+The surface of this incan sarcophagus fragment is slightly pitted.
+The surface of this incan sarcophagus fragment is waxy to the touch.
+The surface of this incan silver chalice is coarse and weathered.
+The surface of this incan silver chalice is remarkably smooth.
+The surface of this incan silver chalice is surprisingly heavy.
+The surface of this incan terracotta figure is coarse and weathered.
+The surface of this incan terracotta figure is delicate and brittle.
+The surface of this indian jeweled crown is cool and heavy.
+The surface of this indian jeweled crown is remarkably smooth.
+The surface of this indian obsidian knife is coarse and weathered.
+The surface of this indian obsidian knife is cool and heavy.
+The surface of this indian obsidian knife is surprisingly heavy.
+The surface of this indian papyrus fragment is cool and heavy.
+The surface of this indian papyrus fragment is delicate and brittle.
+The surface of this indian papyrus fragment is remarkably smooth.
+The surface of this indian ritual bowl is remarkably smooth.
+The surface of this indian sarcophagus fragment is delicate and brittle.
+The surface of this indian sarcophagus fragment is unnaturally cold.
+The surface of this indian silver chalice is coarse and weathered.
+The surface of this indian silver chalice is cool and heavy.
+The surface of this indian silver chalice is delicate and brittle.
+The surface of this indian silver chalice is remarkably smooth.
+The surface of this indian silver chalice is slightly pitted.
+The surface of this indian silver chalice is surprisingly heavy.
+The surface of this indian stone stela is unnaturally cold.
+The surface of this indian stone stela is waxy to the touch.
+The surface of this indian terracotta figure is cool and heavy.
+The surface of this indian terracotta figure is waxy to the touch.
+The surface of this japanese bronze dagger is surprisingly heavy.
+The surface of this japanese bronze dagger is unnaturally cold.
+The surface of this japanese clay tablet is slightly pitted.
+The surface of this japanese clay tablet is surprisingly heavy.
+The surface of this japanese clay tablet is unnaturally cold.
+The surface of this japanese clay tablet is waxy to the touch.
+The surface of this japanese engraved coin is delicate and brittle.
+The surface of this japanese engraved coin is waxy to the touch.
+The surface of this japanese glass vessel is slightly pitted.
+The surface of this japanese iron shield is delicate and brittle.
+The surface of this japanese iron shield is slightly pitted.
+The surface of this japanese ivory carving is unnaturally cold.
+The surface of this japanese jade statue is coarse and weathered.
+The surface of this japanese jade statue is cool and heavy.
+The surface of this japanese jade statue is surprisingly heavy.
+The surface of this japanese jade statue is unnaturally cold.
+The surface of this japanese jade statue is waxy to the touch.
+The surface of this japanese marble bust is coarse and weathered.
+The surface of this japanese marble bust is cool and heavy.
+The surface of this japanese obsidian knife is cool and heavy.
+The surface of this japanese obsidian knife is delicate and brittle.
+The surface of this japanese obsidian knife is remarkably smooth.
+The surface of this japanese obsidian knife is unnaturally cold.
+The surface of this japanese silk scroll is coarse and weathered.
+The surface of this japanese silk scroll is remarkably smooth.
+The surface of this japanese silk scroll is unnaturally cold.
+The surface of this japanese silver chalice is coarse and weathered.
+The surface of this japanese silver chalice is slightly pitted.
+The surface of this japanese stone stela is coarse and weathered.
+The surface of this japanese stone stela is remarkably smooth.
+The surface of this japanese terracotta figure is coarse and weathered.
+The surface of this japanese terracotta figure is delicate and brittle.
+The surface of this mayan amulet is slightly pitted.
+The surface of this mayan amulet is unnaturally cold.
+The surface of this mayan bronze dagger is coarse and weathered.
+The surface of this mayan ceramic urn is coarse and weathered.
+The surface of this mayan ceramic urn is waxy to the touch.
+The surface of this mayan glass vessel is coarse and weathered.
+The surface of this mayan glass vessel is cool and heavy.
+The surface of this mayan glass vessel is remarkably smooth.
+The surface of this mayan golden mask is cool and heavy.
+The surface of this mayan golden mask is slightly pitted.
+The surface of this mayan iron shield is coarse and weathered.
+The surface of this mayan iron shield is cool and heavy.
+The surface of this mayan iron shield is waxy to the touch.
+The surface of this mayan jade statue is delicate and brittle.
+The surface of this mayan jade statue is surprisingly heavy.
+The surface of this mayan jade statue is unnaturally cold.
+The surface of this mayan jeweled crown is coarse and weathered.
+The surface of this mayan jeweled crown is remarkably smooth.
+The surface of this mayan obsidian knife is delicate and brittle.
+The surface of this mayan obsidian knife is unnaturally cold.
+The surface of this mayan sarcophagus fragment is slightly pitted.
+The surface of this mayan sarcophagus fragment is waxy to the touch.
+The surface of this mayan silk scroll is delicate and brittle.
+The surface of this mayan silk scroll is slightly pitted.
+The surface of this mayan silk scroll is waxy to the touch.
+The surface of this mayan silver chalice is delicate and brittle.
+The surface of this mayan silver chalice is slightly pitted.
+The surface of this mayan stone stela is coarse and weathered.
+The surface of this mayan stone stela is cool and heavy.
+The surface of this mayan terracotta figure is cool and heavy.
+The surface of this mayan terracotta figure is slightly pitted.
+The surface of this mesopotamian amulet is remarkably smooth.
+The surface of this mesopotamian amulet is unnaturally cold.
+The surface of this mesopotamian amulet is waxy to the touch.
+The surface of this mesopotamian ceramic urn is remarkably smooth.
+The surface of this mesopotamian ceramic urn is waxy to the touch.
+The surface of this mesopotamian glass vessel is delicate and brittle.
+The surface of this mesopotamian glass vessel is surprisingly heavy.
+The surface of this mesopotamian golden mask is delicate and brittle.
+The surface of this mesopotamian golden mask is surprisingly heavy.
+The surface of this mesopotamian iron shield is delicate and brittle.
+The surface of this mesopotamian iron shield is remarkably smooth.
+The surface of this mesopotamian ivory carving is cool and heavy.
+The surface of this mesopotamian jade statue is remarkably smooth.
+The surface of this mesopotamian jade statue is slightly pitted.
+The surface of this mesopotamian jade statue is surprisingly heavy.
+The surface of this mesopotamian jade statue is unnaturally cold.
+The surface of this mesopotamian jade statue is waxy to the touch.
+The surface of this mesopotamian jeweled crown is surprisingly heavy.
+The surface of this mesopotamian marble bust is remarkably smooth.
+The surface of this mesopotamian marble bust is slightly pitted.
+The surface of this mesopotamian silver chalice is coarse and weathered.
+The surface of this mesopotamian silver chalice is unnaturally cold.
+The surface of this mesopotamian terracotta figure is delicate and brittle.
+The surface of this mesopotamian terracotta figure is waxy to the touch.
+The surface of this norse bronze dagger is unnaturally cold.
+The surface of this norse bronze dagger is waxy to the touch.
+The surface of this norse ceramic urn is remarkably smooth.
+The surface of this norse ceramic urn is slightly pitted.
+The surface of this norse clay tablet is remarkably smooth.
+The surface of this norse clay tablet is unnaturally cold.
+The surface of this norse ivory carving is cool and heavy.
+The surface of this norse ivory carving is slightly pitted.
+The surface of this norse jade statue is cool and heavy.
+The surface of this norse jade statue is delicate and brittle.
+The surface of this norse jeweled crown is unnaturally cold.
+The surface of this norse jeweled crown is waxy to the touch.
+The surface of this norse obsidian knife is delicate and brittle.
+The surface of this norse obsidian knife is remarkably smooth.
+The surface of this norse obsidian knife is surprisingly heavy.
+The surface of this norse papyrus fragment is remarkably smooth.
+The surface of this norse sarcophagus fragment is cool and heavy.
+The surface of this norse sarcophagus fragment is slightly pitted.
+The surface of this norse sarcophagus fragment is unnaturally cold.
+The surface of this norse stone stela is cool and heavy.
+The surface of this norse stone stela is unnaturally cold.
+The surface of this persian ceramic urn is delicate and brittle.
+The surface of this persian ceramic urn is waxy to the touch.
+The surface of this persian engraved coin is cool and heavy.
+The surface of this persian engraved coin is delicate and brittle.
+The surface of this persian engraved coin is remarkably smooth.
+The surface of this persian engraved coin is surprisingly heavy.
+The surface of this persian glass vessel is delicate and brittle.
+The surface of this persian glass vessel is surprisingly heavy.
+The surface of this persian golden mask is cool and heavy.
+The surface of this persian golden mask is delicate and brittle.
+The surface of this persian golden mask is surprisingly heavy.
+The surface of this persian golden mask is waxy to the touch.
+The surface of this persian iron shield is surprisingly heavy.
+The surface of this persian iron shield is unnaturally cold.
+The surface of this persian jade statue is coarse and weathered.
+The surface of this persian jade statue is cool and heavy.
+The surface of this persian jade statue is remarkably smooth.
+The surface of this persian jeweled crown is coarse and weathered.
+The surface of this persian jeweled crown is delicate and brittle.
+The surface of this persian papyrus fragment is coarse and weathered.
+The surface of this persian papyrus fragment is unnaturally cold.
+The surface of this persian silk scroll is coarse and weathered.
+The surface of this persian silk scroll is cool and heavy.
+The surface of this persian silk scroll is surprisingly heavy.
+The surface of this persian silk scroll is unnaturally cold.
+The surface of this persian silver chalice is coarse and weathered.
+The surface of this persian silver chalice is waxy to the touch.
+The surface of this phoenician ceramic urn is coarse and weathered.
+The surface of this phoenician ceramic urn is cool and heavy.
+The surface of this phoenician jade statue is unnaturally cold.
+The surface of this phoenician jade statue is waxy to the touch.
+The surface of this phoenician obsidian knife is delicate and brittle.
+The surface of this phoenician obsidian knife is slightly pitted.
+The surface of this phoenician obsidian knife is surprisingly heavy.
+The surface of this phoenician silver chalice is cool and heavy.
+The surface of this phoenician silver chalice is surprisingly heavy.
+The surface of this roman bronze dagger is remarkably smooth.
+The surface of this roman bronze dagger is waxy to the touch.
+The surface of this roman glass vessel is remarkably smooth.
+The surface of this roman glass vessel is slightly pitted.
+The surface of this roman glass vessel is unnaturally cold.
+The surface of this roman ivory carving is coarse and weathered.
+The surface of this roman ivory carving is remarkably smooth.
+The surface of this roman ivory carving is unnaturally cold.
+The surface of this roman ivory carving is waxy to the touch.
+The surface of this roman jeweled crown is coarse and weathered.
+The surface of this roman jeweled crown is cool and heavy.
+The surface of this roman jeweled crown is slightly pitted.
+The surface of this roman papyrus fragment is slightly pitted.
+The surface of this roman papyrus fragment is waxy to the touch.
+The surface of this roman silk scroll is coarse and weathered.
+The surface of this roman silk scroll is remarkably smooth.
+The surface of this roman stone stela is surprisingly heavy.
+The surface of this roman stone stela is unnaturally cold.
+The surface of this roman terracotta figure is coarse and weathered.
+The surface of this roman terracotta figure is waxy to the touch.
+The surface of this sumerian bronze dagger is cool and heavy.
+The surface of this sumerian bronze dagger is slightly pitted.
+The surface of this sumerian bronze dagger is waxy to the touch.
+The surface of this sumerian ceramic urn is coarse and weathered.
+The surface of this sumerian ceramic urn is cool and heavy.
+The surface of this sumerian glass vessel is delicate and brittle.
+The surface of this sumerian glass vessel is remarkably smooth.
+The surface of this sumerian golden mask is coarse and weathered.
+The surface of this sumerian golden mask is surprisingly heavy.
+The surface of this sumerian iron shield is cool and heavy.
+The surface of this sumerian iron shield is surprisingly heavy.
+The surface of this sumerian ivory carving is cool and heavy.
+The surface of this sumerian ivory carving is surprisingly heavy.
+The surface of this sumerian obsidian knife is slightly pitted.
+The surface of this sumerian obsidian knife is unnaturally cold.
+The surface of this sumerian papyrus fragment is cool and heavy.
+The surface of this sumerian papyrus fragment is slightly pitted.
+The surface of this sumerian papyrus fragment is waxy to the touch.
+The surface of this sumerian stone stela is surprisingly heavy.
+The surface of this sumerian stone stela is unnaturally cold.
+The surface of this sumerian terracotta figure is delicate and brittle.
+The surface of this sumerian terracotta figure is surprisingly heavy.
+The surface of this tibetan bronze dagger is coarse and weathered.
+The surface of this tibetan bronze dagger is delicate and brittle.
+The surface of this tibetan bronze dagger is unnaturally cold.
+The surface of this tibetan clay tablet is remarkably smooth.
+The surface of this tibetan clay tablet is surprisingly heavy.
+The surface of this tibetan engraved coin is delicate and brittle.
+The surface of this tibetan engraved coin is remarkably smooth.
+The surface of this tibetan golden mask is slightly pitted.
+The surface of this tibetan golden mask is unnaturally cold.
+The surface of this tibetan ivory carving is delicate and brittle.
+The surface of this tibetan ivory carving is slightly pitted.
+The surface of this tibetan ivory carving is waxy to the touch.
+The surface of this tibetan jade statue is delicate and brittle.
+The surface of this tibetan jade statue is surprisingly heavy.
+The surface of this tibetan jade statue is unnaturally cold.
+The surface of this tibetan jeweled crown is surprisingly heavy.
+The surface of this tibetan jeweled crown is waxy to the touch.
+The surface of this tibetan ritual bowl is delicate and brittle.
+The surface of this tibetan ritual bowl is waxy to the touch.
+The surface of this tibetan sarcophagus fragment is coarse and weathered.
+The surface of this tibetan sarcophagus fragment is cool and heavy.
+The surface of this tibetan sarcophagus fragment is remarkably smooth.
+The surface of this tibetan sarcophagus fragment is slightly pitted.
+The surface of this tibetan sarcophagus fragment is surprisingly heavy.
+The surface of this tibetan sarcophagus fragment is unnaturally cold.
+The surface of this tibetan sarcophagus fragment is waxy to the touch.
+The surface of this tibetan silver chalice is coarse and weathered.
+The surface of this tibetan silver chalice is slightly pitted.
+The surface of this tibetan silver chalice is surprisingly heavy.
+The surface of this tibetan silver chalice is waxy to the touch.
+The surface of this tibetan stone stela is slightly pitted.
+The surface of this tibetan stone stela is unnaturally cold.
+The surface of this tibetan terracotta figure is surprisingly heavy.
+Upon close inspection, the craftsmanship is intricate, yet there's an unsettling quality to its weight that defies easy categorization.

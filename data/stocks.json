@@ -1,6 +1,8 @@
 {
-    "anthropic": { "name": "Anthropic", "price": 120, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "หุ้น Anthropic" },
-    "alphabet": { "name": "Alphabet", "price": 2500, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "หุ้น Alphabet" },
-    "spacex": { "name": "SpaceX", "price": 15000, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "หุ้น SpaceX" },
-    "bitcoin": { "name": "Bitcoin", "price": 65000, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "BTC Crypto 🪙" }
+    "anthropic": { "name": "Anthropic", "price": 120, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "หุ้น Anthropic", "type": "stock" },
+    "alphabet": { "name": "Alphabet", "price": 2500, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "หุ้น Alphabet", "type": "stock" },
+    "spacex": { "name": "SpaceX", "price": 15000, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "หุ้น SpaceX", "type": "stock" },
+    "bitcoin": { "name": "Bitcoin", "price": 65000, "owned": 0, "invested": 0, "history": [], "unlocked": false, "label": "BTC Crypto 🪙", "type": "crypto" },
+    "aether_fund": { "name": "Aether Fund", "price": 1000, "owned": 0, "invested": 0, "history": [], "unlocked": true, "label": "กองทุน Aether", "type": "fund", "volatility": 0.2 },
+    "nexus_index": { "name": "Nexus Tech Index", "price": 2500, "owned": 0, "invested": 0, "history": [], "unlocked": true, "label": "ดัชนี Nexus", "type": "fund", "volatility": 0.3 }
 }

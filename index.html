@@ -17,6 +17,7 @@
             <div id="score-panel">
                 <div id="level-info" style="font-size: 0.8rem; color: #00ffcc; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center;">
                     <span id="player-title">มือใหม่</span>
+                    <span id="adee-display" style="color: #ffcc00; font-weight: bold;">🪙 0</span>
                     <span id="player-level">Lv. 0</span>
                 </div>
                 <div id="xp-bar-container" style="width: 100%; height: 6px; background: #222; border-radius: 3px; margin-bottom: 10px; overflow: hidden; border: 1px solid #333;">
@@ -33,7 +34,10 @@
 
         <!-- 3. Persistent Embedded Shop -->
         <aside id="persistent-shop">
-            <div class="shop-header">🛒 ตลาดอัปเกรด (Persistent)</div>
+            <div class="shop-header" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>🛒 ตลาดอัปเกรด</span>
+                <button class="btn-action btn-warning" id="watch-ad-btn" onclick="watchAd()" style="padding: 2px 8px; font-size: 0.65rem; margin:0; width:auto;">📺 ดูโฆษณา (+1 Adee)</button>
+            </div>
             <div style="padding:10px 10px 0 10px;">
                 <input type="text" id="shop-search" class="input-box" placeholder="🔍 ค้นหาไอเทม..." oninput="renderShop()">
                 <div class="shop-tabs">
@@ -77,13 +81,61 @@
         </div>
     </nav>
 
-    <!-- Secret Modal -->
-    <div id="secret-modal">
-        <div class="modal-box">
-            <h3 style="color:#00ffcc; margin:0;">DEVELOPER CONSOLE</h3>
-            <input type="number" id="secret-input" class="input-box" placeholder="กรอก Score ที่ต้องการ">
-            <button class="btn-action btn-success" onclick="setSecretScore()">SET SCORE</button>
-            <button class="btn-action" style="margin-top:10px; background:#333;" onclick="closeSecret()">CANCEL</button>
+    <!-- Ad Overlay -->
+    <div id="ad-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:10000; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center;">
+        <div style="font-size: 1.5rem; margin-bottom: 20px;">โฆษณากำลังเล่น...</div>
+        <div id="ad-timer" style="font-size: 3rem; font-weight: bold; color: #ffcc00; margin-bottom: 20px;">15</div>
+        <div style="color: #666; font-size: 0.8rem;">สปอนเซอร์โดย Adee Network</div>
+        <button id="close-ad-btn" disabled style="margin-top: 30px; padding: 10px 30px; background: #444; color: #888; border: none; border-radius: 5px; font-weight: bold; cursor: not-allowed;" onclick="finishAd()">ปิดโฆษณา</button>
+    </div>
+
+    <!-- Inventory Selection Modal -->
+    <div id="inventory-modal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(10px);">
+        <div class="modal-box" style="width:90%; max-width:500px; height:80vh; display:flex; flex-direction:column; padding:20px;">
+            <h3 style="color:#00ffcc; margin:0 0 15px 0;">📦 เลือกไอเท็มประมูล</h3>
+            <div id="inventory-grid" style="flex:1; overflow-y:auto; display:grid; grid-template-columns: 1fr 1fr; gap:10px; padding:5px; margin-bottom:15px;">
+                <!-- Grid items injected here -->
+            </div>
+            <div id="selected-item-detail" style="display:none; background:#0a0a0f; padding:15px; border-radius:10px; border:1px solid #333; margin-bottom:15px; text-align:left;">
+                <b id="detail-name" style="color:#00ffcc;"></b><br>
+                <span id="detail-price" style="font-size:0.8rem; color:#ffcc00;"></span>
+                <p id="detail-desc" style="font-size:0.75rem; color:#888; margin-top:8px;"></p>
+                <button class="btn-action btn-success" id="confirm-select-btn">เลือกรายการนี้</button>
+            </div>
+            <button class="btn-action" style="background:#333;" onclick="closeInventoryModal()">ปิด</button>
+        </div>
+    </div>
+
+    <!-- Secret Modal (DevMode) -->
+    <div id="secret-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 400px; width: 90%;">
+            <h3 style="color:#00ffcc; margin:0 0 15px 0; text-align:center;">🛠️ DEVELOPER MODE</h3>
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
+                <div>
+                    <label style="font-size:0.7rem; color:#888;">Stime Coin</label>
+                    <input type="number" id="dev-score" class="input-box" placeholder="Score">
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; color:#888;">Level</label>
+                    <input type="number" id="dev-level" class="input-box" placeholder="Lv.">
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; color:#888;">Adee Coin</label>
+                    <input type="number" id="dev-adee" class="input-box" placeholder="Adee">
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; color:#888;">CPS</label>
+                    <input type="number" id="dev-cps" class="input-box" placeholder="CPS">
+                </div>
+                <div style="grid-column: span 2;">
+                    <label style="font-size:0.7rem; color:#888;">พลังคลิก (CPC)</label>
+                    <input type="number" id="dev-cpc" class="input-box" placeholder="Click Power">
+                </div>
+            </div>
+
+            <button class="btn-action btn-success" onclick="applyDevMode()">APPLY CHANGES</button>
+            <button class="btn-action" style="margin-top:10px; background:#333;" onclick="closeSecret()">CLOSE</button>
         </div>
     </div>
 
