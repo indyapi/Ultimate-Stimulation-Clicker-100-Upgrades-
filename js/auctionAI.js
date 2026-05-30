@@ -133,9 +133,10 @@ function concludeAuction() {
             alert("ขายไม่ออก!"); 
         }
         else { 
-            score += activeAuction.currentHighestBid; 
-            if (typeof addXp === 'function') {
-                addXp(Math.max(5, Math.floor(activeAuction.currentHighestBid / 500)));
+            if (typeof addStimeAndXP === 'function') {
+                addStimeAndXP(activeAuction.currentHighestBid);
+            } else {
+                score += activeAuction.currentHighestBid;
             }
             alert(`ขายสำเร็จ $${formatNumber(activeAuction.currentHighestBid)}`); 
         }

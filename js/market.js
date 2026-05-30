@@ -6,11 +6,14 @@ var isDraggingDivider = false;
 
 var hasAntiqueTicket = false, hasMediaHypePass = false, hasNewsSubscription = false, archeologistLevel = 0, appraiserLevel = 0;
 var playerLevel = 0, playerXP = 0, playerTitle = "มือใหม่";
+var xpPerSecond = 0, xpMultiplier = 1.0;
 var adeeCoin = 0, adTicketExpiry = 0, nextAdAvailableTime = 0, auctionPriceUnit = 1;
 var playerInventory = [], currentMarketItem = null;
 var newsData = [], activeNews = [];
 var items = [];
 var npcProfiles = [];
+var gameDate = new Date(2024, 0, 1, 0, 0); 
+var lastMonth = gameDate.getMonth();
 
 var ancientArtifacts = [];
 var artifactsLoaded = false;

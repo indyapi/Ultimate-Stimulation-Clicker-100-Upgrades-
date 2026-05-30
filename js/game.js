@@ -123,14 +123,33 @@ function renderStockSheet() {
         return; 
     }
 
+    // Ticket 14: Portfolio Summary
+    let totalStock = 0, totalCrypto = 0, totalFund = 0;
+    unlocked.forEach(k => {
+        const val = marketData[k].owned * marketData[k].price;
+        if (marketData[k].type === 'stock') totalStock += val;
+        else if (marketData[k].type === 'crypto') totalCrypto += val;
+        else if (marketData[k].type === 'fund') totalFund += val;
+    });
+    const grandTotal = totalStock + totalCrypto + totalFund;
+
     const categories = [
         { id: 'stock', label: '📊 หุ้นไทย/ต่างประเทศ' },
         { id: 'crypto', label: '🪙 คริปโตเคอร์เรนซี' },
         { id: 'fund', label: '📈 กองทุนดัชนี' }
     ];
 
+    let html = `<div class="portfolio-summary" style="background:#1c1c24; padding:15px; border-radius:10px; margin-bottom:15px; border:1px solid #333; font-size:0.8rem;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>พอร์ตโฟลิโอรวม:</span> <b style="color:#00ffcc;">$${formatNumber(grandTotal)}</b></div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:5px; color:#888; font-size:0.7rem;">
+            <div>หุ้น: $${formatNumber(totalStock)}</div>
+            <div>คริปโต: $${formatNumber(totalCrypto)}</div>
+            <div>กองทุน: $${formatNumber(totalFund)}</div>
+        </div>
+    </div>`;
+
     // Build Category Tabs (Top)
-    let html = `<div class="category-tabs" style="display:flex; gap:5px; margin-bottom:15px; overflow-x:auto; padding-bottom:5px;">`;
+    html += `<div class="category-tabs" style="display:flex; gap:5px; margin-bottom:15px; overflow-x:auto; padding-bottom:5px;">`;
     categories.forEach(cat => {
         const count = unlocked.filter(k => marketData[k].type === cat.id).length;
         if (count > 0 || cat.id === 'fund') { // Show fund anyway since they start unlocked
@@ -174,6 +193,7 @@ function renderStockSheet() {
             <span>ถือครอง: ${s.owned} หน่วย</span> 
             <span>กำไร/ขาดทุน: <b class="${pnl>=0?'pnl-positive':'pnl-negative'}">$${formatNumber(pnl)}</b></span>
         </div>
+        ${s.type === 'fund' && s.dividendRate ? `<div style="font-size:0.75rem; color:#00ffcc; margin-bottom:10px; padding:8px; background:rgba(0,255,204,0.05); border-radius:5px; border:1px solid rgba(0,255,204,0.1);">ปันผล: <b>${(s.dividendRate * 100).toFixed(1)}%</b> /เดือน | รับแล้วรวม: <b style="color:#ffcc00;">$${formatNumber(s.totalDividends || 0)}</b></div>` : ''}
         <div style="display:flex; gap:8px;">
             <button class="btn-action btn-success" onclick="buyStock('${currentStockTab}')">ซื้อสะสม</button>
             <button class="btn-action btn-danger" onclick="sellStock('${currentStockTab}')">ขายทำกำไร</button>
@@ -194,7 +214,7 @@ function renderChart(key) {
 
 // --- 5. ENGINE ---
 function getXpNeeded(lv) {
-    return Math.floor(100 * Math.pow(1.35, lv));
+    return Math.floor(1000 * Math.pow(1.5, lv));
 }
 
 function updateTitle() {
@@ -211,8 +231,7 @@ function updateTitle() {
     if (titleEl) titleEl.innerText = playerTitle;
 }
 
-function addXp(amount) {
-    playerXP += amount;
+function checkLevelUp() {
     let needed = getXpNeeded(playerLevel);
     while (playerXP >= needed && playerLevel < 999) {
         playerXP -= needed;
@@ -220,9 +239,25 @@ function addXp(amount) {
         needed = getXpNeeded(playerLevel);
         console.log(`Level Up! Now Level ${playerLevel}`);
         updateTitle();
-        // Level up reward: Adee Coin
-        adeeCoin += Math.floor(playerLevel / 10) + 1;
+        // Level up reward: Ticket 14 - Adee Coin +1 every 10 levels
+        if (playerLevel % 10 === 0) {
+            adeeCoin += 1;
+        }
     }
+}
+
+function addXp(amount) {
+    if (amount <= 0) return;
+    playerXP += (amount * xpMultiplier);
+    checkLevelUp();
+    updateUI();
+}
+
+function addStimeAndXP(amount) {
+    if (amount <= 0) return;
+    score += amount;
+    playerXP += (amount * xpMultiplier);
+    checkLevelUp();
     updateUI();
 }
 
@@ -282,7 +317,6 @@ function buyStock(k) {
         score -= s.price; 
         s.owned++; 
         s.invested += s.price; 
-        addXp(Math.max(1, Math.floor(s.price / 1000)));
         updateUI(); 
         renderStockSheet(); 
     } 
@@ -296,7 +330,7 @@ function sellStock(k) {
         let avg = s.invested / s.owned; 
         s.owned--; 
         s.invested -= avg; 
-        if (profit > 0) addXp(Math.max(1, Math.floor(profit / 500)));
+        if (profit > 0) addXp(profit);
         updateUI(); 
         renderStockSheet(); 
     } 
@@ -312,6 +346,7 @@ function buyItem(id) {
             adeeCoin -= cost;
             item.count++;
             applyItemEffect(item);
+            recalculateXpStats();
             updateUI();
             renderShop();
         } else if (cost !== Infinity) {
@@ -321,14 +356,19 @@ function buyItem(id) {
         if (score >= cost && cost !== Infinity) {
             score -= cost;
             item.count++;
-            addXp(Math.max(1, Math.floor(cost / 100)));
             applyItemEffect(item);
+            recalculateXpStats();
             cpc += item.cpcAdd || 0; 
             cps = items.reduce((sum, it) => sum + (it.count * (it.cpsAdd||0)), 0);
             updateUI(); 
             renderShop();
         }
     }
+}
+
+function recalculateXpStats() {
+    xpPerSecond = items.reduce((sum, it) => sum + (it.count * (it.xpPerSecond||0)), 0);
+    xpMultiplier = 1.0 + items.reduce((sum, it) => sum + (it.count * (it.xpMultiplierAdd||0)), 0);
 }
 
 function applyItemEffect(item) {
@@ -382,6 +422,22 @@ function newsCycle() {
     activeNews = activeNews.filter(n => (Date.now() - n.startTime) < (n.duration * 1000));
 }
 
+function payoutDividends() {
+    let totalPaid = 0;
+    Object.keys(marketData).forEach(k => {
+        let s = marketData[k];
+        if (s.type === 'fund' && s.owned > 0 && s.dividendRate) {
+            let amount = s.owned * s.price * s.dividendRate;
+            score += amount;
+            s.totalDividends = (s.totalDividends || 0) + amount;
+            totalPaid += amount;
+        }
+    });
+    if (totalPaid > 0) {
+        console.log(`Paid $${totalPaid} in dividends.`);
+    }
+}
+
 function renderShop() {
     const list = document.getElementById('shop-list-container');
     if (!list) return;
@@ -419,6 +475,12 @@ function updateUI() {
     if (scoreEl) scoreEl.innerText = formatNumber(score);
     if (cpsEl) cpsEl.innerText = `CPS: ${formatNumber(cps)} | พลังคลิก: ${formatNumber(cpc)}`;
     
+    // Time UI
+    const dateEl = document.getElementById('game-date');
+    const clockEl = document.getElementById('game-clock');
+    if (dateEl) dateEl.innerText = gameDate.toLocaleDateString('th-TH', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    if (clockEl) clockEl.innerText = gameDate.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
+
     // Level UI
     const levelEl = document.getElementById('player-level');
     const titleEl = document.getElementById('player-title');
@@ -496,9 +558,7 @@ async function init() {
     const clickBtn = document.getElementById('click-btn');
     if (clickBtn) {
         clickBtn.addEventListener('click', () => { 
-            score += cpc; 
-            addXp(1);
-            updateUI(); 
+            addStimeAndXP(cpc);
         });
     }
     
@@ -509,9 +569,27 @@ async function init() {
     initSplitResizer();
     initSheetResizer();
     
-    setInterval(() => { score += (cps * getTotalCPSMultiplier()) / 10; updateUI(); }, 100);
+    setInterval(() => { 
+        let income = (cps * getTotalCPSMultiplier()) / 10;
+        if (income > 0) addStimeAndXP(income);
+        
+        // Auto XP from items
+        if (xpPerSecond > 0) {
+            let xpThisTick = (xpPerSecond / 10) * xpMultiplier;
+            playerXP += xpThisTick;
+            checkLevelUp();
+        }
+        updateUI(); 
+    }, 100);
     setInterval(() => { if (typeof processAuctionTick === 'function') processAuctionTick(); }, 1000);
     setInterval(() => {
+        // Advance Time: 1 second = 1 day
+        gameDate.setDate(gameDate.getDate() + 1);
+        if (gameDate.getMonth() !== lastMonth) {
+            lastMonth = gameDate.getMonth();
+            payoutDividends();
+        }
+
         activeNews = activeNews.filter(n => (Date.now() - n.startTime) < (n.duration * 1000));
         if (typeof marketData !== 'undefined') {
             Object.keys(marketData).forEach(k => { 
@@ -524,10 +602,11 @@ async function init() {
             });
         }
         if (currentSheet === 'stock') renderStockSheet();
-    }, 2000);
+    }, 1000);
     setInterval(() => { newsCycle(); }, 120000); 
     
     renderShop();
+    recalculateXpStats();
     updateUI();
     console.log("Game initialized successfully.");
 }
@@ -573,7 +652,6 @@ function buyAntique() {
     if (currentMarketItem && score >= currentMarketItem.marketPrice) { 
         score -= currentMarketItem.marketPrice; 
         playerInventory.push(currentMarketItem); 
-        addXp(Math.max(10, Math.floor(currentMarketItem.marketPrice / 1000)));
         currentMarketItem = typeof generateProceduralAntique === 'function' ? generateProceduralAntique() : null; 
         alert("สำเร็จ!"); 
         updateUI(); 
