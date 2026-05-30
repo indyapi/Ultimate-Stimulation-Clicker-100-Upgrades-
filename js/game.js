@@ -193,10 +193,24 @@ function renderStockSheet() {
             <span>ถือครอง: ${s.owned} หน่วย</span> 
             <span>กำไร/ขาดทุน: <b class="${pnl>=0?'pnl-positive':'pnl-negative'}">$${formatNumber(pnl)}</b></span>
         </div>
-        ${s.type === 'fund' && s.dividendRate ? `<div style="font-size:0.75rem; color:#00ffcc; margin-bottom:10px; padding:8px; background:rgba(0,255,204,0.05); border-radius:5px; border:1px solid rgba(0,255,204,0.1);">ปันผล: <b>${(s.dividendRate * 100).toFixed(1)}%</b> /เดือน | รับแล้วรวม: <b style="color:#ffcc00;">$${formatNumber(s.totalDividends || 0)}</b></div>` : ''}
-        <div style="display:flex; gap:8px;">
-            <button class="btn-action btn-success" onclick="buyStock('${currentStockTab}')">ซื้อสะสม</button>
-            <button class="btn-action btn-danger" onclick="sellStock('${currentStockTab}')">ขายทำกำไร</button>
+        ${s.type === 'fund' && s.dividendRate ? `
+            <div style="font-size:0.75rem; color:#00ffcc; margin-bottom:10px; padding:8px; background:rgba(0,255,204,0.05); border-radius:5px; border:1px solid rgba(0,255,204,0.1);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                    <span>ปันผล: <b>${(s.dividendRate * 100).toFixed(1)}%</b></span>
+                    <select onchange="dividendFrequency=this.value; renderStockSheet();" style="background:#111; color:#00ffcc; border:1px solid #333; font-size:0.65rem; border-radius:3px;">
+                        <option value="monthly" ${dividendFrequency==='monthly'?'selected':''}>รายเดือน</option>
+                        <option value="yearly" ${dividendFrequency==='yearly'?'selected':''}>รายปี</option>
+                    </select>
+                </div>
+                รับแล้วรวม: <b style="color:#ffcc00;">$${formatNumber(s.totalDividends || 0)}</b>
+            </div>` : ''}
+        
+        <div style="margin-bottom:10px;">
+            <input type="number" id="trade-amount" class="input-box" value="1" min="1" style="margin-bottom:5px; font-size:0.8rem; text-align:center;">
+            <div style="display:flex; gap:8px;">
+                <button class="btn-action btn-success" onclick="buyStock('${currentStockTab}')">ซื้อสะสม</button>
+                <button class="btn-action btn-danger" onclick="sellStock('${currentStockTab}')">ขายทำกำไร</button>
+            </div>
         </div>
     </div>`;
 
@@ -313,27 +327,36 @@ function finishAd() {
 
 function buyStock(k) { 
     let s = marketData[k]; 
-    if (score >= s.price) { 
-        score -= s.price; 
-        s.owned++; 
-        s.invested += s.price; 
+    let amount = parseInt(document.getElementById('trade-amount').value) || 1;
+    let totalCost = s.price * amount;
+    if (score >= totalCost) { 
+        score -= totalCost; 
+        s.owned += amount; 
+        s.invested += totalCost; 
         updateUI(); 
         renderStockSheet(); 
-    } 
+    } else {
+        alert("เงินไม่พอ!");
+    }
 }
 
 function sellStock(k) { 
     let s = marketData[k]; 
-    if (s.owned > 0) { 
-        let profit = s.price - (s.invested / s.owned);
-        score += s.price; 
-        let avg = s.invested / s.owned; 
-        s.owned--; 
-        s.invested -= avg; 
+    let amount = parseInt(document.getElementById('trade-amount').value) || 1;
+    if (s.owned >= amount) { 
+        let avg = s.invested / s.owned;
+        let saleValue = s.price * amount;
+        let profit = saleValue - (avg * amount);
+        
+        score += saleValue; 
+        s.owned -= amount; 
+        s.invested -= (avg * amount); 
         if (profit > 0) addXp(profit);
         updateUI(); 
         renderStockSheet(); 
-    } 
+    } else {
+        alert("มีหุ้นไม่พอขาย!");
+    }
 }
 
 function buyItem(id) {
@@ -371,11 +394,35 @@ function recalculateXpStats() {
     xpMultiplier = 1.0 + items.reduce((sum, it) => sum + (it.count * (it.xpMultiplierAdd||0)), 0);
 }
 
+var archeologistExpiry = 0;
+var appraiserExpiry = 0;
+var dividendFrequency = 'monthly'; // 'monthly' or 'yearly'
+
 function applyItemEffect(item) {
     if (item.isUnlock) marketData[item.isUnlock].unlocked = true;
     if (item.specialUnlock === "antique_ticket") hasAntiqueTicket = true;
-    if (item.specialUnlock === "archeologist") archeologistLevel = item.count;
-    if (item.specialUnlock === "appraiser") appraiserLevel = item.count;
+    if (item.specialUnlock === "archeologist") {
+        archeologistLevel = item.count;
+        archeologistExpiry = Date.now() + (24 * 60 * 60 * 1000); // 1 day
+    }
+    if (item.specialUnlock === "appraiser") {
+        appraiserLevel = item.count;
+        appraiserExpiry = Date.now() + (24 * 60 * 60 * 1000); // 1 day
+    }
+    if (item.specialUnlock === "email") {
+        const rewards = [
+            { name: "พิกัดขุมทรัพย์ลับ", effect: () => { score += 50000; alert("คุณได้รับข้อมูลพิกัดขุมทรัพย์! (+50,000 Stime)"); } },
+            { name: "รหัสลับ Adee", effect: () => { adeeCoin += 5; alert("คุณได้รับรหัสลับ Adee! (+5 Adee Coin)"); } },
+            { name: "ข่าววงในตลาดหุ้น", effect: () => { 
+                const keys = Object.keys(marketData).filter(k => marketData[k].type === 'stock');
+                const target = keys[Math.floor(Math.random() * keys.length)];
+                marketData[target].price *= 1.5;
+                alert(`คุณได้รับข่าววงใน! หุ้น ${marketData[target].name} พุ่งขึ้น 50%`);
+            } }
+        ];
+        const chosen = rewards[Math.floor(Math.random() * rewards.length)];
+        chosen.effect();
+    }
     if (item.specialUnlock === "news_subscription") {
         hasNewsSubscription = true;
         const ticker = document.getElementById('news-ticker');
@@ -422,19 +469,94 @@ function newsCycle() {
     activeNews = activeNews.filter(n => (Date.now() - n.startTime) < (n.duration * 1000));
 }
 
+function openServicesModal() {
+    document.getElementById('services-modal').style.display = 'flex';
+}
+
+function closeServicesModal() {
+    document.getElementById('services-modal').style.display = 'none';
+}
+
+function showHypeModal() {
+    closeServicesModal();
+    document.getElementById('hype-modal').style.display = 'flex';
+}
+
+function closeHypeModal() {
+    document.getElementById('hype-modal').style.display = 'none';
+}
+
+function confirmHype() {
+    if (adeeCoin >= 1) {
+        adeeCoin -= 1;
+        const rarity = document.getElementById('hype-rarity').value;
+        const target = document.getElementById('hype-target').value;
+        
+        // Create a custom news event for hype
+        const hypeNews = {
+            id: Date.now(),
+            title: `กระแส ${rarity.toUpperCase()} กำลังมาแรง!`,
+            content: `สื่อรายงานว่ากลุ่ม ${target} กำลังกว้านซื้อวัตถุโบราณระดับ ${rarity}!`,
+            impact: { type: 'artifact', target: rarity, multiplier: 2.0 },
+            duration: 120,
+            startTime: Date.now()
+        };
+        activeNews.push(hypeNews);
+        
+        alert("จ้างสื่อสำเร็จ! กระแสข่าวเริ่มกระจายแล้ว");
+        closeHypeModal();
+        updateUI();
+    } else {
+        alert("Adee Coin ไม่พอ!");
+    }
+}
+
+function checkSpecialistExpiry() {
+    const now = Date.now();
+    if (archeologistLevel > 0 && now > archeologistExpiry) {
+        archeologistLevel = 0;
+        console.log("สัญญาจ้างนักโบราณคดีหมดอายุ");
+    }
+    if (appraiserLevel > 0 && now > appraiserExpiry) {
+        appraiserLevel = 0;
+        console.log("สัญญาจ้างนักประเมินหมดอายุ");
+    }
+}
+
+function deductSpecialistCost() {
+    // Costs: Lv1: 1k, Lv2: 3k, Lv3: 5k
+    const costs = [0, 1000, 3000, 5000];
+    let totalCost = 0;
+    if (archeologistLevel > 0) totalCost += costs[archeologistLevel];
+    if (appraiserLevel > 0) totalCost += costs[appraiserLevel];
+    
+    if (totalCost > 0) {
+        score = Math.max(0, score - totalCost);
+        // console.log(`Deducted ${totalPaid} for specialist services.`);
+    }
+}
+
 function payoutDividends() {
     let totalPaid = 0;
+    const now = new Date();
+    
+    // Yearly check: Only pay in January if frequency is yearly
+    if (dividendFrequency === 'yearly' && now.getMonth() !== 0) return;
+
     Object.keys(marketData).forEach(k => {
         let s = marketData[k];
         if (s.type === 'fund' && s.owned > 0 && s.dividendRate) {
-            let amount = s.owned * s.price * s.dividendRate;
+            let rate = s.dividendRate;
+            if (dividendFrequency === 'yearly') rate *= 12; // Approximation for yearly
+            
+            let amount = s.owned * s.price * rate;
             score += amount;
             s.totalDividends = (s.totalDividends || 0) + amount;
             totalPaid += amount;
         }
     });
     if (totalPaid > 0) {
-        console.log(`Paid $${totalPaid} in dividends.`);
+        console.log(`Paid $${totalPaid} in dividends (${dividendFrequency}).`);
     }
 }
 
@@ -590,6 +712,8 @@ async function init() {
             payoutDividends();
         }
 
+        checkSpecialistExpiry();
+
         activeNews = activeNews.filter(n => (Date.now() - n.startTime) < (n.duration * 1000));
         if (typeof marketData !== 'undefined') {
             Object.keys(marketData).forEach(k => { 
@@ -742,6 +866,8 @@ function selectInventoryItem(index) {
 function getExpertReportHTML(item) {
     if (!archeologistLevel && !appraiserLevel) return "";
     
+    deductSpecialistCost(); // Ticket 5.3: Per use cost
+
     // Quantum Appraisal Lens effect: Reveal full details immediately
     if (window.hasQuantumLens) {
         return `<div class="expert-box">
@@ -797,7 +923,8 @@ function renderAuctionSheet() {
         </div>`;
     } else {
         let raise = Math.round(activeAuction.currentHighestBid * 0.1) || 500;
-        container.innerHTML = `<div class="card"><b>${activeAuction.item.name}</b> [${activeAuction.timeLeft}s]<div class="expert-box" style="margin-bottom:10px; font-style:italic; font-size:0.85rem;">"${activeAuction.item.description}"</div><div style="background:#000; text-align:center; padding:15px; margin:10px 0; border-radius:10px; border:1px solid #333;"><div style="color:#00ffcc; font-size:1.8rem; font-weight:900;">$${formatNumber(activeAuction.currentHighestBid)}</div><div style="font-size:0.7rem; color:#666;">โดย: ${activeAuction.highestBidder}</div></div>
+        let expert = activeAuction.mode === 'buy' ? getExpertReportHTML(activeAuction.item) : '';
+        container.innerHTML = `<div class="card"><b>${activeAuction.item.name}</b> [${activeAuction.timeLeft}s]<div class="antique-story" style="margin-bottom:10px;">"${activeAuction.item.description}"</div>${expert}<div style="background:#000; text-align:center; padding:15px; margin:10px 0; border-radius:10px; border:1px solid #333;"><div style="color:#00ffcc; font-size:1.8rem; font-weight:900;">$${formatNumber(activeAuction.currentHighestBid)}</div><div style="font-size:0.7rem; color:#666;">โดย: ${activeAuction.highestBidder}</div></div>
         <div class="auction-log"><div>${activeAuction.bidsLog.map(l => `<div>${l}</div>`).join('')}</div></div>
         <div style="margin-top:10px;">${activeAuction.mode==='sell'?'<button class="btn-action btn-danger" onclick="concludeAuction()">ปิดดีล</button>':`<button class="btn-action btn-success" onclick="playerPlaceBid(${raise})">✋ ยกป้าย (+$${formatNumber(raise)})</button>`}</div></div>`;
     }

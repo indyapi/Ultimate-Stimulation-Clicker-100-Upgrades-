@@ -12,63 +12,72 @@ async function loadNPCs() {
 }
 
 function setupAuction(mode, item, startPrice) {
+    let hypeLevel = 0; // 0 to 5
     let newsMultiplier = 1;
     activeNews.forEach(n => {
         if (n.impact.type === 'artifact') {
-            if (n.impact.target === 'All' || item.name.toLowerCase().includes(n.impact.target.toLowerCase())) {
-                let impact = n.impact.multiplier;
-                if (window.hasCarterJournal) {
-                    if (impact > 1) impact = 1 + (impact - 1) * 1.3;
-                    else impact = 1 - (1 - impact) * 1.3;
-                }
-                newsMultiplier *= impact;
+            if (n.impact.target === 'All' || item.rarity.toLowerCase() === n.impact.target.toLowerCase()) {
+                hypeLevel += 1.5;
+                newsMultiplier *= n.impact.multiplier;
             }
         }
     });
 
+    // Categorize NPCs by wealth Mult: Poor < 2, Middle 2-10, Rich 10-50, Billionaire > 50
     let availableNpcs = npcProfiles.filter(npc => !npc.minLevel || playerLevel >= npc.minLevel);
-    if (availableNpcs.length === 0) availableNpcs = [npcProfiles[2]];
+    
+    // Filter based on Hype Level
+    let pool = [];
+    if (hypeLevel < 1) {
+        pool = availableNpcs.filter(n => n.wealthMult < 10); // Mostly poor/middle
+    } else if (hypeLevel < 3) {
+        pool = availableNpcs.filter(n => n.wealthMult < 50); // Include rich
+    } else {
+        pool = availableNpcs; // Everyone comes to hyped auctions
+    }
+
+    // Ensure at least 3 NPCs
+    if (pool.length < 3) pool = availableNpcs.slice(0, 5);
+    
+    // Pick 3-6 random NPCs from the pool
+    let selected = [];
+    let poolCopy = [...pool];
+    let count = Math.floor(Math.random() * 4) + 3;
+    for (let i = 0; i < count && poolCopy.length > 0; i++) {
+        selected.push(poolCopy.splice(Math.floor(Math.random() * poolCopy.length), 1)[0]);
+    }
 
     const rarityScores = { "common": 1, "rare": 3, "epic": 8, "legendary": 20, "mythic": 50 };
     const gradeScores = { "fake": 0.5, "authentic": 10, "ancient_true": 25 };
 
-    let activeNpcs = availableNpcs.map(npc => {
-        // Ticket 6: Personal Appraiser accuracy (0.7 to 1.3 margin based on NPC trust)
-        let errorMargin = (1 - npc.trustAppraiser) * (Math.random() > 0.5 ? 1 : -1) * (0.05 + Math.random() * 0.3); 
-        
+    let activeNpcs = selected.map(npc => {
         const rarityMult = (typeof rarityMultipliers !== 'undefined' ? rarityMultipliers[item.rarity] : 1) || 1;
         const gradeMult = (typeof gradeMultipliers !== 'undefined' ? gradeMultipliers[item.grade] : 1) || 1;
         const popularity = (item.basePopularity || 1) * newsMultiplier;
         
         let basePerceived = (item.realValue || 1000) * rarityMult * gradeMult * popularity;
-        
-        // Collector's Aura
-        if (window.hasCollectorAura && mode === 'sell') basePerceived *= 1.12;
+        if (window.hasCollectorAura && mode === 'sell') basePerceived *= 1.15;
 
-        let perceivedValue = basePerceived * (1 + errorMargin) * npc.greed;
+        let perceivedValue = basePerceived * npc.greed;
         
-        // Ticket 6: Desire Score = (Rarity + Grade + Popularity + Interest)
         const rarityScore = rarityScores[item.rarity] || 0;
         const gradeScore = gradeScores[item.grade] || 0;
-        const personalInterest = (Math.random() * 10); // Random interest per auction
-        const desireScore = rarityScore + gradeScore + (popularity * 5) + personalInterest;
+        const desireScore = rarityScore + gradeScore + (popularity * 5);
 
         return { 
             ...npc, 
             maxWillingToPay: perceivedValue * npc.wealthMult, 
             desireScore: desireScore,
             isActive: true, 
-            thinkTimer: 0 
+            thinkTimer: Math.floor(Math.random() * 2)
         };
     });
 
     activeAuction = {
-        mode, item, currentHighestBid: startPrice, highestBidder: mode === 'sell' ? "คุณเอง" : "NPC",
-        timeLeft: 10, // Ticket 6: Starting time 10s
-        activeNpcs, overbidCount: 0,
-        maxOverbids: Math.floor(Math.random() * 5) + 2, 
-        lastBidType: 'normal',
-        bidsLog: ["📢 เริ่มงานประมูล"]
+        mode, item, currentHighestBid: startPrice, highestBidder: mode === 'sell' ? "คุณเอง" : "เจ้าหน้าที่",
+        timeLeft: 15,
+        activeNpcs, 
+        bidsLog: [`📢 งานประมูล ${item.name} เริ่มแล้ว!`]
     };
     renderAuctionSheet();
 }
@@ -78,49 +87,36 @@ function processAuctionTick() {
     activeAuction.timeLeft--;
     activeAuction.activeNpcs.forEach(n => { if(n.thinkTimer > 0) n.thinkTimer--; });
     
-    // NPC Decision Logic
+    // Simplified NPC Decision Logic (Probability based)
     let capableNpcs = activeAuction.activeNpcs.filter(n => n.isActive && activeAuction.currentHighestBid < n.maxWillingToPay && n.thinkTimer <= 0);
     
     if (capableNpcs.length > 0) {
-        // Likelihood of bidding increases with Desire Score
-        let bidder = capableNpcs[Math.floor(Math.random() * capableNpcs.length)];
-        if (activeAuction.highestBidder !== bidder.name) {
-            
-            let bidChance = 0.2 + (bidder.desireScore / 100);
-            if (activeAuction.timeLeft < 5) bidChance += 0.3; // Panic bidding
+        capableNpcs.forEach(bidder => {
+            if (activeAuction.highestBidder === bidder.name) return;
+
+            // Simple probability logic: base 15% + bonus from desire and low time
+            let bidChance = 0.15;
+            bidChance += (bidder.desireScore / 200);
+            if (activeAuction.timeLeft < 5) bidChance += 0.2; 
 
             if (Math.random() < bidChance) {
-                let isOverbid = false, multiplier = 1;
+                let raise = Math.round(activeAuction.currentHighestBid * (0.05 + Math.random()*0.15)) + 100;
+                let nextBid = activeAuction.currentHighestBid + raise;
                 
-                // Desire Score influences overbid chance
-                if (bidder.desireScore > 30 && Math.random() < (bidder.desireScore / 150)) {
-                    isOverbid = true;
-                    multiplier = 1.2 + (Math.random() * (bidder.desireScore / 25));
-                }
-
-                if (isOverbid) {
-                    let nextBid = Math.round(activeAuction.currentHighestBid * multiplier);
-                    if (nextBid <= bidder.maxWillingToPay) {
-                        activeAuction.currentHighestBid = nextBid; activeAuction.highestBidder = bidder.name; activeAuction.overbidCount++; activeAuction.lastBidType = 'overbid';
-                        activeAuction.bidsLog.push(`🔥 [เกทับ!] ${bidder.name} อัดไปที่ $${formatNumber(nextBid)}!`);
-                        activeAuction.activeNpcs.forEach(n => { if(n.name !== bidder.name) n.thinkTimer = Math.floor(Math.random() * 2) + 2; });
-                        activeAuction.timeLeft = Math.min(activeAuction.timeLeft + 5, 25); // Extension for overbid
-                    } else isOverbid = false;
-                }
-                
-                if (!isOverbid) {
-                    let raise = Math.round(activeAuction.currentHighestBid * (0.05 + Math.random()*0.1)) + 500;
-                    let nextBid = activeAuction.currentHighestBid + raise;
-                    if (nextBid <= bidder.maxWillingToPay) {
-                        activeAuction.currentHighestBid = nextBid; activeAuction.highestBidder = bidder.name; activeAuction.lastBidType = 'normal';
-                        activeAuction.bidsLog.push(`💬 ${bidder.name} สู้ $${formatNumber(nextBid)}`);
-                        activeAuction.timeLeft = Math.min(activeAuction.timeLeft + 3, 25); // Ticket 6: +3s extension
-                        bidder.thinkTimer = Math.floor(bidder.baseDelay + Math.random() * 2);
-                    } else { bidder.isActive = false; activeAuction.bidsLog.push(`🏳️ ${bidder.name} ถอนตัว`); }
+                if (nextBid <= bidder.maxWillingToPay) {
+                    activeAuction.currentHighestBid = nextBid; 
+                    activeAuction.highestBidder = bidder.name; 
+                    activeAuction.bidsLog.push(`💬 ${bidder.name} เสนอ $${formatNumber(nextBid)}`);
+                    activeAuction.timeLeft = Math.min(activeAuction.timeLeft + 3, 20); 
+                    bidder.thinkTimer = Math.floor(Math.random() * 3) + 2;
+                } else { 
+                    bidder.isActive = false; 
+                    activeAuction.bidsLog.push(`🏳️ ${bidder.name} ถอนตัว`); 
                 }
             }
-        }
+        });
     }
+    
     if (activeAuction.timeLeft <= 0) concludeAuction();
     else if (currentSheet === 'auction') renderAuctionSheet();
 }

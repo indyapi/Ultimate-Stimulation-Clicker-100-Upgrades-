@@ -68,5 +68,19 @@
         "content": "ค่าครองชีพที่สูงขึ้นทำให้คนเน้นเก็บเงินสด ส่งผลกระทบต่อตลาดการลงทุนทุกประเภท",
         "duration": 150,
         "impact": { "type": "general", "target": "All", "multiplier": 0.9 }
-    }
+    },
+  {
+    "id": 16,
+    "title": "Elon Musk ทวีตเกี่ยวกับ Doge",
+    "content": "เจ้าพ่อเทคโนโลยีทวีตภาพสุนัข Shiba Inu บนดวงจันทร์ ทำให้เหรียญมีมพุ่งกระฉูด!",
+    "impact": { "type": "crypto", "target": "dogecoin", "multiplier": 1.5 },
+    "duration": 60
+  },
+  {
+    "id": 17,
+    "title": "ร้านสะดวกซื้อยอมรับ Dogecoin",
+    "content": "เครือข่ายร้านค้าปลีกยักษ์ใหญ่ประกาศรับชำระเงินด้วย Dogecoin สร้างความเชื่อมั่นให้นักลงทุน",
+    "impact": { "type": "crypto", "target": "dogecoin", "multiplier": 1.2 },
+    "duration": 45
+  }
 ]

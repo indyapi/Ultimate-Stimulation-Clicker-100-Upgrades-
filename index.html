@@ -31,6 +31,7 @@
                 <div id="cps-display">CPS: 0 | พลังคลิก: 1</div>
             </div>
             <button id="click-btn">TAP TO EARN</button>
+            <button id="services-btn" class="btn-action" style="background:#1c1c24; border:1px solid #333; margin-top:5px; font-size:0.8rem;" onclick="openServicesModal()">🛠️ SERVICES</button>
         </main>
 
         <!-- 2. UI Resizable Divider -->
@@ -107,6 +108,44 @@
                 <button class="btn-action btn-success" id="confirm-select-btn">เลือกรายการนี้</button>
             </div>
             <button class="btn-action" style="background:#333;" onclick="closeInventoryModal()">ปิด</button>
+        </div>
+    </div>
+
+    <!-- Services Modal -->
+    <div id="services-modal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(10px);">
+        <div class="modal-box" style="width:90%; max-width:400px; padding:20px;">
+            <h3 style="color:#00ffcc; margin:0 0 15px 0; text-align:center;">🛠️ บริการพิเศษ (Services)</h3>
+            <div id="services-list">
+                <button class="btn-action btn-primary" style="margin-bottom:10px;" onclick="showHypeModal()">📢 จ้างสื่อสร้างกระแสข่าว (1 Adee)</button>
+                <!-- More services can be added here -->
+            </div>
+            <button class="btn-action" style="margin-top:10px; background:#333;" onclick="closeServicesModal()">ปิด</button>
+        </div>
+    </div>
+
+    <!-- Hype Selection Modal -->
+    <div id="hype-modal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2100; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(10px);">
+        <div class="modal-box" style="width:90%; max-width:400px; padding:20px;">
+            <h3 style="color:#ffcc00; margin:0 0 15px 0; text-align:center;">📢 จ้างสื่อสร้างกระแส</h3>
+            
+            <label style="font-size:0.8rem; color:#888;">เลือกระดับวัตถุโบราณที่ต้องการปั่น:</label>
+            <select id="hype-rarity" class="input-box" style="margin-bottom:15px;">
+                <option value="common">Common</option>
+                <option value="rare">Rare</option>
+                <option value="epic">Epic</option>
+                <option value="legendary">Legendary</option>
+                <option value="mythic">Mythic</option>
+            </select>
+
+            <label style="font-size:0.8rem; color:#888;">เลือกกลุ่มเป้าหมาย:</label>
+            <select id="hype-target" class="input-box" style="margin-bottom:15px;">
+                <option value="poor">กลุ่มคนรายได้น้อย</option>
+                <option value="middle">กลุ่มชนชั้นกลาง</option>
+                <option value="rich">กลุ่มมหาเศรษฐี</option>
+            </select>
+
+            <button class="btn-action btn-success" onclick="confirmHype()">ยืนยันการจ้าง (1 Adee)</button>
+            <button class="btn-action" style="margin-top:10px; background:#333;" onclick="closeHypeModal()">ยกเลิก</button>
         </div>
     </div>
 
