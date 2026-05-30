@@ -186,23 +186,35 @@ function renderStockSheet() {
     html += `<div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <b style="font-size:1.1rem;">${s.name}</b> 
-            <b style="color:#ffcc00; font-size:1.1rem;">$${formatNumber(s.price)}</b>
+            <b style="color:#ffcc00; font-size:1.1rem;" id="stock-price-display">$${formatNumber(s.price)}</b>
         </div>
         <div class="chart-container"><svg class="chart-svg" id="live-chart-${currentStockTab}"></svg></div>
         <div style="font-size:0.8rem; margin:10px 0; color:#888; display:flex; justify-content:space-between;">
             <span>ถือครอง: ${s.owned} หน่วย</span> 
-            <span>กำไร/ขาดทุน: <b class="${pnl>=0?'pnl-positive':'pnl-negative'}">$${formatNumber(pnl)}</b></span>
+            <span id="stock-pnl-container">กำไร/ขาดทุน: <b class="${pnl>=0?'pnl-positive':'pnl-negative'}">$${formatNumber(pnl)}</b></span>
         </div>
         ${s.type === 'fund' && s.dividendRate ? `
             <div style="font-size:0.75rem; color:#00ffcc; margin-bottom:10px; padding:8px; background:rgba(0,255,204,0.05); border-radius:5px; border:1px solid rgba(0,255,204,0.1);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-                    <span>ปันผล: <b>${(s.dividendRate * 100).toFixed(1)}%</b></span>
+                    <span id="stock-rate-display">ปันผล: <b>${((dividendFrequency==='monthly'?s.dividendRate/12:s.dividendRate) * 100).toFixed(2)}%</b> /${dividendFrequency==='monthly'?'เดือน':'ปี'}</span>
                     <select onchange="dividendFrequency=this.value; renderStockSheet();" style="background:#111; color:#00ffcc; border:1px solid #333; font-size:0.65rem; border-radius:3px;">
                         <option value="monthly" ${dividendFrequency==='monthly'?'selected':''}>รายเดือน</option>
                         <option value="yearly" ${dividendFrequency==='yearly'?'selected':''}>รายปี</option>
                     </select>
                 </div>
-                รับแล้วรวม: <b style="color:#ffcc00;">$${formatNumber(s.totalDividends || 0)}</b>
+                <span id="stock-total-div-display">รับแล้วรวม: <b style="color:#ffcc00;">$${formatNumber(s.totalDividends || 0)}</b></span>
+            </div>` : ''}
+
+        ${s.type === 'stock' ? `
+            <div style="font-size:0.75rem; color:#00ffcc; margin-bottom:10px; padding:8px; background:rgba(0,255,204,0.05); border-radius:5px; border:1px solid rgba(0,255,204,0.1);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                    <span>กลยุทธ์: <b>${(s.strategy || 'dividend') === 'dividend' ? 'เน้นปันผล' : 'ปันผล+เติบโต'}</b></span>
+                    <select onchange="marketData['${currentStockTab}'].strategy=this.value; renderStockSheet();" style="background:#111; color:#00ffcc; border:1px solid #333; font-size:0.65rem; border-radius:3px;">
+                        <option value="dividend" ${(s.strategy || 'dividend')==='dividend'?'selected':''}>ปันผล (Low Risk)</option>
+                        <option value="growth" ${s.strategy==='growth'?'selected':''}>ปันผล+เติบโต (High Risk)</option>
+                    </select>
+                </div>
+                <span id="stock-total-div-display">ปันผลรับแล้ว: <b style="color:#ffcc00;">$${formatNumber(s.totalDividends || 0)}</b></span>
             </div>` : ''}
         
         <div style="margin-bottom:10px;">
@@ -215,6 +227,29 @@ function renderStockSheet() {
     </div>`;
 
     container.innerHTML = html;
+    renderChart(currentStockTab);
+}
+
+function updateStockUI() {
+    if (currentSheet !== 'stock' || !currentStockTab) return;
+    const s = marketData[currentStockTab]; if(!s) return;
+    
+    const priceEl = document.getElementById('stock-price-display');
+    if (priceEl) priceEl.innerText = `$${formatNumber(s.price)}`;
+    
+    const pnl = (s.owned * s.price) - s.invested;
+    const pnlEl = document.getElementById('stock-pnl-container');
+    if (pnlEl) pnlEl.innerHTML = `กำไร/ขาดทุน: <b class="${pnl>=0?'pnl-positive':'pnl-negative'}">$${formatNumber(pnl)}</b>`;
+    
+    const rateEl = document.getElementById('stock-rate-display');
+    if (rateEl && s.type === 'fund' && s.dividendRate) {
+        const rate = dividendFrequency === 'monthly' ? s.dividendRate / 12 : s.dividendRate;
+        rateEl.innerHTML = `ปันผล: <b>${(rate * 100).toFixed(2)}%</b> /${dividendFrequency==='monthly'?'เดือน':'ปี'}`;
+    }
+
+    const totalDivEl = document.getElementById('stock-total-div-display');
+    if (totalDivEl) totalDivEl.innerHTML = `${s.type==='fund'?'รับแล้วรวม':'ปันผลรับแล้ว'}: <b style="color:#ffcc00;">$${formatNumber(s.totalDividends || 0)}</b>`;
+
     renderChart(currentStockTab);
 }
 
@@ -423,10 +458,18 @@ function applyItemEffect(item) {
         const chosen = rewards[Math.floor(Math.random() * rewards.length)];
         chosen.effect();
     }
+    if (item.specialUnlock === "media_hype_card") {
+        hasMediaHypeCard = true;
+        updateUI();
+    }
     if (item.specialUnlock === "news_subscription") {
         hasNewsSubscription = true;
         const ticker = document.getElementById('news-ticker');
         if (ticker) ticker.style.display = 'block';
+    }
+    if (item.specialUnlock === "media_hype_card") {
+        hasMediaHypeCard = true;
+        updateUI();
     }
     if (item.specialUnlock === "ad_ticket") {
         adTicketExpiry = Date.now() + (24 * 60 * 60 * 1000);
@@ -444,17 +487,44 @@ function newsCycle() {
     const news = newsData[Math.floor(Math.random() * newsData.length)];
     activeNews.push({ ...news, startTime: Date.now() });
     
-    if (hasNewsSubscription) {
-        const ticker = document.getElementById('news-text');
-        if (ticker) {
-            ticker.innerText = `[ข่าวด่วน] ${news.title}: ${news.content} (ผลกระทบ: ${news.impact.type} ${news.impact.target} x${news.impact.multiplier})`;
-            ticker.style.animation = 'none';
-            ticker.offsetHeight; 
-            ticker.style.animation = null;
-        }
-    }
+    updateNewsTicker();
 
     if (news.impact.type === 'stock' || news.impact.type === 'crypto') {
+        const target = news.impact.target;
+        if (target === 'All') {
+            Object.keys(marketData).forEach(k => {
+                if ((news.impact.type === 'stock' && k !== 'bitcoin') || (news.impact.type === 'crypto' && k === 'bitcoin')) {
+                    marketData[k].price *= news.impact.multiplier;
+                }
+            });
+        } else if (marketData[target]) {
+            marketData[target].price *= news.impact.multiplier;
+        }
+    }
+}
+
+function updateNewsTicker() {
+    if (!hasNewsSubscription) return;
+    const ticker = document.getElementById('news-text');
+    if (!ticker) return;
+
+    if (activeNews.length === 0) {
+        ticker.innerText = "กำลังรอข่าวสารสำคัญจากตลาด...";
+        return;
+    }
+
+    // Show the latest active news
+    const news = activeNews[activeNews.length - 1];
+    const newText = `[ข่าวด่วน] ${news.title}: ${news.content} (ผลกระทบ: ${news.impact.type} ${news.impact.target} x${news.impact.multiplier})`;
+    
+    // Only reset animation if text actually changed
+    if (ticker.innerText !== newText) {
+        ticker.innerText = newText;
+        ticker.style.animation = 'none';
+        ticker.offsetHeight; 
+        ticker.style.animation = null;
+    }
+}
         const target = news.impact.target;
         if (target === 'All') {
             Object.keys(marketData).forEach(k => {
@@ -470,6 +540,10 @@ function newsCycle() {
 }
 
 function openServicesModal() {
+    if (!hasMediaHypeCard) {
+        alert("คุณต้องมี 'บัตรจ้างกระแสข่าว' ก่อนจึงจะใช้บริการนี้ได้!");
+        return;
+    }
     document.getElementById('services-modal').style.display = 'flex';
 }
 
@@ -545,14 +619,28 @@ function payoutDividends() {
 
     Object.keys(marketData).forEach(k => {
         let s = marketData[k];
-        if (s.type === 'fund' && s.owned > 0 && s.dividendRate) {
-            let rate = s.dividendRate;
-            if (dividendFrequency === 'yearly') rate *= 12; // Approximation for yearly
-            
-            let amount = s.owned * s.price * rate;
-            score += amount;
-            s.totalDividends = (s.totalDividends || 0) + amount;
-            totalPaid += amount;
+        if (s.owned > 0) {
+            let amount = 0;
+            if (s.type === 'fund' && s.dividendRate) {
+                let rate = s.dividendRate;
+                if (dividendFrequency === 'yearly') rate *= 12;
+                amount = s.owned * s.price * rate;
+            } else if (s.type === 'stock') {
+                // Ticket 6: Stock Dividends
+                const strategy = s.strategy || 'dividend';
+                let rate = 0;
+                if (strategy === 'dividend') rate = 0.008; // 0.8% monthly
+                else if (strategy === 'growth') rate = 0.002; // 0.2% monthly
+                
+                if (dividendFrequency === 'yearly') rate *= 12;
+                amount = s.owned * s.price * rate;
+            }
+
+            if (amount > 0) {
+                score += amount;
+                s.totalDividends = (s.totalDividends || 0) + amount;
+                totalPaid += amount;
+            }
         }
     });
     if (totalPaid > 0) {
@@ -589,62 +677,6 @@ function renderShop() {
             list.appendChild(div);
         }
     });
-}
-
-function updateUI() {
-    const scoreEl = document.getElementById('score-display');
-    const cpsEl = document.getElementById('cps-display');
-    if (scoreEl) scoreEl.innerText = formatNumber(score);
-    if (cpsEl) cpsEl.innerText = `CPS: ${formatNumber(cps)} | พลังคลิก: ${formatNumber(cpc)}`;
-    
-    // Time UI
-    const dateEl = document.getElementById('game-date');
-    const clockEl = document.getElementById('game-clock');
-    if (dateEl) dateEl.innerText = gameDate.toLocaleDateString('th-TH', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    if (clockEl) clockEl.innerText = gameDate.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
-
-    // Level UI
-    const levelEl = document.getElementById('player-level');
-    const titleEl = document.getElementById('player-title');
-    const xpBarFill = document.getElementById('xp-bar-fill');
-    const adeeEl = document.getElementById('adee-display');
-    
-    if (levelEl) levelEl.innerText = `Lv. ${playerLevel}`;
-    if (titleEl) titleEl.innerText = playerTitle;
-    if (adeeEl) adeeEl.innerText = `🪙 ${adeeCoin}`;
-    if (xpBarFill) {
-        const needed = getXpNeeded(playerLevel);
-        const percent = (playerXP / needed) * 100;
-        xpBarFill.style.width = `${percent}%`;
-    }
-
-    // Ad Button Cooldown
-    const adBtn = document.getElementById('watch-ad-btn');
-    if (adBtn) {
-        const now = Date.now();
-        if (now < nextAdAvailableTime) {
-            const rem = Math.ceil((nextAdAvailableTime - now) / 1000);
-            adBtn.innerText = `📺 รอ (${rem}s)`;
-            adBtn.classList.add('disabled');
-            adBtn.disabled = true;
-        } else {
-            adBtn.innerText = `📺 ดูโฆษณา (+1 Adee)`;
-            adBtn.classList.remove('disabled');
-            adBtn.disabled = false;
-        }
-    }
-
-    if (items) {
-        items.forEach(item => {
-            const el = document.getElementById(`shop-item-${item.id}`);
-            if (el) { 
-                const cost = getCost(item); 
-                const canAfford = item.currency === 'adee' ? adeeCoin >= cost : score >= cost;
-                if (!canAfford || cost === Infinity) el.classList.add('disabled'); 
-                else el.classList.remove('disabled'); 
-            }
-        });
-    }
 }
 
 function applyDevMode() {
@@ -714,18 +746,33 @@ async function init() {
 
         checkSpecialistExpiry();
 
+        const oldActiveCount = activeNews.length;
         activeNews = activeNews.filter(n => (Date.now() - n.startTime) < (n.duration * 1000));
+        if (activeNews.length !== oldActiveCount) updateNewsTicker();
+
         if (typeof marketData !== 'undefined') {
             Object.keys(marketData).forEach(k => { 
+                let s = marketData[k];
                 let multiplier = getActiveMarketMultiplier(k);
-                let vol = marketData[k].volatility || 1.0;
-                marketData[k].price *= (1 + (Math.random() * 0.06 - 0.03) * vol) * multiplier; 
-                if (!marketData[k].history) marketData[k].history = [];
-                marketData[k].history.push(marketData[k].price); 
-                if(marketData[k].history.length > 20) marketData[k].history.shift(); 
+                let vol = s.volatility || 1.0;
+                
+                // Ticket 6: Strategy Impact on Growth/Volatility
+                let growthBase = (Math.random() * 0.06 - 0.03); // -3% to +3%
+                if (s.type === 'stock') {
+                    const strategy = s.strategy || 'dividend';
+                    if (strategy === 'growth') {
+                        growthBase += 0.005; // Extra 0.5% growth bias
+                        vol *= 1.5; // Higher risk
+                    }
+                }
+
+                s.price *= (1 + growthBase * vol) * multiplier; 
+                if (!s.history) s.history = [];
+                s.history.push(s.price); 
+                if(s.history.length > 20) s.history.shift(); 
             });
         }
-        if (currentSheet === 'stock') renderStockSheet();
+        if (currentSheet === 'stock') updateStockUI();
     }, 1000);
     setInterval(() => { newsCycle(); }, 120000); 
     

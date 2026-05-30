@@ -75,12 +75,12 @@
   },
   {
     "id": 7,
-    "name": "📢 บัตรจ้างสื่อสร้างกระแสข่าว",
+    "name": "📢 บัตรจ้างกระแสข่าว",
     "baseCost": 15,
     "cpcAdd": 0,
     "cpsAdd": 0,
-    "desc": "🔓 ปลดล็อกระบบพิเศษ",
-    "specialUnlock": "media_hype",
+    "desc": "🔓 ปลดล็อกระบบ Services (จ้างสื่อ)",
+    "specialUnlock": "media_hype_card",
     "isOnetime": true,
     "currency": "adee"
   },

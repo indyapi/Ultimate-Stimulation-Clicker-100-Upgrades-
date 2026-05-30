@@ -4,7 +4,9 @@ var currentSheet = null, currentStockTab = null, currentStockCategory = 'stock',
 var isDraggingSheet = false, sheetStartY, sheetStartHeight;
 var isDraggingDivider = false;
 
-var hasAntiqueTicket = false, hasMediaHypePass = false, hasNewsSubscription = false, archeologistLevel = 0, appraiserLevel = 0;
+var hasAntiqueTicket = false, hasMediaHypeCard = false, hasNewsSubscription = false, archeologistLevel = 0, appraiserLevel = 0;
+var archeologistExpiry = 0, appraiserExpiry = 0;
+var dividendFrequency = 'monthly'; // 'monthly' or 'yearly'
 var playerLevel = 0, playerXP = 0, playerTitle = "มือใหม่";
 var xpPerSecond = 0, xpMultiplier = 1.0;
 var adeeCoin = 0, adTicketExpiry = 0, nextAdAvailableTime = 0, auctionPriceUnit = 1;
